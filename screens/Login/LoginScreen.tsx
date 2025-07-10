@@ -18,6 +18,12 @@ export default function LoginScreen() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleLogin = () => {
+    // Aquí puedes validar el usuario/contraseña más adelante
+    // Por ahora solo navegamos al stack con pestañas:
+    navigation.navigate('Tabs');
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -60,7 +66,7 @@ export default function LoginScreen() {
           </Text>
         </Text>
 
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
       </ScrollView>

@@ -1,8 +1,9 @@
+// src/screens/Home/styles.ts
 import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#061C64',
@@ -16,18 +17,18 @@ const styles = StyleSheet.create({
     marginBottom: height * 0.03,
   },
   greeting: {
+    fontSize: width * 0.05,
     color: '#fff',
-    fontSize: width * 0.045,
   },
   username: {
     fontWeight: 'bold',
     color: '#fff',
   },
   wave: {
-    fontSize: width * 0.045,
+    fontSize: width * 0.05,
   },
   logo: {
-    width: width * 0.2,
+    width: width * 0.25,
     height: height * 0.05,
     resizeMode: 'contain',
   },
@@ -35,15 +36,21 @@ const styles = StyleSheet.create({
     paddingBottom: height * 0.2,
   },
   cardPrimary: {
-    backgroundColor: '#0072FF',
-    borderRadius: 20,
-    padding: width * 0.05,
+    backgroundColor: '#FF7A00',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: height * 0.02,
+  },
+  cardSecondary: {
+    backgroundColor: '#1B2BAF',
+    borderRadius: 15,
+    padding: 15,
     marginBottom: height * 0.02,
   },
   cardLabel: {
     color: '#fff',
-    fontSize: width * 0.035,
     fontWeight: 'bold',
+    fontSize: width * 0.04,
     marginBottom: 4,
   },
   cardTitle: {
@@ -54,45 +61,101 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     color: '#fff',
     fontSize: width * 0.035,
-    marginBottom: height * 0.015,
+    marginBottom: 8,
   },
   cardInfoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 6,
+    flexWrap: 'wrap',
   },
   cardInfo: {
     color: '#fff',
     fontSize: width * 0.035,
-    marginLeft: 8,
+    marginLeft: 6,
+  },
+  cardContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardImageRight: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    marginLeft: 10,
+  },
+  cardImageLeft: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+    marginRight: 10,
+  },
+  cardImage: {
+    width: '100%',
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 10,
   },
   tabGroup: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: height * 0.02,
+    justifyContent: 'center',
+    gap: 10,
+    marginVertical: height * 0.02,
   },
   tab: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#fff',
     borderRadius: 20,
-    paddingVertical: height * 0.01,
-    paddingHorizontal: width * 0.05,
-    marginHorizontal: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   tabText: {
-    color: '#000',
+    color: '#333',
     fontWeight: 'bold',
   },
   tabActive: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FF7A00',
     borderRadius: 20,
-    paddingVertical: height * 0.01,
-    paddingHorizontal: width * 0.05,
-    marginHorizontal: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   tabActiveText: {
-    color: '#061C64',
+    color: '#fff',
     fontWeight: 'bold',
   },
+  bottomMenu: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 14,
+    paddingBottom: height * 0.03,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  menuButton: {
+    alignItems: 'center',
+  },
+  menuText: {
+    color: '#061C64',
+    fontSize: width * 0.03,
+    marginTop: 4,
+  },
+  menuButtonActive: {
+    alignItems: 'center',
+  },
+  menuTextActive: {
+    color: '#FF7A00',
+    fontSize: width * 0.03,
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
 });
-
-export default styles;
