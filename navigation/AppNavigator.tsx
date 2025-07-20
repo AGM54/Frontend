@@ -7,6 +7,8 @@ import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
 import LoginScreen from '../screens/Login/LoginScreen';
 import ElectricidadScreen from '../screens/Electricidad/ElectricidadScreen';
+import ElectronLessonScreen from '../screens/Electricidad/ElectronLessonScreen';
+import GeneracionScreen from '../screens/Electricidad/Generacion/generacion'; 
 import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -19,6 +21,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Electricidad" component={ElectricidadScreen} />
+        <Stack.Screen name="ElectronLesson" component={ElectronLessonScreen} />
+        <Stack.Screen name="Generacion" component={GeneracionScreen} /> 
         <Stack.Screen name="Tabs" component={BottomTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

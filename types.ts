@@ -4,6 +4,8 @@ export type RootStackParamList = {
   Login: undefined;
   Tabs: undefined;
   Electricidad: undefined;
+  ElectronLesson: undefined; 
+  Generacion: undefined; //
 };
 
 export type TabParamList = {
