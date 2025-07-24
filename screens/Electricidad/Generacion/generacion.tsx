@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import styles from './generacionStyles';
 import TriviaCard from '../../../components/TriviaCard';
+import ImageTriviaCard from '../../../components/ImageTriviaCard';
+import ClasificaCorrienteGame from './ClasificaCorrienteGame';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,21 +18,84 @@ const lessonSteps = [
   {
     title: '¿Qué es la generación de electricidad?',
     description:
-      'Es el proceso de producir electricidad usando fuentes como el sol, el viento o el agua. Los electrones se mueven por un conductor cuando hay una diferencia de voltaje, creando un flujo de corriente como un río de energía.',
-    image: require('../../assets/flujo.png'),
+      'La corriente eléctrica es el movimiento continuo y ordenado de electrones a través de un material conductor, como un cable de cobre. Este flujo se genera cuando los electrones se desplazan debido a una diferencia de potencial eléctrico, conocida como voltaje. Dicho de forma sencilla: la corriente eléctrica es como un río de electrones que viajan por los cables llevando energía a los aparatos eléctricos.',
+    image: require('../../../assets/flujo.png'),
   },
   {
-    title: '¿Qué fuentes existen?',
+    title: '¿Qué se necesita?',
     description:
-      'Existen fuentes renovables como la solar y la eólica, y no renovables como el petróleo y el gas. Las plantas generadoras convierten estas fuentes en energía eléctrica.',
+      'Para que exista corriente eléctrica, debe haber un circuito cerrado que permita a los electrones circular desde una fuente de energía hasta una carga (como un foco o un ventilador) y regresar.',
+    image: require('../../../assets/ventilador.png'),
   },
   {
     title: '🧠 Trivia: ¿Cuál es una fuente renovable?',
     isTrivia: true,
+    question: '¿Cuál es una fuente de energía renovable?',
+    options: [
+      { label: 'Carbón', correct: false },
+      { label: 'Sol', correct: true },
+      { label: 'Petróleo', correct: false },
+      { label: 'Gas natural', correct: false },
+    ],
   },
   {
-    title: '⚡ Juego interactivo (próximamente)',
-    description: 'Aquí habrá un juego sobre cómo se genera y transporta la electricidad.',
+    title: 'Corriente continua (DC - Direct Current)',
+    description: 'En este tipo de corriente, los electrones se mueven siempre en la misma dirección.',
+    image: require('../../../assets/continua.png'),
+  },
+  {
+    title: 'Ejemplo',
+    description:
+      'Cuando conectas un control remoto con baterías, los electrones viajan en una sola dirección desde el polo negativo al polo positivo.',
+    image: require('../../../assets/ejemplo.png'),
+  },
+  {
+    title: 'Corriente alterna (AC - Alternating Current)',
+    description:
+      'En este caso, los electrones no siguen una sola dirección, sino que cambian de dirección muchas veces por segundo (en Guatemala, 60 veces por segundo, o 60 Hz). Es el tipo de corriente que se usa para alimentar nuestros hogares, escuelas y empresas.',
+    image: require('../../../assets/alterna.png'),
+  },
+  {
+    title: 'Trivia: Ventaja de la corriente alterna',
+    isTriviaImage: true,
+    triviaType: 'acVentaja',
+  },
+  {
+    title: 'Ejemplo',
+    description:
+      'La electricidad que llega a los tomacorrientes de tu casa es corriente alterna. Esto significa que los electrones no se mueven en una sola dirección, sino que cambian de dirección muchas veces por segundo.',
+    image: require('../../../assets/toma.png'),
+  },
+  {
+    title: '¿Por qué existen dos tipos de corriente?',
+    description:
+      '• La corriente continua es ideal para aparatos electrónicos sensibles y para almacenar energía en baterías.\n\n• La corriente alterna, en cambio, es más fácil y eficiente de transportar a través de largas distancias, por eso se usa en las redes eléctricas.',
+  },
+  {
+    title: 'Trivia: Edison vs. Tesla ⚡',
+    isImageTrivia: true,
+    triviaType: 'edisonTesla',
+  },
+  {
+    title: 'Trivia: ¿Cuál usa corriente continua?',
+    isImageTrivia: true,
+    triviaType: 'corrienteContinua',
+  },
+  {
+    title: 'Juego: Clasifica por tipo de corriente ⚡',
+    isGame: true,
+  },
+  {
+    title: 'Trivia: ¿Qué pasa si conectas una licuadora a corriente DC?',
+    isTrivia: true,
+    image: require('../../../assets/licuadora.png'),
+    question: '¿Qué puede pasar si conectas una licuadora a una batería de corriente continua (DC)?',
+    options: [
+      { label: 'Funciona mejor que con AC', correct: false },
+      { label: 'No funciona o se daña', correct: true },
+      { label: 'Se convierte en ventilador', correct: false },
+    ],
+    explanation: 'Correcto. Muchos aparatos diseñados para AC no funcionan con DC. Podrías dañarlos.',
   },
 ];
 
@@ -49,25 +114,102 @@ export default function GeneracionScreen() {
     alert('¡Has terminado la lección de generación! ⚡');
   };
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <Text style={styles.title}>{current.title}</Text>
-
-      {current.isTrivia ? (
-        <TriviaCard
-          question="¿Cuál es una fuente de energía renovable?"
+  const renderImageTrivia = () => {
+    if (current.triviaType === 'edisonTesla') {
+      return (
+        <ImageTriviaCard
+          question="¿Quién apoyaba la corriente alterna?"
           options={[
-            { label: 'Carbón', correct: false },
-            { label: 'Sol', correct: true },
-            { label: 'Petróleo', correct: false },
-            { label: 'Gas natural', correct: false },
+            {
+              label: 'Thomas Edison',
+              correct: false,
+              image: require('../../../assets/edison.png'),
+            },
+            {
+              label: 'Nikola Tesla',
+              correct: true,
+              image: require('../../../assets/tesla.png'),
+              isLarger: true,
+            },
           ]}
           onNext={handleNext}
         />
+      );
+    }
+    if (current.triviaType === 'corrienteContinua') {
+      return (
+        <ImageTriviaCard
+          question="¿Cuál de estos aparatos utiliza corriente continua (DC)?"
+          options={[
+            {
+              label: 'Dispositivos portátiles',
+              correct: true,
+              image: require('../../../assets/portatil.png'),
+            },
+            {
+              label: 'Televisores',
+              correct: false,
+              image: require('../../../assets/televisor.png'),
+            },
+          ]}
+          onNext={handleNext}
+        />
+      );
+    }
+    if (current.triviaType === 'acVentaja') {
+      return (
+        <TriviaCard
+          image={require('../../../assets/cabless.png')}
+          question="¿Cuál es una ventaja clave de la corriente alterna (AC)?"
+          options={[
+            { label: 'Es más fácil de transportar a largas distancias', correct: true },
+            { label: 'Solo funciona con pilas', correct: false },
+            { label: 'Tiene menor voltaje que la corriente continua', correct: false },
+          ]}
+          onNext={handleNext}
+        />
+      );
+    }
+    return null;
+  };
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <Image
+        source={require('../../../assets/icon.png')}
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 16,
+          width: width * 0.25,
+          height: height * 0.05,
+          zIndex: 99,
+        }}
+        resizeMode="contain"
+      />
+
+      <Text style={styles.title}>{current.title}</Text>
+
+      {current.isImageTrivia || current.isTriviaImage ? (
+        renderImageTrivia()
+      ) : current.isTrivia ? (
+        <TriviaCard
+          image={current.image}
+          question={current.question}
+          options={current.options}
+          explanation={current.explanation}
+          onNext={handleNext}
+        />
+      ) : current.isGame ? (
+        <ClasificaCorrienteGame onSuccess={handleNext} />
       ) : (
         <>
-          {current.image && <Image source={current.image} style={styles.image} />}
-          <Text style={styles.description}>{current.description}</Text>
+          {current.image && (
+            <Image source={current.image} style={styles.image} resizeMode="contain" />
+          )}
+          <Text style={[styles.description, { textAlign: 'justify' }]}>
+            {current.description}
+          </Text>
         </>
       )}
 
@@ -87,7 +229,7 @@ export default function GeneracionScreen() {
         ))}
       </View>
 
-      {!current.isTrivia && step < lessonSteps.length - 1 && (
+      {!current.isTrivia && !current.isImageTrivia && !current.isTriviaImage && !current.isGame && step < lessonSteps.length - 1 && (
         <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>Continuar</Text>
         </TouchableOpacity>
