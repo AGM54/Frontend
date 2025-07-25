@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
+import { RootStackParamList } from '../../types/types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
