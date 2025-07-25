@@ -12,10 +12,12 @@ import ElectricidadScreen from '../screens/Electricidad/ElectricidadScreen';
 import ElectronLessonScreen from '../screens/Electricidad/ElectronLessonScreen';
 import GeneracionScreen from '../screens/Electricidad/Generacion/generacion';
 import BottomTabNavigator from './BottomTabNavigator';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import ForgotPasswordScreen from '../screens/ForgontPassword/ForgotPasswordScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const { width, height } = Dimensions.get('window');
+
 
 const AppNavigator: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -72,8 +74,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   loadingText: {
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: height * 0.01,
+    fontSize: height * 0.045,
     color: '#666',
   },
 });
