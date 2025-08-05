@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types/types';
+import { RootStackParamList } from '../../types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -39,20 +39,22 @@ export default function ElectricidadScreen() {
       navigateTo: 'ElectronLesson',
     },
     {
-      title: 'Generación',
+      title: 'Corriente eléctrica',
       duration: '2 min',
       image: require('../../assets/rayo.png'),
       navigateTo: 'Generacion', // 
     },
     {
-      title: 'Corriente',
+      title: 'Voltaje,Corriente y Resistencia',
       duration: '2 min',
       image: require('../../assets/corriente.png'),
+       navigateTo: 'Vcr',
     },
     {
       title: 'Conductores y aislantes',
       duration: '3 min',
       image: require('../../assets/conductores.png'),
+      navigateTo: 'ConductoresYa', 
     },
     {
       title: 'Seguridad básica',

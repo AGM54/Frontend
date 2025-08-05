@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -21,11 +21,24 @@ type Props = {
   image?: any;
   onNext?: () => void;
   explanation?: string;
+  isLast?: boolean; // ✅ Nueva prop para saber si es la última
 };
 
-export default function TriviaCard({ question, options, image, onNext, explanation }: Props) {
+export default function TriviaCard({
+  question,
+  options,
+  image,
+  onNext,
+  explanation,
+  isLast = false, // valor por defecto
+}: Props) {
   const [selected, setSelected] = useState<number | null>(null);
   const [correctAnswered, setCorrectAnswered] = useState(false);
+
+  useEffect(() => {
+    setSelected(null);
+    setCorrectAnswered(false);
+  }, [question]);
 
   const handleSelect = (index: number) => {
     if (correctAnswered) return;
@@ -78,8 +91,16 @@ export default function TriviaCard({ question, options, image, onNext, explanati
       )}
 
       {correctAnswered && (
-        <TouchableOpacity style={styles.nextButton} onPress={onNext}>
-          <Text style={styles.nextButtonText}>Continuar</Text>
+        <TouchableOpacity
+          style={[
+            styles.nextButton,
+            isLast && { backgroundColor: '#FF7A00' },
+          ]}
+          onPress={onNext}
+        >
+          <Text style={styles.nextButtonText}>
+            {isLast ? 'Finalizar lección' : 'Continuar'}
+          </Text>
         </TouchableOpacity>
       )}
     </View>

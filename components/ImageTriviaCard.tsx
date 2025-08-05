@@ -16,6 +16,7 @@ interface Option {
   correct: boolean;
   image: any;
   isLarger?: boolean;
+  feedback?: string;            
 }
 
 interface Props {
@@ -25,19 +26,19 @@ interface Props {
 }
 
 const ImageTriviaCard: React.FC<Props> = ({ question, options, onNext }) => {
-  const [feedback, setFeedback] = useState<null | 'correct' | 'wrong'>(null);
+  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // 🔄 Resetear estados al cambiar de pregunta
   useEffect(() => {
-    setFeedback(null);
+    setFeedbackMsg(null);
     setRespuestaCorrecta(false);
     fadeAnim.setValue(0);
   }, [question]);
 
-  const mostrarFeedback = (tipo: 'correct' | 'wrong') => {
-    setFeedback(tipo);
+  const mostrarFeedback = (mensaje: string) => {
+    setFeedbackMsg(mensaje);
     Animated.sequence([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -53,15 +54,18 @@ const ImageTriviaCard: React.FC<Props> = ({ question, options, onNext }) => {
     ]).start();
   };
 
-  const handlePress = (isCorrect: boolean) => {
+  const handlePress = (opt: Option) => {
     if (respuestaCorrecta) return;
 
-    if (isCorrect) {
+    if (opt.correct) {
       setRespuestaCorrecta(true);
-      mostrarFeedback('correct');
-    } else {
-      mostrarFeedback('wrong');
     }
+
+    const msg =
+      opt.feedback ??
+      (opt.correct ? '¡Correcto! 🎉' : 'Intenta de nuevo 🙁');
+
+    mostrarFeedback(msg);
   };
 
   return (
@@ -69,15 +73,18 @@ const ImageTriviaCard: React.FC<Props> = ({ question, options, onNext }) => {
       <Text style={styles.question}>{question}</Text>
 
       <View style={styles.optionsContainer}>
-        {options.map((opt, index) => (
+        {options.map((opt, i) => (
           <TouchableOpacity
-            key={index}
-            onPress={() => handlePress(opt.correct)}
+            key={i}
+            onPress={() => handlePress(opt)}
+            disabled={respuestaCorrecta}
             style={[
               styles.optionBox,
-              respuestaCorrecta && opt.correct && { borderColor: '#00C853', borderWidth: 2 },
+              respuestaCorrecta && opt.correct && {
+                borderColor: '#00C853',
+                borderWidth: 2,
+              },
             ]}
-            disabled={respuestaCorrecta}
           >
             <Image
               source={opt.image}
@@ -91,19 +98,19 @@ const ImageTriviaCard: React.FC<Props> = ({ question, options, onNext }) => {
         ))}
       </View>
 
-      {feedback && (
+      {feedbackMsg && (
         <Animated.View
           style={[
             styles.feedbackContainer,
             {
               opacity: fadeAnim,
-              backgroundColor: feedback === 'correct' ? '#00C853' : '#FF5252',
+              backgroundColor: respuestaCorrecta
+                ? '#00C853'
+                : '#FF5252',
             },
           ]}
         >
-          <Text style={styles.feedbackText}>
-            {feedback === 'correct' ? '¡Correcto! 🎉' : 'Intenta de nuevo 🙁'}
-          </Text>
+          <Text style={styles.feedbackText}>{feedbackMsg}</Text>
         </Animated.View>
       )}
 
@@ -135,10 +142,10 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 16,
     marginBottom: 24,
-    flexWrap: 'wrap',
   },
   optionBox: {
     alignItems: 'center',

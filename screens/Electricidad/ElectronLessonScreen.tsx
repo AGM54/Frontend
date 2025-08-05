@@ -75,7 +75,7 @@ export default function ElectronLessonScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Logo en la esquina superior derecha con tamaño solicitado */}
+      {/*  */}
       <Image
         source={require('../../assets/icon.png')}
         style={{
@@ -89,7 +89,7 @@ export default function ElectronLessonScreen() {
         resizeMode="contain"
       />
 
-      {/* Mostrar título solo si no es el paso del juego de circuito */}
+      {/*  */}
       {!current.isCircuitGame && (
         <Text style={styles.title}>{current.title}</Text>
       )}

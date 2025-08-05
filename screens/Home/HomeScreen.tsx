@@ -11,8 +11,7 @@ import { styles } from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types/types';
-import LogoutButton from '../../components/Buttons/LogOutButton/LogOutButton';
+import { RootStackParamList } from '../../types';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Tabs'>;
 
@@ -27,10 +26,6 @@ export default function HomeScreen() {
           Buenas tardes, <Text style={styles.username}>David</Text>{' '}
           <Text style={styles.wave}>👋</Text>
         </Text>
-                 <LogoutButton 
-            style={styles.logoutButton}
-            textStyle={styles.logoutText}
-          />
         <Image source={require('../../assets/icon.png')} style={styles.logo} />
       </View>
 

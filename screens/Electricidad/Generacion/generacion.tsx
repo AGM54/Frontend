@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styles from './generacionStyles';
 import TriviaCard from '../../../components/TriviaCard';
 import ImageTriviaCard from '../../../components/ImageTriviaCard';
@@ -40,7 +41,8 @@ const lessonSteps = [
   },
   {
     title: 'Corriente continua (DC - Direct Current)',
-    description: 'En este tipo de corriente, los electrones se mueven siempre en la misma dirección.',
+    description:
+      'En este tipo de corriente, los electrones se mueven siempre en la misma dirección.',
     image: require('../../../assets/continua.png'),
   },
   {
@@ -89,13 +91,27 @@ const lessonSteps = [
     title: 'Trivia: ¿Qué pasa si conectas una licuadora a corriente DC?',
     isTrivia: true,
     image: require('../../../assets/licuadora.png'),
-    question: '¿Qué puede pasar si conectas una licuadora a una batería de corriente continua (DC)?',
+    question:
+      '¿Qué puede pasar si conectas una licuadora a una batería de corriente continua (DC)?',
     options: [
       { label: 'Funciona mejor que con AC', correct: false },
       { label: 'No funciona o se daña', correct: true },
       { label: 'Se convierte en ventilador', correct: false },
     ],
-    explanation: 'Correcto. Muchos aparatos diseñados para AC no funcionan con DC. Podrías dañarlos.',
+    explanation:
+      'Correcto. Muchos aparatos diseñados para AC no funcionan con DC. Podrías dañarlos.',
+  },
+  {
+    title: 'Trivia: ¿Por qué es importante saber el tipo de corriente?',
+    isTrivia: true,
+    image: require('../../../assets/enchufe.png'),
+    question: '¿Por qué es importante saber el tipo de corriente que necesita un aparato?',
+    options: [
+      { label: 'Porque puede afectar la velocidad del WiFi', correct: false },
+      { label: 'Porque usar el tipo equivocado puede dañarlo', correct: true },
+      { label: 'No importa, todos los aparatos usan ambos', correct: false },
+    ],
+    explanation: '✅ ¡Correcto! Identificar el tipo de corriente previene daños y accidentes.',
   },
 ];
 
@@ -103,6 +119,7 @@ export default function GeneracionScreen() {
   const [step, setStep] = useState(0);
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
+  const navigation = useNavigation();
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -111,66 +128,72 @@ export default function GeneracionScreen() {
   };
 
   const handleFinish = () => {
-    alert('¡Has terminado la lección de generación! ⚡');
+    navigation.navigate('Electricidad');
   };
 
   const renderImageTrivia = () => {
-    if (current.triviaType === 'edisonTesla') {
-      return (
-        <ImageTriviaCard
-          question="¿Quién apoyaba la corriente alterna?"
-          options={[
-            {
-              label: 'Thomas Edison',
-              correct: false,
-              image: require('../../../assets/edison.png'),
-            },
-            {
-              label: 'Nikola Tesla',
-              correct: true,
-              image: require('../../../assets/tesla.png'),
-              isLarger: true,
-            },
-          ]}
-          onNext={handleNext}
-        />
-      );
+    switch (current.triviaType) {
+      case 'edisonTesla':
+        return (
+          <ImageTriviaCard
+            question="¿Quién apoyaba la corriente alterna?"
+            options={[
+              {
+                label: 'Thomas Edison',
+                correct: false,
+                image: require('../../../assets/edison.png'),
+              },
+              {
+                label: 'Nikola Tesla',
+                correct: true,
+                image: require('../../../assets/tesla.png'),
+                isLarger: true,
+              },
+            ]}
+            onNext={handleNext}
+          />
+        );
+      case 'corrienteContinua':
+        return (
+          <ImageTriviaCard
+            question="¿Cuál de estos aparatos utiliza corriente continua (DC)?"
+            options={[
+              {
+                label: 'Dispositivos portátiles',
+                correct: true,
+                image: require('../../../assets/portatil.png'),
+              },
+              {
+                label: 'Televisores',
+                correct: false,
+                image: require('../../../assets/televisor.png'),
+              },
+            ]}
+            onNext={handleNext}
+          />
+        );
+      case 'acVentaja':
+        return (
+          <TriviaCard
+            image={require('../../../assets/cabless.png')}
+            question="¿Cuál es una ventaja clave de la corriente alterna (AC)?"
+            options={[
+              {
+                label: 'Es más fácil de transportar a largas distancias',
+                correct: true,
+              },
+              { label: 'Solo funciona con pilas', correct: false },
+              {
+                label: 'Tiene menor voltaje que la corriente continua',
+                correct: false,
+              },
+            ]}
+            onNext={handleNext}
+          />
+        );
+      default:
+        return null;
     }
-    if (current.triviaType === 'corrienteContinua') {
-      return (
-        <ImageTriviaCard
-          question="¿Cuál de estos aparatos utiliza corriente continua (DC)?"
-          options={[
-            {
-              label: 'Dispositivos portátiles',
-              correct: true,
-              image: require('../../../assets/portatil.png'),
-            },
-            {
-              label: 'Televisores',
-              correct: false,
-              image: require('../../../assets/televisor.png'),
-            },
-          ]}
-          onNext={handleNext}
-        />
-      );
-    }
-    if (current.triviaType === 'acVentaja') {
-      return (
-        <TriviaCard
-          image={require('../../../assets/cabless.png')}
-          question="¿Cuál es una ventaja clave de la corriente alterna (AC)?"
-          options={[
-            { label: 'Es más fácil de transportar a largas distancias', correct: true },
-            { label: 'Solo funciona con pilas', correct: false },
-            { label: 'Tiene menor voltaje que la corriente continua', correct: false },
-          ]}
-          onNext={handleNext}
-        />
-      );
-    }
-    return null;
   };
 
   return (
@@ -190,31 +213,38 @@ export default function GeneracionScreen() {
 
       <Text style={styles.title}>{current.title}</Text>
 
-      {current.isImageTrivia || current.isTriviaImage ? (
-        renderImageTrivia()
-      ) : current.isTrivia ? (
-        <TriviaCard
-          image={current.image}
-          question={current.question}
-          options={current.options}
-          explanation={current.explanation}
-          onNext={handleNext}
-        />
-      ) : current.isGame ? (
-        <ClasificaCorrienteGame onSuccess={handleNext} />
-      ) : (
-        <>
-          {current.image && (
-            <Image source={current.image} style={styles.image} resizeMode="contain" />
+      {current.isImageTrivia || current.isTriviaImage
+        ? renderImageTrivia()
+        : current.isTrivia ? (
+            <TriviaCard
+              image={current.image}
+              question={current.question}
+              options={current.options}
+              explanation={current.explanation}
+              onNext={step === lessonSteps.length - 1 ? handleFinish : handleNext}
+              isLast={step === lessonSteps.length - 1}
+            />
+          ) : current.isGame ? (
+            <ClasificaCorrienteGame onSuccess={handleNext} />
+          ) : (
+            <>
+              {current.image && (
+                <Image
+                  source={current.image}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+              )}
+              <Text style={[styles.description, { textAlign: 'justify' }]}>
+                {current.description}
+              </Text>
+            </>
           )}
-          <Text style={[styles.description, { textAlign: 'justify' }]}>
-            {current.description}
-          </Text>
-        </>
-      )}
 
       <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+        <View
+          style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
+        />
       </View>
 
       <View style={styles.stepIndicators}>
@@ -229,20 +259,15 @@ export default function GeneracionScreen() {
         ))}
       </View>
 
-      {!current.isTrivia && !current.isImageTrivia && !current.isTriviaImage && !current.isGame && step < lessonSteps.length - 1 && (
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>Continuar</Text>
-        </TouchableOpacity>
-      )}
-
-      {step === lessonSteps.length - 1 && (
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#00C853' }]}
-          onPress={handleFinish}
-        >
-          <Text style={styles.buttonText}>Finalizar lección</Text>
-        </TouchableOpacity>
-      )}
+      {!current.isTrivia &&
+        !current.isImageTrivia &&
+        !current.isTriviaImage &&
+        !current.isGame &&
+        step < lessonSteps.length - 1 && (
+          <TouchableOpacity style={styles.button} onPress={handleNext}>
+            <Text style={styles.buttonText}>Continuar</Text>
+          </TouchableOpacity>
+        )}
     </SafeAreaView>
   );
 }
