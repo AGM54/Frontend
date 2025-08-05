@@ -2,10 +2,11 @@ export type RootStackParamList = {
   Welcome: undefined;
   Register: undefined;
   Login: undefined;
-  Tabs: undefined;
+  ForgotPassword: undefined; // Nueva pantalla
   Electricidad: undefined;
-  ElectronLesson: undefined; 
-  Generacion: undefined; //
+  ElectronLesson: undefined;
+  Generacion: undefined;
+  Tabs: undefined;
 };
 
 export type TabParamList = {
