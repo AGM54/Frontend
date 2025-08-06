@@ -14,12 +14,12 @@ const { width, height } = Dimensions.get('window');
 const lessonSteps = [
   {
     title: 'Bienvenida',
-    description: 'Hoy conocerás  una institución muy importante para Guatemala: la Comisión Nacional de Energía Eléctrica o CNEE.',
+    description: 'Hoy conocerás una institución muy importante para Guatemala: la Comisión Nacional de Energía Eléctrica o CNEE.',
     image: require('../../assets/cnee.png'),
   },
   {
     title: '¿Qué es la CNEE?',
-    description: 'La CNEE es la institución que dirige el sector eléctrico de Guatemala. No genera electricidad, pero  trabaja todos los días para que los guatemaltecos recibamos un servicio de energía de calidad, sin cortes y con precios estables',
+    description: 'La CNEE es la institución que dirige el sector eléctrico de Guatemala. No genera electricidad, pero trabaja todos los días para que los guatemaltecos recibamos un servicio de energía de calidad, sin cortes y con precios estables.',
     image: require('../../assets/quees.png'),
   },
   {
@@ -69,6 +69,8 @@ export default function CnneScreen() {
     alert('¡Lección completada! 🎉');
   };
 
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* Logo */}
@@ -90,7 +92,11 @@ export default function CnneScreen() {
 
       {/* Contenido */}
       {current.image && <Image source={current.image} style={styles.image} />}
-      <Text style={styles.description}>{current.description}</Text>
+
+      {/* Tarjeta de información */}
+      <View style={styles.descriptionCard}>
+        <Text style={styles.description}>{current.description}</Text>
+      </View>
 
       {/* Barra de progreso */}
       <View style={styles.progressBarContainer}>
