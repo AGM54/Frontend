@@ -68,7 +68,7 @@ export default function HomeScreen() {
         <View style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>Qué es la generación de electricidad</Text>
+              <Text style={styles.cardTitle}>¿Qué es la CNEE?</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
@@ -115,8 +115,8 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Quinta Tarjeta */}
-        <View style={styles.cardSecondary}>
+        {/* Quinta Tarjeta - CNEE con navegación */}
+        <TouchableOpacity onPress={() => navigation.navigate('Cnne')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
               <Text style={styles.cardTitle}>¿Qué es la CNEE?</Text>
@@ -130,7 +130,7 @@ export default function HomeScreen() {
             </View>
             <Image source={require('../../assets/cnee.png')} style={styles.cardImageRight} />
           </View>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

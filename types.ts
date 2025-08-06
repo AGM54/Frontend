@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Generacion: undefined; //
    Vcr: undefined;
    ConductoresYa: undefined;
+   Cnne: undefined;
 };
 
 export type TabParamList = {

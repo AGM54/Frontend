@@ -3,10 +3,12 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Home/HomeScreen';
 import ElectricidadScreen from '../screens/Electricidad/ElectricidadScreen';
+import CnneScreen from '../screens/cnne/CnneScreen';
 
 export type MainStackParamList = {
   HomeMain: undefined;
   Electricidad: undefined;
+  Cnne: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -16,6 +18,7 @@ export default function MainStackNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={HomeScreen} />
       <Stack.Screen name="Electricidad" component={ElectricidadScreen} />
+      <Stack.Screen name="Cnne" component={CnneScreen} />
     </Stack.Navigator>
   );
 }

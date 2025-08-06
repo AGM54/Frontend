@@ -10,7 +10,8 @@ import ElectricidadScreen from '../screens/Electricidad/ElectricidadScreen';
 import ElectronLessonScreen from '../screens/Electricidad/ElectronLessonScreen';
 import GeneracionScreen from '../screens/Electricidad/Generacion/generacion'; 
 import VcrScreen from '../screens/vcr/vcr';
-import ConductoresYaScreen from '../screens/conductoresya/conductoresya'; 
+import ConductoresYaScreen from '../screens/conductoresya/conductoresya';
+import CnneScreen from '../screens/cnne/CnneScreen'; 
 import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -26,7 +27,8 @@ export default function AppNavigator() {
         <Stack.Screen name="ElectronLesson" component={ElectronLessonScreen} />
         <Stack.Screen name="Generacion" component={GeneracionScreen} /> 
         <Stack.Screen name="Vcr" component={VcrScreen} />
-        <Stack.Screen name="ConductoresYa" component={ConductoresYaScreen} /> 
+        <Stack.Screen name="ConductoresYa" component={ConductoresYaScreen} />
+        <Stack.Screen name="Cnne" component={CnneScreen} /> 
         <Stack.Screen name="Tabs" component={BottomTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
