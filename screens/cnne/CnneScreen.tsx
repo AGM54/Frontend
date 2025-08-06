@@ -40,6 +40,11 @@ const lessonSteps = [
     isTrivia: true,
   },
   {
+    title: '¿Qué ha logrado la CNEE?',
+    description: `●  Inversión extranjera: empresas de otros países han invertido en Guatemala, generando empleo.\n\n●  Infraestructura moderna: se han construido redes eléctricas nuevas y seguras.\n\n●  Trámites más rápidos y sencillos para los usuarios.\n\n●  Un servicio de energía seguro y de calidad.\n\n●  Precios estables`,
+    isAchievements: true,
+  },
+  {
     title: 'Regulación de tarifas',
     description: 'La CNEE establece las tarifas eléctricas justas para garantizar un servicio de calidad a precios accesibles para todos los guatemaltecos.',
     image: require('../../assets/facturaa.png'),
