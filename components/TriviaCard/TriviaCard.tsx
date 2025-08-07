@@ -7,7 +7,6 @@ import {
   Platform,
 } from 'react-native';
 import { styles } from './styles';
-import { Confetti } from './Confetti';
 
 const { width, height } = Dimensions.get('window');
 
@@ -90,7 +89,6 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
 
   const question = triviaQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === triviaQuestions.length - 1;
@@ -98,11 +96,9 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
   const handleAnswer = (answer: boolean) => {
     setSelectedAnswer(answer);
     setShowFeedback(true);
-    
+
     if (answer === question.correct) {
       setScore(score + 1);
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 2000);
     }
   };
 
@@ -113,7 +109,6 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowFeedback(false);
-      setShowConfetti(false);
     }
   };
 
@@ -121,7 +116,6 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
 
   return (
     <View style={styles.triviaContainer}>
-      {showConfetti && <Confetti />}
       <View style={styles.questionHeader}>
         <Text style={styles.questionNumber}>
           Pregunta {currentQuestion + 1} de {triviaQuestions.length}
@@ -133,7 +127,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
 
       <View style={styles.questionCard}>
         <Text style={styles.questionText}>{question.question}</Text>
-        
+
         <View style={styles.answersContainer}>
           <TouchableOpacity
             style={[

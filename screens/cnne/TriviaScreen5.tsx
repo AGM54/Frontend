@@ -10,78 +10,25 @@ import {
   Platform,
 } from 'react-native';
 import { styles } from './styles';
-import TriviaCard from '../../components/TriviaCard/TriviaCard';
 import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
-import GlossaryGame from '../../components/GlossaryGame/GlossaryGame';
 
 const { width, height } = Dimensions.get('window');
 
 const lessonSteps = [
   {
-    title: 'Bienvenida',
-    description: 'Hoy conocerás una institución muy importante para Guatemala: la Comisión Nacional de Energía Eléctrica o CNEE.',
-    image: require('../../assets/cnee.png'),
-  },
-  {
-    title: '¿Qué es la CNEE?',
-    description: 'La CNEE es la institución que dirige el sector eléctrico de Guatemala. No genera electricidad, pero trabaja todos los días para que los guatemaltecos recibamos un servicio de energía de calidad, sin cortes y con precios estables.',
-    image: require('../../assets/quees.png'),
-  },
-  {
-    title: '¿Qué hace la CNEE?',
-    description: `●  Aplica la ley: hace cumplir la ley de electricidad.\n
-●  Protege los derechos de quienes usamos la energía.\n
-●  Vigila que las empresas del sector eléctrico actúen correctamente.\n
-●  Define cuánto deben cobrar las empresas distribuidoras por llevar la electricidad a los hogares y comercios.\n
-●  Resuelve conflictos: ayuda a resolver desacuerdos entre empresas del sector.\n
-●  Crea normas: establece reglas técnicas que deben cumplirse.\n
-●  Permite el uso de redes para utilizar las redes de energía.`,
-  },
-  {
-    title: '¡Pongamos a prueba tus conocimientos!',
+    title: 'Trivia - ¡Pon a prueba tu conocimiento!',
+    description: 'Responde las siguientes preguntas sobre la CNEE para demostrar lo que has aprendido.',
     isTrivia: true,
   },
   {
-    title: '¿Qué ha logrado la CNEE?',
-    description: `●  Inversión extranjera: empresas de otros países han invertido en Guatemala, generando empleo.\n\n●  Infraestructura moderna: se han construido redes eléctricas nuevas y seguras.\n\n●  Trámites más rápidos y sencillos para los usuarios.\n\n●  Un servicio de energía seguro y de calidad.\n\n●  Precios estables`,
-    isAchievements: true,
-  },
-  {
-    title: 'Trivia - ¡Pon a prueba tu conocimiento!',
-    isNewTrivia: true,
-  },
-  {
-    title: 'Glosario animado',
-    isGlossary: true,
-  },
-  {
-    title: 'Regulación de tarifas',
-    description: 'La CNEE establece las tarifas eléctricas justas para garantizar un servicio de calidad a precios accesibles para todos los guatemaltecos.',
-    image: require('../../assets/facturaa.png'),
-  },
-  {
-    title: 'Supervisión de calidad',
-    description: 'Monitorea constantemente la calidad del servicio eléctrico para asegurar que cumpla con los estándares establecidos.',
-    image: require('../../assets/transmision.png'),
-  },
-  {
-    title: 'Protección al usuario',
-    description: 'Defiende los derechos de los consumidores y resuelve conflictos entre usuarios y empresas distribuidoras de electricidad.',
-    image: require('../../assets/personatarjeta.png'),
-  },
-  {
-    title: 'Importancia para Guatemala',
-    description: 'La CNEE garantiza un sector eléctrico competitivo, eficiente y confiable que contribuye al desarrollo económico del país.',
+    title: '¡Felicitaciones! 🎉',
+    description: 'Has completado exitosamente la trivia sobre la CNEE. Ahora conoces mejor el papel fundamental que desempeña esta institución en el sector eléctrico de Guatemala.',
     image: require('../../assets/cnee.png'),
-  },
-  {
-    title: 'Contacto y servicios',
-    description: 'Los ciudadanos pueden contactar a la CNEE para consultas, quejas o información sobre el servicio eléctrico en Guatemala.',
-    image: require('../../assets/personatarjeta.png'),
+    isCompletion: true,
   },
 ];
 
-export default function CnneScreen() {
+export default function TriviaScreen5() {
   const [step, setStep] = useState(0);
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
@@ -93,10 +40,8 @@ export default function CnneScreen() {
   };
 
   const handleFinish = () => {
-    alert('¡Lección completada! 🎉');
+    alert('¡Trivia completada! 🎉 Has demostrado un excelente conocimiento sobre la CNEE.');
   };
-
-
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -137,11 +82,7 @@ export default function CnneScreen() {
 
         {/* Contenido */}
         {current.isTrivia ? (
-          <TriviaCard onComplete={handleNext} />
-        ) : current.isNewTrivia ? (
           <TriviaCardScreen5 onComplete={handleNext} />
-        ) : current.isGlossary ? (
-          <GlossaryGame onComplete={handleNext} />
         ) : (
           <>
             {current.image && <Image source={current.image} style={styles.image} />}
@@ -160,7 +101,7 @@ export default function CnneScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && (
+      {!current.isTrivia && (
         <View style={styles.fixedBottom}>
           {/* Barra de progreso */}
           <View style={styles.progressBarContainer}>
@@ -190,7 +131,7 @@ export default function CnneScreen() {
 
           {step === lessonSteps.length - 1 && (
             <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
-              <Text style={styles.buttonText}>Finalizar lección</Text>
+              <Text style={styles.buttonText}>Finalizar trivia</Text>
             </TouchableOpacity>
           )}
         </View>
