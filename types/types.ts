@@ -2,10 +2,13 @@ export type RootStackParamList = {
   Welcome: undefined;
   Register: undefined;
   Login: undefined;
-  ForgotPassword: undefined; // Nueva pantalla
+  ForgotPassword: undefined;
   Electricidad: undefined;
   ElectronLesson: undefined;
   Generacion: undefined;
+  Vcr: undefined;
+  ConductoresYa: undefined;
+  Cnne: undefined;
   Tabs: undefined;
 };
 

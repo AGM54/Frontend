@@ -46,12 +46,20 @@ export const styles = StyleSheet.create({
     }),
   },
   image: {
-    width: width * 0.5,
-    height: width * 0.5,
+    width: width * 0.8,
+    height: width * 0.6,
     resizeMode: 'contain',
     alignSelf: 'center',
-    marginBottom: height * 0.015,
-    marginTop: height * 0.005,
+    marginTop: height * 0.02,
+    marginBottom: height * 0.02,
+  },
+  imageCinco: {
+    width: width * 0.95,
+    height: width * 0.8,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: height * 0.02,
+    marginBottom: height * 0.02,
   },
   descriptionCard: {
     backgroundColor: '#1C1C1C',
@@ -78,11 +86,12 @@ export const styles = StyleSheet.create({
     maxHeight: height * 0.5,
   },
   description: {
-    fontSize: width * 0.042,
+    fontSize: width * 0.044,
     color: '#FFFFFF',
     textAlign: 'justify',
-    lineHeight: width * 0.068,
-    letterSpacing: 0.5,
+    lineHeight: width * 0.072,
+    letterSpacing: 0.3,
+    textAlignVertical: 'top',
     ...Platform.select({
       ios: {
         fontFamily: 'System',
@@ -91,6 +100,7 @@ export const styles = StyleSheet.create({
       android: {
         fontFamily: 'Roboto',
         fontWeight: '400',
+        textAlignVertical: 'top',
       },
     }),
   },

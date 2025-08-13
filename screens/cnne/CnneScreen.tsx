@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,34 @@ import {
   Platform,
 } from 'react-native';
 import { styles } from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../navigation/MainStackNavigator';
 import TriviaCard from '../../components/TriviaCard/TriviaCard';
 import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
-import GlossaryGame from '../../components/GlossaryGame/GlossaryGame';
+import GlossaryGame from '../../components/GlossaryGame/GlossaryGame_fixed';
+import TypewriterList from '../../components/TypewriterText/TypewriterList';
+import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
+import StoryCard from '../../components/StoryCard/StoryCard';
+import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
 
-const lessonSteps = [
+type CnneScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Cnne'>;
+
+interface LessonStep {
+  title: string;
+  description?: string;
+  image?: any;
+  isTrivia?: boolean;
+  isNewTrivia?: boolean;
+  isGlossary?: boolean;
+  isAchievements?: boolean;
+  isImageTrivia?: boolean;
+  isStory?: boolean;
+}
+
+const lessonSteps: LessonStep[] = [
   {
     title: 'Bienvenida',
     description: 'Hoy conocerás una institución muy importante para Guatemala: la Comisión Nacional de Energía Eléctrica o CNEE.',
@@ -55,36 +76,33 @@ const lessonSteps = [
     isGlossary: true,
   },
   {
-    title: 'Regulación de tarifas',
-    description: 'La CNEE establece las tarifas eléctricas justas para garantizar un servicio de calidad a precios accesibles para todos los guatemaltecos.',
-    image: require('../../assets/facturaa.png'),
+    title: '¿Dónde vemos el trabajo de la CNEE en la vida diaria?',
+    description: `●  Cuando enciendes la luz en tu cuarto.\n\n●  Cuando cargas tu celular.\n\n●  Cuando tu familia paga el recibo de la luz.\n\n●  Cuando se va la energía y vuelve rápido.\n\n●  Cuando exiges que no te cobren de más.`,
+    image: require('../../assets/cinco.png'),
   },
   {
-    title: 'Supervisión de calidad',
-    description: 'Monitorea constantemente la calidad del servicio eléctrico para asegurar que cumpla con los estándares establecidos.',
-    image: require('../../assets/transmision.png'),
+    title: 'Actividad: Relaciona cada situación y decide si es regulada o no por la CNEE',
+    isImageTrivia: true,
   },
   {
-    title: 'Protección al usuario',
-    description: 'Defiende los derechos de los consumidores y resuelve conflictos entre usuarios y empresas distribuidoras de electricidad.',
-    image: require('../../assets/personatarjeta.png'),
-  },
-  {
-    title: 'Importancia para Guatemala',
-    description: 'La CNEE garantiza un sector eléctrico competitivo, eficiente y confiable que contribuye al desarrollo económico del país.',
-    image: require('../../assets/cnee.png'),
-  },
-  {
-    title: 'Contacto y servicios',
-    description: 'Los ciudadanos pueden contactar a la CNEE para consultas, quejas o información sobre el servicio eléctrico en Guatemala.',
-    image: require('../../assets/personatarjeta.png'),
+    title: 'Conoce a Diego y cómo descubre la CNEE',
+    isStory: true,
   },
 ];
 
 export default function CnneScreen() {
   const [step, setStep] = useState(0);
+  const [typewriterComplete, setTypewriterComplete] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const navigation = useNavigation<CnneScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
+
+  // Resetear typewriter cuando cambia el paso
+  React.useEffect(() => {
+    setTypewriterComplete(false);
+  }, [step]);
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -93,7 +111,11 @@ export default function CnneScreen() {
   };
 
   const handleFinish = () => {
-    alert('¡Lección completada! 🎉');
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+      navigation.navigate('HomeMain');
+    }, 3000);
   };
 
 
@@ -128,12 +150,15 @@ export default function CnneScreen() {
 
       {/* Contenido scrolleable */}
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={true}
       >
-        {/* Título */}
-        <Text style={styles.title}>{current.title}</Text>
+        {/* Título - Oculto para Story */}
+        {!current.isStory && (
+          <Text style={styles.title}>{current.title}</Text>
+        )}
 
         {/* Contenido */}
         {current.isTrivia ? (
@@ -142,9 +167,18 @@ export default function CnneScreen() {
           <TriviaCardScreen5 onComplete={handleNext} />
         ) : current.isGlossary ? (
           <GlossaryGame onComplete={handleNext} />
+        ) : current.isImageTrivia ? (
+          <ImageTriviaCard onComplete={handleNext} />
+        ) : current.isStory ? (
+          <StoryCard onComplete={handleFinish} />
         ) : (
           <>
-            {current.image && <Image source={current.image} style={styles.image} />}
+            {current.image && (
+              <Image
+                source={current.image}
+                style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
+              />
+            )}
             {/* Tarjeta de información */}
             <View style={styles.descriptionCard}>
               <ScrollView
@@ -152,7 +186,20 @@ export default function CnneScreen() {
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={true}
               >
-                <Text style={styles.description}>{current.description}</Text>
+                {current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' && current.description ? (
+                  <TypewriterList
+                    items={current.description.split('\n\n').map(item => item.replace('●  ', '').trim()).filter(item => item.length > 0)}
+                    itemStyle={styles.description}
+                    speed={25}
+                    itemDelay={1200}
+                    startDelay={500}
+                    onComplete={() => setTypewriterComplete(true)}
+                    scrollViewRef={scrollViewRef}
+                    autoScroll={false}
+                  />
+                ) : (
+                  <Text style={styles.description}>{current.description || ''}</Text>
+                )}
               </ScrollView>
             </View>
           </>
@@ -160,41 +207,45 @@ export default function CnneScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && (
-        <View style={styles.fixedBottom}>
-          {/* Barra de progreso */}
-          <View style={styles.progressBarContainer}>
-            <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory &&
+        (!current.title.includes('vida diaria') || typewriterComplete) && (
+          <View style={styles.fixedBottom}>
+            {/* Barra de progreso */}
+            <View style={styles.progressBarContainer}>
+              <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+            </View>
+
+            {/* Indicadores de pasos */}
+            <View style={styles.stepIndicators}>
+              {lessonSteps.map((_, i) => (
+                <View
+                  key={i}
+                  style={[
+                    styles.circle,
+                    i === step && styles.activeCircle,
+                    { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
+                  ]}
+                />
+              ))}
+            </View>
+
+            {/* Botón continuar o finalizar */}
+            {step < lessonSteps.length - 1 && (
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                <Text style={styles.buttonText}>Continuar</Text>
+              </TouchableOpacity>
+            )}
+
+            {step === lessonSteps.length - 1 && (
+              <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
+                <Text style={styles.buttonText}>Finalizar lección</Text>
+              </TouchableOpacity>
+            )}
           </View>
+        )}
 
-          {/* Indicadores de pasos */}
-          <View style={styles.stepIndicators}>
-            {lessonSteps.map((_, i) => (
-              <View
-                key={i}
-                style={[
-                  styles.circle,
-                  i === step && styles.activeCircle,
-                  { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
-                ]}
-              />
-            ))}
-          </View>
-
-          {/* Botón continuar o finalizar */}
-          {step < lessonSteps.length - 1 && (
-            <TouchableOpacity style={styles.button} onPress={handleNext}>
-              <Text style={styles.buttonText}>Continuar</Text>
-            </TouchableOpacity>
-          )}
-
-          {step === lessonSteps.length - 1 && (
-            <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
-              <Text style={styles.buttonText}>Finalizar lección</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+      {/* Confetti Effect */}
+      {showConfetti && <Confetti />}
     </SafeAreaView>
   );
 }

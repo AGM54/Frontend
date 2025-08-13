@@ -11,9 +11,9 @@ import { styles } from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
+import { MainStackParamList } from '../../navigation/MainStackNavigator';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Tabs'>;
+type HomeScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'HomeMain'>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -81,11 +81,11 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Tercera Tarjeta */}
-        <View style={styles.cardSecondary}>
+        {/* Tercera Tarjeta - Luz Hogar con navegación */}
+        <TouchableOpacity onPress={() => navigation.navigate('LuzHogar')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>Transmisión de electricidad</Text>
+              <Text style={styles.cardTitle}>¿Cómo llega la luz a tu hogar?</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
@@ -96,7 +96,7 @@ export default function HomeScreen() {
             </View>
             <Image source={require('../../assets/transmision.png')} style={styles.cardImageRight} />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Cuarta Tarjeta */}
         <View style={styles.cardSecondary}>
@@ -119,7 +119,7 @@ export default function HomeScreen() {
         <TouchableOpacity onPress={() => navigation.navigate('Cnne')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>¿Qué es la CNEE?</Text>
+              <Text style={styles.cardTitle}>Precios y Factura de Energía</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
