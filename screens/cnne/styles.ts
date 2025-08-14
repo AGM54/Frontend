@@ -13,15 +13,30 @@ export const styles = StyleSheet.create({
     paddingTop: height * 0.08,
   },
   scrollContent: {
-    paddingBottom: height * 0.02,
+    paddingBottom: height * 0.25, // Más espacio para evitar sobreposición con elementos fijos
   },
   fixedBottom: {
-    backgroundColor: '#000000',
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? height * 0.12 : height * 0.1, // Más arriba para evitar sobreposición
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
     paddingHorizontal: width * 0.06,
-    paddingBottom: height * 0.015,
-    paddingTop: height * 0.01,
+    paddingBottom: height * 0.025,
+    paddingTop: height * 0.02,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   title: {
     fontSize: width * 0.075,

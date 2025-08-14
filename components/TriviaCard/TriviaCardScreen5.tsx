@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 
 const { width, height } = Dimensions.get('window');
@@ -75,6 +76,7 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const question = triviaQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === triviaQuestions.length - 1;
@@ -87,6 +89,15 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
       setScore(score + 1);
     }
   };
+
+  // Scroll automático cuando aparece el feedback
+  useEffect(() => {
+    if (showFeedback && scrollViewRef.current) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 300);
+    }
+  }, [showFeedback]);
 
   const handleContinue = () => {
     if (isLastQuestion) {
@@ -101,7 +112,12 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
   const isCorrect = selectedAnswer !== null && question.options[selectedAnswer].correct;
 
   return (
-    <View style={styles.triviaContainer}>
+    <LinearGradient
+      colors={['#1a1a2e', '#16213e', '#0f3460']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.triviaContainer}
+    >
       <View style={styles.questionHeader}>
         <Text style={styles.questionNumber}>
           Pregunta {currentQuestion + 1} de {triviaQuestions.length}
@@ -111,70 +127,92 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
         </Text>
       </View>
 
-      <View style={[
-        styles.questionCard,
-        showFeedback && styles.questionCardWithFeedback
-      ]}>
-        <Text style={styles.questionText}>{question.question}</Text>
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.scrollContainer}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={true}
+        bounces={true}
+        alwaysBounceVertical={true}
+      >
+        <LinearGradient
+          colors={['#2a2a4a', '#1e1e3a', '#151530']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.questionCard}
+        >
+          <Text style={styles.questionText}>{question.question}</Text>
 
-        <View style={[
-          styles.multipleChoiceContainer,
-          showFeedback && styles.multipleChoiceContainerWithFeedback
-        ]}>
-          {question.options.map((option, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.multipleChoiceButton,
-                selectedAnswer === index && (
-                  option.correct ? styles.correctButton : styles.incorrectButton
-                ),
-                showFeedback && option.correct && styles.correctButton
-              ]}
-              onPress={() => handleAnswer(index)}
-              disabled={showFeedback}
-            >
-              <Text style={[
-                styles.multipleChoiceText,
-                selectedAnswer === index && styles.selectedAnswerText,
-                showFeedback && option.correct && styles.selectedAnswerText
-              ]}>
-                {option.text}
+          <View style={styles.multipleChoiceContainer}>
+            {question.options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.multipleChoiceButton,
+                  selectedAnswer === index && (
+                    option.correct ? styles.correctButton : styles.incorrectButton
+                  ),
+                  showFeedback && option.correct && styles.correctButton
+                ]}
+                onPress={() => handleAnswer(index)}
+                disabled={showFeedback}
+              >
+                <LinearGradient
+                  colors={
+                    selectedAnswer === index && showFeedback
+                      ? (option.correct ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                      : showFeedback && option.correct
+                      ? ['#28A745', '#20C751']
+                      : ['#2c2c2c', '#1c1c1c']
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{ flex: 1, justifyContent: 'center', paddingVertical: height * 0.02, paddingHorizontal: width * 0.04, borderRadius: 12 }}
+                >
+                  <Text style={[
+                    styles.multipleChoiceText,
+                    (selectedAnswer === index || (showFeedback && option.correct)) && styles.selectedAnswerText
+                  ]}>
+                    {option.text}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {showFeedback && (
+            <View style={[
+              styles.feedbackContainer,
+              isCorrect ? styles.correctFeedback : styles.incorrectFeedback
+            ]}>
+              <Text style={styles.feedbackTitle}>
+                {isCorrect ? '¡Correcto! 🎉' : '❌ Incorrecto'}
               </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+              <Text style={styles.feedbackText}>
+                {isCorrect ? question.feedback.correct : question.feedback.incorrect}
+              </Text>
+            </View>
+          )}
+        </LinearGradient>
 
         {showFeedback && (
-          <View style={[
-            styles.feedbackContainer,
-            isCorrect ? styles.correctFeedback : styles.incorrectFeedback
-          ]}>
-            <Text style={styles.feedbackTitle}>
-              {isCorrect ? '¡Correcto! 🎉' : '❌ Incorrecto'}
-            </Text>
-            <Text style={styles.feedbackText}>
-              {isCorrect ? question.feedback.correct : question.feedback.incorrect}
-            </Text>
-          </View>
+          <TouchableOpacity
+            style={styles.continueButton}
+            onPress={handleContinue}
+          >
+            <LinearGradient
+              colors={['#58CCF7', '#4A9FE7']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 16 }}
+            >
+              <Text style={styles.continueButtonText}>
+                {isLastQuestion ? 'Finalizar Trivia' : 'Continuar'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         )}
-      </View>
-
-      <TouchableOpacity
-        style={[
-          styles.continueButton,
-          !showFeedback && styles.disabledButton
-        ]}
-        onPress={handleContinue}
-        disabled={!showFeedback}
-      >
-        <Text style={[
-          styles.continueButtonText,
-          !showFeedback && styles.disabledButtonText
-        ]}>
-          {isLastQuestion ? 'Finalizar Trivia' : 'Continuar'}
-        </Text>
-      </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }

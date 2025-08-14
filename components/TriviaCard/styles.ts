@@ -4,26 +4,32 @@ const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   triviaContainer: {
-    backgroundColor: '#1C1C1C',
-    borderRadius: 24,
+    borderRadius: 28,
     padding: width * 0.04,
     marginBottom: height * 0.01,
     marginHorizontal: width * 0.015,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
-    minHeight: height * 0.75,
-    maxHeight: height * 0.8,
+    borderWidth: 2,
+    borderColor: 'rgba(88, 204, 247, 0.3)',
+    flex: 1, // Cambiado para permitir scroll completo
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.4,
-        shadowRadius: 15,
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
       },
       android: {
-        elevation: 8,
+        elevation: 12,
       },
     }),
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: height * 0.15,
+    minHeight: height * 0.9,
   },
   questionHeader: {
     flexDirection: 'row',
@@ -71,12 +77,23 @@ export const styles = StyleSheet.create({
     paddingHorizontal: width * 0.02,
   },
   answerButton: {
-    backgroundColor: '#1C1C1C',
     width: '48%',
-    paddingVertical: height * 0.02,
+    height: height * 0.08,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 2,
+    borderColor: 'rgba(88, 204, 247, 0.3)',
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   answerText: {
     color: '#FFFFFF',
@@ -97,17 +114,26 @@ export const styles = StyleSheet.create({
   },
   feedbackContainer: {
     paddingHorizontal: width * 0.04,
-    paddingVertical: height * 0.01,
-    borderRadius: 12,
+    paddingVertical: height * 0.02,
+    borderRadius: 15,
     marginHorizontal: width * 0.02,
-    position: 'absolute',
-    bottom: height * 0.025,
-    left: width * 0.04,
-    right: width * 0.04,
-    zIndex: 1,
-    minHeight: height * 0.08,
+    marginTop: height * 0.025,
+    minHeight: height * 0.10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
   correctFeedback: {
     backgroundColor: 'rgba(40, 167, 69, 0.2)',
@@ -135,17 +161,37 @@ export const styles = StyleSheet.create({
   },
   continueButton: {
     backgroundColor: '#58CCF7',
-    paddingVertical: height * 0.018,
+    paddingVertical: height * 0.025,
     borderRadius: 16,
     alignItems: 'center',
-    marginTop: height * 0.02,
-    marginBottom: height * 0.01,
-    width: '100%',
+    justifyContent: 'center',
+    marginTop: height * 0.025,
+    marginBottom: height * 0.03,
+    marginHorizontal: width * 0.02,
+    alignSelf: 'center',
+    width: '96%',
+    minHeight: height * 0.07,
+    borderWidth: 2,
+    borderColor: '#58CCF7',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.6,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   continueButtonText: {
     color: '#FFFFFF',
     fontSize: width * 0.045,
-    fontWeight: '600',
+    fontWeight: '700',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   disabledButton: {
     backgroundColor: '#4A4A4A',

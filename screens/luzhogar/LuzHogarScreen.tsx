@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,9 @@ import {
   Dimensions,
   ScrollView,
   Platform,
+  Animated,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,6 +21,7 @@ import GlossaryGame from '../../components/GlossaryGame/GlossaryGame_fixed';
 import TypewriterList from '../../components/TypewriterText/TypewriterList';
 import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
 import StoryCard from '../../components/StoryCard/StoryCard';
+import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDropGame';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
@@ -35,13 +38,53 @@ interface LessonStep {
   isAchievements?: boolean;
   isImageTrivia?: boolean;
   isStory?: boolean;
+  isDragDrop?: boolean;
 }
 
 const lessonSteps: LessonStep[] = [
   {
     title: '¿Te has preguntado cómo llega la luz a tu casa?',
     description: 'Todo parte con la producción de electricidad en Guatemala: usamos agua, sol, viento, caña y combustibles para generarla.',
-    image: require('../../assets/transmision.png'),
+    image: require('../../assets/energias.png'),
+  },
+  {
+    title: 'Central Hidroeléctrica',
+    description: ' Agua de ríos\nLas centrales hidroeléctricas aprovechan la fuerza del agua de nuestros ríos para generar electricidad de manera limpia y renovable.',
+    image: require('../../assets/hidro.png'),
+  },
+  {
+    title: 'Paneles Solares',
+    description: ' Sol\nLos paneles solares capturan la energía del sol y la convierten en electricidad, aprovechando uno de nuestros recursos más abundantes.',
+    image: require('../../assets/solar.png'),
+  },
+  {
+    title: 'Aerogeneradores',
+    description: ' Viento\nLos aerogeneradores utilizan la fuerza del viento para hacer girar sus aspas y generar energía eléctrica de forma sostenible.',
+    image: require('../../assets/aerogenerador.png'),
+  },
+  {
+    title: 'Planta de Biomasa',
+    description: ' Caña de azúcar\nLas plantas de biomasa queman residuos de caña de azúcar y otros materiales orgánicos para producir electricidad.',
+    image: require('../../assets/biomasa.png'),
+  },
+  {
+    title: 'Planta Térmica',
+    description: '🛢️ Combustibles\nLas plantas térmicas utilizan combustibles como gas natural o diesel para generar electricidad cuando se necesita más energía.',
+    image: require('../../assets/termica.png'),
+  },
+  {
+    title: 'Actividad Interactiva: Conecta las Fuentes de Energía',
+    isDragDrop: true,
+  },
+  {
+    title: 'Líneas de Transmisión',
+    description: 'La electricidad viaja por líneas de alto voltaje desde las plantas hasta todos los departamentos del país.',
+    image: require('../../assets/lineastransmision.png'),
+  },
+  {
+    title: 'Transporte de Electricidad',
+    description: 'La electricidad viaja por líneas de alto voltaje desde las plantas hasta todos los departamentos del país.\n\n📘 Dato curioso:\nLa electricidad viaja a casi la velocidad de la luz. 🌐⚡',
+    image: require('../../assets/lineastransmision.png'),
   },
   {
     title: 'Fuentes de energía en Guatemala',
@@ -99,10 +142,62 @@ export default function LuzHogarScreen() {
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
 
+  // Animation values for curious fact
+  const lightningOpacity = useRef(new Animated.Value(0)).current;
+  const factScale = useRef(new Animated.Value(0.8)).current;
+
   // Resetear typewriter cuando cambia el paso
   React.useEffect(() => {
     setTypewriterComplete(false);
   }, [step]);
+
+  // Lightning animation effect
+  useEffect(() => {
+    if (current.title === 'Transporte de Electricidad') {
+      // Start lightning animation
+      const lightningAnimation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(lightningOpacity, {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true,
+          }),
+          Animated.timing(lightningOpacity, {
+            toValue: 0.3,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(lightningOpacity, {
+            toValue: 1,
+            duration: 150,
+            useNativeDriver: true,
+          }),
+          Animated.timing(lightningOpacity, {
+            toValue: 0.5,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+
+      // Start fact scale animation
+      const scaleAnimation = Animated.spring(factScale, {
+        toValue: 1,
+        tension: 100,
+        friction: 8,
+        useNativeDriver: true,
+      });
+
+      lightningAnimation.start();
+      scaleAnimation.start();
+
+      return () => {
+        lightningAnimation.stop();
+        factScale.setValue(0.8);
+        lightningOpacity.setValue(0);
+      };
+    }
+  }, [current.title, lightningOpacity, factScale]);
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -119,7 +214,12 @@ export default function LuzHogarScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <LinearGradient
+      colors={['#0a0a0a', '#1a0033', '#2d1b4d', '#1a0033', '#0a0a0a']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.safeArea}
+    >
       {/* Logo */}
       <Image
         source={require('../../assets/icon.png')}
@@ -167,18 +267,36 @@ export default function LuzHogarScreen() {
           <GlossaryGame onComplete={handleNext} />
         ) : current.isImageTrivia ? (
           <ImageTriviaCard onComplete={handleNext} />
+        ) : current.isDragDrop ? (
+          <EnergyDragDropGame onComplete={handleNext} />
         ) : current.isStory ? (
           <StoryCard onComplete={handleFinish} />
         ) : (
           <>
             {current.image && (
-              <Image
-                source={current.image}
-                style={current.title === '¿Cómo llega la electricidad a tu hogar específicamente?' ? styles.imageCinco : styles.image}
-              />
+              <View style={styles.imageContainer}>
+                <Image
+                  source={current.image}
+                  style={current.title === '¿Cómo llega la electricidad a tu hogar específicamente?' ? styles.imageCinco : styles.image}
+                />
+              </View>
             )}
-            {/* Tarjeta de información */}
-            <View style={styles.descriptionCard}>
+            {/* Tarjeta de información con diseño profesional */}
+            <LinearGradient
+              colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.descriptionCard}
+            >
+              {/* Border interior con gradiente */}
+              <View style={styles.gradientBorder} />
+              
+              {/* Efectos de partículas de estrellas sutiles */}
+              <View style={styles.sparkleContainer}>
+                <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
+                <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
+              </View>
+              
               <ScrollView
                 style={styles.descriptionScroll}
                 nestedScrollEnabled={true}
@@ -195,17 +313,55 @@ export default function LuzHogarScreen() {
                     scrollViewRef={scrollViewRef}
                     autoScroll={false}
                   />
+                ) : current.title === 'Transporte de Electricidad' ? (
+                  <>
+                    <Text style={styles.description}>
+                      {current.description?.split('\n\n')[0] || ''}
+                    </Text>
+                    <Animated.View 
+                      style={[
+                        styles.curiousFact,
+                        {
+                          transform: [{ scale: factScale }]
+                        }
+                      ]}
+                    >
+                      <LinearGradient
+                        colors={['rgba(139, 69, 255, 0.4)', 'rgba(75, 0, 130, 0.5)']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.curiousFactGradient}
+                      >
+                        <Text style={styles.curiousFactText}>
+                          📘 Dato curioso:
+                        </Text>
+                        <Text style={[styles.curiousFactText, { marginTop: height * 0.01 }]}>
+                          La electricidad viaja a casi la velocidad de la luz.
+                        </Text>
+                        <Animated.Text 
+                          style={[
+                            styles.lightningIcon,
+                            {
+                              opacity: lightningOpacity
+                            }
+                          ]}
+                        >
+                          🌐⚡
+                        </Animated.Text>
+                      </LinearGradient>
+                    </Animated.View>
+                  </>
                 ) : (
                   <Text style={styles.description}>{current.description || ''}</Text>
                 )}
               </ScrollView>
-            </View>
+            </LinearGradient>
           </>
         )}
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory &&
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory &&
         (!current.title.includes('específicamente') || typewriterComplete) && (
           <View style={styles.fixedBottom}>
             {/* Barra de progreso */}
@@ -244,6 +400,6 @@ export default function LuzHogarScreen() {
 
       {/* Confetti Effect */}
       {showConfetti && <Confetti />}
-    </SafeAreaView>
+    </LinearGradient>
   );
 }

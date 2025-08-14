@@ -13,27 +13,42 @@ export const styles = StyleSheet.create({
     paddingTop: height * 0.08,
   },
   scrollContent: {
-    paddingBottom: height * 0.02,
+    paddingBottom: height * 0.25, // Más espacio para evitar sobreposición con elementos fijos
   },
   fixedBottom: {
-    backgroundColor: '#000000',
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? height * 0.12 : height * 0.1, // Más arriba para evitar sobreposición
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
     paddingHorizontal: width * 0.06,
-    paddingBottom: height * 0.015,
-    paddingTop: height * 0.01,
+    paddingBottom: height * 0.025,
+    paddingTop: height * 0.02,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   title: {
-    fontSize: width * 0.075,
+    fontSize: width * 0.07,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginBottom: height * 0.03,
+    marginBottom: height * 0.025,
     textAlign: 'center',
     paddingHorizontal: width * 0.04,
     letterSpacing: 0.5,
-    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    textShadowRadius: 6,
     ...Platform.select({
       ios: {
         fontFamily: 'System',
@@ -46,12 +61,12 @@ export const styles = StyleSheet.create({
     }),
   },
   image: {
-    width: width * 0.8,
-    height: width * 0.6,
+    width: width * 0.65,
+    height: width * 0.45,
     resizeMode: 'contain',
     alignSelf: 'center',
-    marginTop: height * 0.02,
-    marginBottom: height * 0.02,
+    marginTop: height * 0.015,
+    marginBottom: height * 0.015,
   },
   imageCinco: {
     width: width * 0.95,
@@ -61,24 +76,43 @@ export const styles = StyleSheet.create({
     marginTop: height * 0.02,
     marginBottom: height * 0.02,
   },
-  descriptionCard: {
-    backgroundColor: '#1C1C1C',
-    borderRadius: 24,
-    padding: width * 0.07,
-    marginBottom: height * 0.02,
-    marginHorizontal: width * 0.015,
-    maxHeight: height * 0.55,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+  imageContainer: {
+    alignSelf: 'center',
+    marginTop: height * 0.02,
+    marginBottom: height * 0.025,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.4)',
+    overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.3,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  descriptionCard: {
+    borderRadius: 24,
+    padding: width * 0.06,
+    marginBottom: height * 0.02,
+    marginHorizontal: width * 0.02,
+    maxHeight: height * 0.5,
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.4)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.4,
         shadowRadius: 15,
       },
       android: {
-        elevation: 8,
+        elevation: 10,
       },
     }),
   },
@@ -91,15 +125,20 @@ export const styles = StyleSheet.create({
     textAlign: 'justify',
     lineHeight: width * 0.072,
     letterSpacing: 0.3,
+    fontWeight: '500',
+    zIndex: 10,
     textAlignVertical: 'top',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
     ...Platform.select({
       ios: {
         fontFamily: 'System',
-        fontWeight: '400',
+        fontWeight: '500',
       },
       android: {
         fontFamily: 'Roboto',
-        fontWeight: '400',
+        fontWeight: '500',
         textAlignVertical: 'top',
       },
     }),
@@ -243,6 +282,117 @@ export const styles = StyleSheet.create({
       android: {
         fontFamily: 'Roboto',
         fontWeight: '600',
+      },
+    }),
+  },
+  curiousFact: {
+    backgroundColor: '#2A4B7C',
+    borderRadius: 16,
+    padding: width * 0.05,
+    marginTop: height * 0.015,
+    borderWidth: 2,
+    borderColor: '#58CCF7',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.6,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  curiousFactText: {
+    fontSize: width * 0.042,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+        fontWeight: '600',
+      },
+      android: {
+        fontFamily: 'Roboto',
+        fontWeight: '600',
+      },
+    }),
+  },
+  lightningIcon: {
+    fontSize: width * 0.06,
+    textAlign: 'center',
+    marginTop: height * 0.01,
+  },
+  glassmorphicOverlay: {
+    flex: 1,
+    borderRadius: 20,
+    padding: width * 0.05,
+    position: 'relative',
+  },
+  sparkleContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+    pointerEvents: 'none',
+  },
+  sparkle: {
+    position: 'absolute',
+    fontSize: width * 0.03,
+    opacity: 0.6,
+    ...Platform.select({
+      ios: {
+        textShadowColor: 'rgba(255, 255, 255, 0.6)',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
+      },
+      android: {
+        textShadowColor: 'rgba(255, 255, 255, 0.6)',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
+      },
+    }),
+  },
+  curiousFactGradient: {
+    borderRadius: 16,
+    padding: width * 0.05,
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.5)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.6,
+        shadowRadius: 15,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
+  },
+  gradientBorder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.6)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.4,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
       },
     }),
   },

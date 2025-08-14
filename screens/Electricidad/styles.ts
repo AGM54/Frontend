@@ -11,7 +11,7 @@ export default StyleSheet.create({
 
   container: {
     paddingHorizontal: width * 0.06,
-    paddingBottom: height * 0.18,
+    paddingBottom: height * 0.25, // Más espacio para evitar sobreposición con elementos fijos
   },
 
   // Header con saludo y logo

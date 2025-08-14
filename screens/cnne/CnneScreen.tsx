@@ -18,7 +18,7 @@ import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
 import GlossaryGame from '../../components/GlossaryGame/GlossaryGame_fixed';
 import TypewriterList from '../../components/TypewriterText/TypewriterList';
 import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
-import StoryCard from '../../components/StoryCard/StoryCard';
+import StorySlide from '../../components/StorySlide/StorySlide';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
@@ -170,7 +170,7 @@ export default function CnneScreen() {
         ) : current.isImageTrivia ? (
           <ImageTriviaCard onComplete={handleNext} />
         ) : current.isStory ? (
-          <StoryCard onComplete={handleFinish} />
+          <StorySlide onComplete={handleFinish} />
         ) : (
           <>
             {current.image && (

@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
+  Animated,
+  Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 
 const { width, height } = Dimensions.get('window');
@@ -228,23 +231,54 @@ export default function StoryCard({ onComplete }: StoryCardProps) {
       <Text style={styles.storyTitle}>Conoce a Diego y cómo descubre la CNEE</Text>
       <Text style={styles.slideNumber}>Slide {currentSlide + 1} de {storySlides.length}</Text>
       
-      <View style={styles.slideCard}>
+      <LinearGradient
+        colors={['#1a1a2e', '#16213e', '#0f3460']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.slideCard}
+      >
         <Text style={styles.slideTitle}>{slide.title}</Text>
         
-        <Image
-          source={slide.image}
-          style={styles.storyImage}
-          resizeMode="contain"
-        />
+        <View style={{
+          borderRadius: 20,
+          overflow: 'hidden',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          padding: 8,
+          marginVertical: 15,
+          ...Platform.select({
+            ios: {
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: 0.3,
+              shadowRadius: 12,
+            },
+            android: {
+              elevation: 8,
+            },
+          }),
+        }}>
+          <Image
+            source={slide.image}
+            style={styles.storyImage}
+            resizeMode="contain"
+          />
+        </View>
         
         <Text style={styles.slideDescription}>{slide.description}</Text>
         
         <TouchableOpacity style={styles.nextSlideButton} onPress={handleNextSlide}>
-          <Text style={styles.nextSlideButtonText}>
-            {currentSlide < storySlides.length - 1 ? 'Siguiente' : 'Comenzar trivia'}
-          </Text>
+          <LinearGradient
+            colors={['#58CCF7', '#4A9FE7']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 20 }}
+          >
+            <Text style={styles.nextSlideButtonText}>
+              {currentSlide < storySlides.length - 1 ? 'Siguiente' : 'Comenzar trivia'}
+            </Text>
+          </LinearGradient>
         </TouchableOpacity>
-      </View>
+      </LinearGradient>
     </View>
   );
 }

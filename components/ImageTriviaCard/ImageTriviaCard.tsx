@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 
 const { width, height } = Dimensions.get('window');
@@ -67,6 +68,7 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const question = imageTriviaQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === imageTriviaQuestions.length - 1;
@@ -79,6 +81,15 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
       setScore(score + 1);
     }
   };
+
+  // Scroll automático cuando aparece el feedback
+  useEffect(() => {
+    if (showFeedback && scrollViewRef.current) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 300); // Pequeño delay para asegurar que el feedback se renderice
+    }
+  }, [showFeedback]);
 
   const handleContinue = () => {
     if (isLastQuestion) {
@@ -93,7 +104,12 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
   const isCorrect = selectedAnswer === question.correct;
 
   return (
-    <View style={styles.triviaContainer}>
+    <LinearGradient
+      colors={['#1a1a2e', '#16213e', '#0f3460']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.triviaContainer}
+    >
       <View style={styles.questionHeader}>
         <Text style={styles.questionNumber}>
           Situación {currentQuestion + 1} de {imageTriviaQuestions.length}
@@ -104,24 +120,37 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
       </View>
 
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={true}
+        bounces={true}
+        alwaysBounceVertical={true}
       >
-        <View style={styles.questionCard}>
+        <LinearGradient
+          colors={['#2a2a4a', '#1e1e3a', '#151530']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.questionCard}
+        >
           {currentQuestion === 0 && (
             <Text style={styles.activityTitle}>
               Actividad: Relaciona cada situación y decide si es regulada o no por la CNEE
             </Text>
           )}
 
-          <View style={styles.imageContainer}>
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.15)', 'rgba(88, 204, 247, 0.1)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.imageContainer}
+          >
             <Image
               source={question.image}
               style={styles.situationImage}
               resizeMode="contain"
             />
-          </View>
+          </LinearGradient>
 
           <Text style={styles.situationText}>{question.situation}</Text>
 
@@ -138,12 +167,23 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
               onPress={() => handleAnswer(true)}
               disabled={showFeedback}
             >
-              <Text style={[
-                styles.answerText,
-                selectedAnswer === true && styles.selectedAnswerText
-              ]}>
-                ✅ Sí
-              </Text>
+              <LinearGradient
+                colors={
+                  selectedAnswer === true 
+                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    : ['#2c2c2c', '#1c1c1c']
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 12 }}
+              >
+                <Text style={[
+                  styles.answerText,
+                  selectedAnswer === true && styles.selectedAnswerText
+                ]}>
+                  ✅ Sí
+                </Text>
+              </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -154,44 +194,67 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
               onPress={() => handleAnswer(false)}
               disabled={showFeedback}
             >
-              <Text style={[
-                styles.answerText,
-                selectedAnswer === false && styles.selectedAnswerText
-              ]}>
-                ❌ No
-              </Text>
+              <LinearGradient
+                colors={
+                  selectedAnswer === false 
+                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    : ['#2c2c2c', '#1c1c1c']
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 12 }}
+              >
+                <Text style={[
+                  styles.answerText,
+                  selectedAnswer === false && styles.selectedAnswerText
+                ]}>
+                  ❌ No
+                </Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
 
           {showFeedback && (
-            <View style={[
-              styles.feedbackContainer,
-              isCorrect ? styles.correctFeedback : styles.incorrectFeedback
-            ]}>
+            <LinearGradient
+              colors={
+                isCorrect 
+                  ? ['rgba(40, 167, 69, 0.3)', 'rgba(32, 199, 81, 0.2)']
+                  : ['rgba(220, 53, 69, 0.3)', 'rgba(255, 71, 87, 0.2)']
+              }
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[
+                styles.feedbackContainer,
+                isCorrect ? styles.correctFeedback : styles.incorrectFeedback
+              ]}
+            >
               <Text style={styles.feedbackTitle}>
                 {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
               </Text>
               <Text style={styles.feedbackText}>{question.feedback}</Text>
-            </View>
+            </LinearGradient>
           )}
-        </View>
+        </LinearGradient>
 
-        <TouchableOpacity
-          style={[
-            styles.continueButton,
-            !showFeedback && styles.disabledButton
-          ]}
-          onPress={handleContinue}
-          disabled={!showFeedback}
-        >
-          <Text style={[
-            styles.continueButtonText,
-            !showFeedback && styles.disabledButtonText
-          ]}>
-            {isLastQuestion ? 'Finalizar Actividad' : 'Continuar'}
-          </Text>
-        </TouchableOpacity>
+        {/* Botón fuera del LinearGradient de la pregunta para mejor accesibilidad */}
+        {showFeedback && (
+          <TouchableOpacity
+            style={styles.continueButton}
+            onPress={handleContinue}
+          >
+            <LinearGradient
+              colors={['#58CCF7', '#4A9FE7']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 16 }}
+            >
+              <Text style={styles.continueButtonText}>
+                {isLastQuestion ? 'Finalizar Actividad' : 'Continuar'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 }

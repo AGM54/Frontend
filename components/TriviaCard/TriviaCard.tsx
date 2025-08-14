@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Dimensions,
   Platform,
+  ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 
 const { width, height } = Dimensions.get('window');
@@ -89,6 +91,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const question = triviaQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === triviaQuestions.length - 1;
@@ -101,6 +104,15 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
       setScore(score + 1);
     }
   };
+
+  // Scroll automático cuando aparece el feedback
+  useEffect(() => {
+    if (showFeedback && scrollViewRef.current) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 300);
+    }
+  }, [showFeedback]);
 
   const handleContinue = () => {
     if (isLastQuestion) {
@@ -115,7 +127,12 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
   const isCorrect = selectedAnswer === question.correct;
 
   return (
-    <View style={styles.triviaContainer}>
+    <LinearGradient
+      colors={['#1a1a2e', '#16213e', '#0f3460']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.triviaContainer}
+    >
       <View style={styles.questionHeader}>
         <Text style={styles.questionNumber}>
           Pregunta {currentQuestion + 1} de {triviaQuestions.length}
@@ -125,71 +142,118 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
         </Text>
       </View>
 
-      <View style={styles.questionCard}>
-        <Text style={styles.questionText}>{question.question}</Text>
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.scrollContainer}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={true}
+        bounces={true}
+        alwaysBounceVertical={true}
+      >
+        <LinearGradient
+          colors={['#2a2a4a', '#1e1e3a', '#151530']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.questionCard}
+        >
+          <Text style={styles.questionText}>{question.question}</Text>
 
-        <View style={styles.answersContainer}>
-          <TouchableOpacity
-            style={[
-              styles.answerButton,
-              selectedAnswer === true && (isCorrect ? styles.correctButton : styles.incorrectButton)
-            ]}
-            onPress={() => handleAnswer(true)}
-            disabled={showFeedback}
-          >
-            <Text style={[
-              styles.answerText,
-              selectedAnswer === true && styles.selectedAnswerText
-            ]}>
-              ✅ Sí
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.answersContainer}>
+            <TouchableOpacity
+              style={[
+                styles.answerButton,
+                selectedAnswer === true && (isCorrect ? styles.correctButton : styles.incorrectButton)
+              ]}
+              onPress={() => handleAnswer(true)}
+              disabled={showFeedback}
+            >
+              <LinearGradient
+                colors={
+                  selectedAnswer === true 
+                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    : ['#2c2c2c', '#1c1c1c']
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 12 }}
+              >
+                <Text style={[
+                  styles.answerText,
+                  selectedAnswer === true && styles.selectedAnswerText
+                ]}>
+                  ✅ Sí
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              styles.answerButton,
-              selectedAnswer === false && (isCorrect ? styles.correctButton : styles.incorrectButton)
-            ]}
-            onPress={() => handleAnswer(false)}
-            disabled={showFeedback}
-          >
-            <Text style={[
-              styles.answerText,
-              selectedAnswer === false && styles.selectedAnswerText
-            ]}>
-              ❌ No
-            </Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={[
+                styles.answerButton,
+                selectedAnswer === false && (isCorrect ? styles.correctButton : styles.incorrectButton)
+              ]}
+              onPress={() => handleAnswer(false)}
+              disabled={showFeedback}
+            >
+              <LinearGradient
+                colors={
+                  selectedAnswer === false 
+                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    : ['#2c2c2c', '#1c1c1c']
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 12 }}
+              >
+                <Text style={[
+                  styles.answerText,
+                  selectedAnswer === false && styles.selectedAnswerText
+                ]}>
+                  ❌ No
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+
+          {showFeedback && (
+            <LinearGradient
+              colors={
+                isCorrect 
+                  ? ['rgba(40, 167, 69, 0.3)', 'rgba(32, 199, 81, 0.2)']
+                  : ['rgba(220, 53, 69, 0.3)', 'rgba(255, 71, 87, 0.2)']
+              }
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[
+                styles.feedbackContainer,
+                isCorrect ? styles.correctFeedback : styles.incorrectFeedback
+              ]}
+            >
+              <Text style={styles.feedbackTitle}>
+                {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
+              </Text>
+              <Text style={styles.feedbackText}>{question.feedback}</Text>
+            </LinearGradient>
+          )}
+        </LinearGradient>
 
         {showFeedback && (
-          <View style={[
-            styles.feedbackContainer,
-            isCorrect ? styles.correctFeedback : styles.incorrectFeedback
-          ]}>
-            <Text style={styles.feedbackTitle}>
-              {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
-            </Text>
-            <Text style={styles.feedbackText}>{question.feedback}</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.continueButton}
+            onPress={handleContinue}
+          >
+            <LinearGradient
+              colors={['#58CCF7', '#4A9FE7']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 16 }}
+            >
+              <Text style={styles.continueButtonText}>
+                {isLastQuestion ? 'Finalizar Trivia' : 'Continuar'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         )}
-      </View>
-
-      <TouchableOpacity
-        style={[
-          styles.continueButton,
-          !showFeedback && styles.disabledButton
-        ]}
-        onPress={handleContinue}
-        disabled={!showFeedback}
-      >
-        <Text style={[
-          styles.continueButtonText,
-          !showFeedback && styles.disabledButtonText
-        ]}>
-          {isLastQuestion ? 'Finalizar Trivia' : 'Continuar'}
-        </Text>
-      </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
