@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Dimensions,
   Animated,
-  Alert,
+  Modal,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 
 const { width, height } = Dimensions.get('window');
@@ -113,6 +114,10 @@ export default function EnergyDragDropGame({ onComplete }: Props) {
   const [zones, setZones] = useState(dropZones);
   const [score, setScore] = useState(0);
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [showSelectModal, setShowSelectModal] = useState(false);
+  const [showOccupiedModal, setShowOccupiedModal] = useState(false);
+  const [showRetryModal, setShowRetryModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSourceSelect = (sourceId: string) => {
     if (selectedSource === sourceId) {
@@ -124,13 +129,13 @@ export default function EnergyDragDropGame({ onComplete }: Props) {
 
   const handleZoneSelect = (zoneId: string) => {
     if (!selectedSource) {
-      Alert.alert('Primero selecciona una fuente de energía', 'Toca una de las fuentes de energía de abajo para seleccionarla.');
+      setShowSelectModal(true);
       return;
     }
 
     const zone = zones.find(z => z.id === zoneId);
     if (zone?.filled) {
-      Alert.alert('Esta posición ya está ocupada', 'Elige una posición vacía.');
+      setShowOccupiedModal(true);
       return;
     }
 
@@ -151,16 +156,12 @@ export default function EnergyDragDropGame({ onComplete }: Props) {
       
       if (score + 1 === 5) {
         setTimeout(() => {
-          Alert.alert(
-            '¡Excelente!',
-            '¡Has completado correctamente todas las conexiones!',
-            [{ text: 'Continuar', onPress: onComplete }]
-          );
+          setShowSuccessModal(true);
         }, 500);
       }
     } else {
       // Incorrect match
-      Alert.alert('¡Inténtalo de nuevo!', 'Esa no es la conexión correcta. Piensa en qué fuente corresponde a cada tipo de planta.');
+      setShowRetryModal(true);
       setSelectedSource(null);
     }
   };
@@ -224,6 +225,113 @@ export default function EnergyDragDropGame({ onComplete }: Props) {
           <Text style={styles.completionSubText}>Has conectado todas las fuentes correctamente</Text>
         </View>
       )}
+
+      {/* Modal: Selecciona una fuente */}
+      <Modal transparent visible={showSelectModal} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <LinearGradient
+            colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.modalContainer}
+          >
+            <Text style={styles.modalTitle}>Primero selecciona una fuente de energía</Text>
+            <Text style={styles.modalMessage}>Toca una de las fuentes de energía de abajo para seleccionarla.</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowSelectModal(false)}
+            >
+              <LinearGradient
+                colors={['#58CCF7', '#4A9FE7']}
+                style={styles.modalButtonGradient}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
+
+      {/* Modal: Posición ocupada */}
+      <Modal transparent visible={showOccupiedModal} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <LinearGradient
+            colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.modalContainer}
+          >
+            <Text style={styles.modalTitle}>Esta posición ya está ocupada</Text>
+            <Text style={styles.modalMessage}>Elige una posición vacía.</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowOccupiedModal(false)}
+            >
+              <LinearGradient
+                colors={['#58CCF7', '#4A9FE7']}
+                style={styles.modalButtonGradient}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
+
+      {/* Modal: Inténtalo de nuevo */}
+      <Modal transparent visible={showRetryModal} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <LinearGradient
+            colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.modalContainer}
+          >
+            <Text style={styles.modalTitle}>¡Inténtalo de nuevo!</Text>
+            <Text style={styles.modalMessage}>Esa no es la conexión correcta. Piensa en qué fuente corresponde a cada tipo de planta.</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowRetryModal(false)}
+            >
+              <LinearGradient
+                colors={['#58CCF7', '#4A9FE7']}
+                style={styles.modalButtonGradient}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
+
+      {/* Modal: ¡Excelente! */}
+      <Modal transparent visible={showSuccessModal} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <LinearGradient
+            colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.modalContainer}
+          >
+            <Text style={styles.modalTitle}>¡Excelente!</Text>
+            <Text style={styles.modalMessage}>¡Has completado correctamente todas las conexiones!</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                setShowSuccessModal(false);
+                onComplete();
+              }}
+            >
+              <LinearGradient
+                colors={['#58CCF7', '#4A9FE7']}
+                style={styles.modalButtonGradient}
+              >
+                <Text style={styles.modalButtonText}>Continuar</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
     </View>
   );
 }

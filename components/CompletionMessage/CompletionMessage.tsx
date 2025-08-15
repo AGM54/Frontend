@@ -99,7 +99,7 @@ export default function CompletionMessage({
         ]}
       >
         <LinearGradient
-          colors={['#1a1a2e', '#16213e', '#0f3460', '#1a1a2e']}
+          colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradientContainer}

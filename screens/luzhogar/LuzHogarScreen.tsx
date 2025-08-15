@@ -22,6 +22,9 @@ import TypewriterList from '../../components/TypewriterText/TypewriterList';
 import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
 import StoryCard from '../../components/StoryCard/StoryCard';
 import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDropGame';
+import TrueFalseQuiz from '../../components/TrueFalseQuiz/TrueFalseQuiz';
+import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
+import OrderDragDrop from '../../components/OrderDragDrop/OrderDragDrop';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
@@ -39,38 +42,41 @@ interface LessonStep {
   isImageTrivia?: boolean;
   isStory?: boolean;
   isDragDrop?: boolean;
+  isTrueFalse?: boolean;
+  isOrderDragDrop?: boolean;
+  isSofiaStory?: boolean;
 }
 
 const lessonSteps: LessonStep[] = [
   {
-    title: '¿Te has preguntado cómo llega la luz a tu casa?',
-    description: 'Todo parte con la producción de electricidad en Guatemala: usamos agua, sol, viento, caña y combustibles para generarla.',
-    image: require('../../assets/energias.png'),
+    title: 'Fuentes de energía en Guatemala',
+    description: 'Guatemala genera electricidad usando diferentes recursos naturales: las centrales hidroeléctricas aprovechan la fuerza del agua, los paneles solares captan la energía del sol, los aerogeneradores usan el viento, las plantas de biomasa queman caña de azúcar, y las centrales térmicas utilizan combustibles.',
+    image: require('../../assets/principal.png'),
   },
   {
     title: 'Central Hidroeléctrica',
     description: ' Agua de ríos\nLas centrales hidroeléctricas aprovechan la fuerza del agua de nuestros ríos para generar electricidad de manera limpia y renovable.',
-    image: require('../../assets/hidro.png'),
+    image: require('../../assets/hidrocolor.png'),
   },
   {
     title: 'Paneles Solares',
     description: ' Sol\nLos paneles solares capturan la energía del sol y la convierten en electricidad, aprovechando uno de nuestros recursos más abundantes.',
-    image: require('../../assets/solar.png'),
+    image: require('../../assets/solarcolor.png'),
   },
   {
     title: 'Aerogeneradores',
     description: ' Viento\nLos aerogeneradores utilizan la fuerza del viento para hacer girar sus aspas y generar energía eléctrica de forma sostenible.',
-    image: require('../../assets/aerogenerador.png'),
+    image: require('../../assets/generadorcolor.png'),
   },
   {
     title: 'Planta de Biomasa',
     description: ' Caña de azúcar\nLas plantas de biomasa queman residuos de caña de azúcar y otros materiales orgánicos para producir electricidad.',
-    image: require('../../assets/biomasa.png'),
+    image: require('../../assets/biomasaa.png'),
   },
   {
     title: 'Planta Térmica',
     description: '🛢️ Combustibles\nLas plantas térmicas utilizan combustibles como gas natural o diesel para generar electricidad cuando se necesita más energía.',
-    image: require('../../assets/termica.png'),
+    image: require('../../assets/termopng.png'),
   },
   {
     title: 'Actividad Interactiva: Conecta las Fuentes de Energía',
@@ -82,54 +88,82 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/lineastransmision.png'),
   },
   {
+    title: 'Distribución en tu colonia y hogar',
+    description: 'Las empresas distribuidoras llevan la energía por postes y cables. Llega con la fuerza justa para que la uses con seguridad.',
+    image: require('../../assets/casas.png'),
+  },
+  {
+    title: '📘 Sabías que…?',
+    description: 'La electricidad que llega a tu casa pasa por un transformador que baja el voltaje para que no dañe tus aparatos. ⚙️🏠',
+    image: require('../../assets/sabias.png'),
+  },
+  {
+    title: '🧭 Medidor',
+    description: 'Registra cuánto consumes\n\nEl medidor eléctrico es un dispositivo que mide exactamente cuánta electricidad utiliza tu hogar cada mes, para que solo pagues por lo que realmente consumes.',
+    image: require('../../assets/contador.png'),
+  },
+  {
+    title: '⚡ Transformador',
+    description: 'Ajusta el voltaje para que sea seguro\n\nLos transformadores reducen el alto voltaje de las líneas de transmisión a un nivel seguro que pueden usar los electrodomésticos de tu casa sin dañarse.',
+    image: require('../../assets/transformador.png'),
+  },
+  {
+    title: '🧍 Usuario',
+    description: 'Persona que recibe y paga por el servicio\n\nTú, como usuario del servicio eléctrico, recibes la energía en tu hogar y pagas mensualmente según tu consumo registrado en el medidor.',
+      image: require('../../assets/usuario.png'),
+  },
+  {
     title: 'Transporte de Electricidad',
-    description: 'La electricidad viaja por líneas de alto voltaje desde las plantas hasta todos los departamentos del país.\n\n📘 Dato curioso:\nLa electricidad viaja a casi la velocidad de la luz. 🌐⚡',
-    image: require('../../assets/lineastransmision.png'),
+    description: 'La energía eléctrica se transporta desde las plantas generadoras hasta las áreas urbanas y rurales del país a través de una extensa red de líneas eléctricas.\n\n🏞️ A través de montañas, valles y llanuras, estas torres llevan electricidad a todos los guatemaltecos.',
+  
+  },
+
+  {
+    title: 'La CNEE: Tu Guardián Energético',
+    description: 'La CNEE no genera ni distribuye energía, pero supervisa que todo funcione bien. Vigila que las empresas cumplan, y que las personas reciban un servicio de energía fluido, de calidad y confiable.',
+  image: require('../../assets/guardian.png'),
   },
   {
-    title: 'Fuentes de energía en Guatemala',
-    description: 'Guatemala genera electricidad usando diferentes recursos naturales: las centrales hidroeléctricas aprovechan la fuerza del agua, los paneles solares captan la energía del sol, los aerogeneradores usan el viento, las plantas de biomasa queman caña de azúcar, y las centrales térmicas utilizan combustibles.',
-    image: require('../../assets/fuente.png'),
+    title: '📘 Sabías que…?',
+    description: 'La CNEE también aprueba los proyectos de expansión de redes eléctricas en todo el país.',
+    image: require('../../assets/expansion.png'),
   },
   {
-    title: 'El proceso de generación',
-    description: `●  Centrales generadoras: crean electricidad usando diferentes fuentes.\n
-●  Transformadores: aumentan el voltaje para el transporte.\n
-●  Torres de transmisión: llevan la electricidad a grandes distancias.\n
-●  Subestaciones: reducen el voltaje para distribución.\n
-●  Redes de distribución: llevan la energía hasta los hogares.\n
-●  Medidores: registran el consumo de cada hogar.`,
-    image: require('../../assets/trans.png'),
+    title: '🎮 Mini quiz verdadero/falso',
+    isTrueFalse: true,
   },
   {
-    title: '¡Pongamos a prueba tus conocimientos!',
-    isTrivia: true,
+    title: '🎞️ Historia de Sofía',
+    isSofiaStory: true,
   },
   {
-    title: 'El viaje de la electricidad',
-    description: `●  Generación: se produce en centrales eléctricas.\n\n●  Transmisión: viaja por cables de alta tensión.\n\n●  Distribución: se reduce el voltaje en subestaciones.\n\n●  Entrega: llega a tu hogar a través de cables de baja tensión.\n\n●  Medición: un medidor registra cuánta energía usas.`,
-    isAchievements: true,
+    title: 'Etapas del viaje de la electricidad',
+    
+   image: require('../../assets/etapas.png'),
   },
   {
-    title: 'Trivia - ¡Pon a prueba tu conocimiento!',
-    isNewTrivia: true,
+    title: ' 1. Generación',
+    description: '📍 ¿Dónde empieza?\nEn las plantas generadoras, que convierten agua, sol, viento, biomasa o combustibles en electricidad.\n\n📘 Dato: En Guatemala, más del 60% de la energía proviene de fuentes renovables.',
+  image: require('../../assets/pares.png'),
   },
   {
-    title: 'Glosario animado',
-    isGlossary: true,
+    title: ' 2. Transmisión',
+    description: '📍 ¿Cómo se mueve?\nA través de líneas de alto voltaje, sostenidas por grandes torres. Estas líneas llevan la electricidad por todo el país de forma rápida y segura.\n\n📘 Dato: Las líneas de transmisión operan con altos voltajes para que no se pierda energía en el camino.',
+  image: require('../../assets/distribucion.png'),
   },
   {
-    title: '¿Cómo llega la electricidad a tu hogar específicamente?',
-    description: `●  Desde las centrales generadoras por torres de alta tensión.\n\n●  A través de subestaciones que reducen el voltaje.\n\n●  Por cables de distribución en tu vecindario.\n\n●  Hasta el medidor de tu casa.\n\n●  Y finalmente a los enchufes y focos de tu hogar.`,
-    image: require('../../assets/transmision.png'),
+    title: ' 3. Distribución',
+    description: '📍 ¿Cómo llega a ti?\nLas empresas distribuidoras bajan el voltaje y envían la electricidad por los postes y cables de tu colonia hasta llegar a tu casa. Un medidor registra cuánto usas.\n\n📘 Dato: ¡Pagas solo por lo que consumes! La CNEE supervisa que las empresas distribuidoras cobren las tarifas autorizadas.',
+  image: require('../../assets/casad.png'),
   },
   {
-    title: 'Actividad: Identifica cada paso del proceso eléctrico',
-    isImageTrivia: true,
+    title: '',
+    isOrderDragDrop: true,
   },
   {
-    title: 'Descubre el increíble viaje de la electricidad',
-    isStory: true,
+    title: ' En resumen',
+    description: '🔌 La luz que usas cada día sigue un recorrido desde su generación hasta tu hogar.\n\n⚡ La CNEE no produce ni distribuye la energía, pero vigila que todo el sistema funcione de forma eficiente, confiable y segura.',
+    image: require('../../assets/final.png'),
   },
 ];
 
@@ -215,7 +249,7 @@ export default function LuzHogarScreen() {
 
   return (
     <LinearGradient
-      colors={['#0a0a0a', '#1a0033', '#2d1b4d', '#1a0033', '#0a0a0a']}
+      colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#2d1b4d', '#1a0033']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.safeArea}
@@ -269,8 +303,14 @@ export default function LuzHogarScreen() {
           <ImageTriviaCard onComplete={handleNext} />
         ) : current.isDragDrop ? (
           <EnergyDragDropGame onComplete={handleNext} />
+        ) : current.isTrueFalse ? (
+          <TrueFalseQuiz onComplete={handleNext} />
+        ) : current.isOrderDragDrop ? (
+          <OrderDragDrop onComplete={handleNext} />
         ) : current.isStory ? (
-          <StoryCard onComplete={handleFinish} />
+          <StoryCard onComplete={handleNext} />
+        ) : current.isSofiaStory ? (
+          <SofiaStoryCard onComplete={handleNext} />
         ) : (
           <>
             {current.image && (
@@ -346,7 +386,7 @@ export default function LuzHogarScreen() {
                             }
                           ]}
                         >
-                          🌐⚡
+                          ⚡
                         </Animated.Text>
                       </LinearGradient>
                     </Animated.View>
@@ -361,7 +401,7 @@ export default function LuzHogarScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory &&
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isSofiaStory && !current.isOrderDragDrop &&
         (!current.title.includes('específicamente') || typewriterComplete) && (
           <View style={styles.fixedBottom}>
             {/* Barra de progreso */}

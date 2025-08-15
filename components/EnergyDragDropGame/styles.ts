@@ -295,7 +295,86 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   selectedIndicatorText: {
+    fontSize: width * 0.04,
+    color: '#FFD700',
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.05,
+  },
+  modalContainer: {
+    width: width * 0.9,
+    borderRadius: 25,
+    padding: width * 0.06,
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: 'rgba(139, 69, 255, 0.8)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 15 },
+        shadowOpacity: 1,
+        shadowRadius: 25,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  modalTitle: {
+    fontSize: width * 0.06,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginBottom: height * 0.02,
+    textShadowColor: 'rgba(139, 69, 255, 1)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 10,
+    letterSpacing: 1,
+  },
+  modalMessage: {
+    fontSize: width * 0.045,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.95)',
+    textAlign: 'center',
+    lineHeight: width * 0.065,
+    marginBottom: height * 0.03,
+    paddingHorizontal: width * 0.02,
+  },
+  modalButton: {
+    borderRadius: 20,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.6)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.6,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  modalButtonGradient: {
+    paddingVertical: height * 0.02,
+    paddingHorizontal: width * 0.08,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalButtonText: {
     fontSize: width * 0.05,
-    color: '#FFF',
+    fontWeight: '700',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+    letterSpacing: 0.5,
   },
 });
