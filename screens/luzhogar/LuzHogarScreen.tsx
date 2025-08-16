@@ -133,7 +133,7 @@ const lessonSteps: LessonStep[] = [
     isTrueFalse: true,
   },
   {
-    title: '🎞️ Historia de Sofía',
+    title: '',
     isSofiaStory: true,
   },
   {

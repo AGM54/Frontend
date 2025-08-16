@@ -5,12 +5,14 @@ import HomeScreen from '../screens/Home/HomeScreen';
 import ElectricidadScreen from '../screens/Electricidad/ElectricidadScreen';
 import CnneScreen from '../screens/cnne/CnneScreen';
 import LuzHogarScreen from '../screens/luzhogar/LuzHogarScreen';
+import PreciosFacturaScreen from '../screens/preciosfactura/PreciosFacturaScreen';
 
 export type MainStackParamList = {
   HomeMain: undefined;
   Electricidad: undefined;
   Cnne: undefined;
   LuzHogar: undefined;
+  PreciosFactura: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -22,6 +24,7 @@ export default function MainStackNavigator() {
       <Stack.Screen name="Electricidad" component={ElectricidadScreen} />
       <Stack.Screen name="Cnne" component={CnneScreen} />
       <Stack.Screen name="LuzHogar" component={LuzHogarScreen} />
+      <Stack.Screen name="PreciosFactura" component={PreciosFacturaScreen} />
     </Stack.Navigator>
   );
 }

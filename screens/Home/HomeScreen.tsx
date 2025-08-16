@@ -98,11 +98,11 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
 
-        {/* Cuarta Tarjeta */}
-        <View style={styles.cardSecondary}>
+        {/* Cuarta Tarjeta - Precios y Factura con navegación */}
+        <TouchableOpacity onPress={() => navigation.navigate('PreciosFactura')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>Distribución y lectura de facturas</Text>
+              <Text style={styles.cardTitle}>Precios y Factura de Energía</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
@@ -113,13 +113,13 @@ export default function HomeScreen() {
             </View>
             <Image source={require('../../assets/facturaa.png')} style={styles.cardImageRight} />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Quinta Tarjeta - CNEE con navegación */}
         <TouchableOpacity onPress={() => navigation.navigate('Cnne')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>Precios y Factura de Energía</Text>
+              <Text style={styles.cardTitle}>CNEE</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
