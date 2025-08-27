@@ -13,49 +13,50 @@ import { styles } from './styles';
 const { width, height } = Dimensions.get('window');
 
 interface Question {
-  id: number;
   question: string;
-  correctAnswer: boolean;
+  options: string[];
+  correctAnswer: number;
   explanation?: string;
 }
 
-const questions: Question[] = [
+const defaultQuestions: Question[] = [
   {
-    id: 1,
     question: 'La CNEE instala los cables de energía en tu colonia.',
-    correctAnswer: false,
+    options: ['Verdadero', 'Falso'],
+    correctAnswer: 1,
     explanation: 'La CNEE supervisa, pero son las empresas distribuidoras quienes instalan los cables.'
   },
   {
-    id: 2,
     question: 'La CNEE supervisa que el servicio eléctrico sea de calidad.',
-    correctAnswer: true,
+    options: ['Verdadero', 'Falso'],
+    correctAnswer: 0,
     explanation: '¡Correcto! La CNEE vigila que las empresas brinden un servicio de calidad.'
   },
   {
-    id: 3,
     question: 'Tú pagas según lo que marca el medidor.',
-    correctAnswer: true,
+    options: ['Verdadero', 'Falso'],
+    correctAnswer: 0,
     explanation: '¡Exacto! Solo pagas por la electricidad que realmente consumes.'
   }
 ];
 
 interface Props {
   onComplete: () => void;
+  questions?: Question[];
 }
 
-export default function TrueFalseQuiz({ onComplete }: Props) {
+export default function TrueFalseQuiz({ onComplete, questions = defaultQuestions }: Props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
 
-  const handleAnswer = (answer: boolean) => {
-    const correct = answer === questions[currentQuestion].correctAnswer;
-    setSelectedAnswer(answer);
+  const handleAnswer = (answerIndex: number) => {
+    const correct = answerIndex === questions[currentQuestion].correctAnswer;
+    setSelectedAnswer(answerIndex);
     setIsCorrect(correct);
     setShowFeedback(true);
     
@@ -109,39 +110,28 @@ export default function TrueFalseQuiz({ onComplete }: Props) {
         <Text style={styles.questionText}>{current.question}</Text>
       </LinearGradient>
 
-      {/* Botones Verdadero/Falso */}
+      {/* Botones de respuesta */}
       <View style={styles.answersContainer}>
-        <TouchableOpacity
-          style={[
-            styles.answerButton,
-            selectedAnswer === true && styles.selectedButton
-          ]}
-          onPress={() => handleAnswer(true)}
-          disabled={showFeedback}
-        >
-          <LinearGradient
-            colors={selectedAnswer === true ? ['#28A745', '#34CE57'] : ['#1E1B4B', '#3730A3', '#5B21B6', '#7C3AED']}
-            style={styles.answerButtonGradient}
+        {current.options.map((option, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.answerButton,
+              selectedAnswer === index && styles.selectedButton
+            ]}
+            onPress={() => handleAnswer(index)}
+            disabled={showFeedback}
           >
-            <Text style={styles.answerButtonText}>✅ VERDADERO</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.answerButton,
-            selectedAnswer === false && styles.selectedButton
-          ]}
-          onPress={() => handleAnswer(false)}
-          disabled={showFeedback}
-        >
-          <LinearGradient
-            colors={selectedAnswer === false ? ['#DC3545', '#E74C3C'] : ['#312E81', '#4338CA', '#6366F1', '#8B5CF6']}
-            style={styles.answerButtonGradient}
-          >
-            <Text style={styles.answerButtonText}>❌ FALSO</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={selectedAnswer === index ? ['#28A745', '#34CE57'] : ['#1E1B4B', '#3730A3', '#5B21B6', '#7C3AED']}
+              style={styles.answerButtonGradient}
+            >
+              <Text style={styles.answerButtonText}>
+                {index === 0 ? '✅' : index === 1 ? '❌' : `${String.fromCharCode(65 + index)}.`} {option}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Score */}

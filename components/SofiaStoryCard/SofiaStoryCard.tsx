@@ -13,55 +13,56 @@ import { styles } from './styles';
 const { width, height } = Dimensions.get('window');
 
 interface StorySlide {
-  image: any;
   title: string;
-  dialogue: string;
+  content: string;
+  image?: any;
 }
 
 interface SofiaStoryCardProps {
   onComplete: () => void;
+  slides?: StorySlide[];
 }
 
-const sofiaStorySlides: StorySlide[] = [
+const defaultSofiaStorySlides: StorySlide[] = [
   {
-    image: require('../../assets/primeram.png'),
     title: 'Sofía en su primer apartamento',
-    dialogue: '¡Mi primer hogar sola! Pero… ¿Cómo llega la luz hasta aquí?',
+    content: '¡Mi primer hogar sola! Pero… ¿Cómo llega la luz hasta aquí?',
+    image: require('../../assets/primeram.png'),
   },
   {
-    image: require('../../assets/segundam.png'),
     title: 'Su papá le explica por teléfono',
-    dialogue: 'La energía se genera lejos, viaja por cables, y llega gracias a la empresa distribuidora. La CNEE vigila que todo funcione bien.',
+    content: 'La energía se genera lejos, viaja por cables, y llega gracias a la empresa distribuidora. La CNEE vigila que todo funcione bien.',
+    image: require('../../assets/segundam.png'),
   },
   {
-    image: require('../../assets/terceram.png'),
     title: 'Sofía revisa su medidor y el recibo',
-    dialogue: 'Solo pago lo que consumo… y ahora entiendo por qué.',
+    content: 'Solo pago lo que consumo… y ahora entiendo por qué.',
+    image: require('../../assets/terceram.png'),
   },
   {
-    image: require('../../assets/cuartam.png'),
     title: 'Cierre',
-    dialogue: '¡Gracias CNEE, ahora sé cómo funciona mi energía!',
+    content: '¡Gracias CNEE, ahora sé cómo funciona mi energía!',
+    image: require('../../assets/cuartam.png'),
   },
 ];
 
-export default function SofiaStoryCard({ onComplete }: SofiaStoryCardProps) {
+export default function SofiaStoryCard({ onComplete, slides = defaultSofiaStorySlides }: SofiaStoryCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleNextSlide = () => {
-    if (currentSlide < sofiaStorySlides.length - 1) {
+    if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
       onComplete();
     }
   };
 
-  const slide = sofiaStorySlides[currentSlide];
+  const slide = slides[currentSlide];
   
   return (
     <View style={styles.container}>
-      <Text style={styles.storyTitle}>🎞️ Historia de Sofía</Text>
-      <Text style={styles.slideNumber}>Viñeta {currentSlide + 1} de {sofiaStorySlides.length}</Text>
+      <Text style={styles.storyTitle}>🎞️ Historia</Text>
+      <Text style={styles.slideNumber}>Viñeta {currentSlide + 1} de {slides.length}</Text>
       
       <LinearGradient
         colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#8B45FF', '#2d1b4d', '#1a0033']}
@@ -88,7 +89,7 @@ export default function SofiaStoryCard({ onComplete }: SofiaStoryCardProps) {
             style={styles.nextSlideButtonGradient}
           >
             <Text style={styles.nextSlideButtonText}>
-              {currentSlide < sofiaStorySlides.length - 1 ? 'Siguiente viñeta ➡️' : 'Continuar ✨'}
+              {currentSlide < slides.length - 1 ? 'Siguiente viñeta ➡️' : 'Continuar ✨'}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -96,7 +97,7 @@ export default function SofiaStoryCard({ onComplete }: SofiaStoryCardProps) {
       
       {/* Progress dots */}
       <View style={styles.progressDots}>
-        {sofiaStorySlides.map((_, index) => (
+        {slides.map((_: StorySlide, index: number) => (
           <View
             key={index}
             style={[

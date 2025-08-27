@@ -64,8 +64,8 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Segunda Tarjeta */}
-        <View style={styles.cardSecondary}>
+        {/* Segunda Tarjeta - CNEE con navegación */}
+        <TouchableOpacity onPress={() => navigation.navigate('Cnne')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
               <Text style={styles.cardTitle}>¿Qué es la CNEE?</Text>
@@ -79,7 +79,7 @@ export default function HomeScreen() {
             </View>
             <Image source={require('../../assets/personatarjeta.png')} style={styles.cardImageRight} />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Tercera Tarjeta - Luz Hogar con navegación */}
         <TouchableOpacity onPress={() => navigation.navigate('LuzHogar')} style={styles.cardSecondary}>
@@ -115,11 +115,11 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
 
-        {/* Quinta Tarjeta - CNEE con navegación */}
-        <TouchableOpacity onPress={() => navigation.navigate('Cnne')} style={styles.cardSecondary}>
+        {/* Quinta Tarjeta - Obligaciones de las empresas distribuidoras */}
+        <TouchableOpacity onPress={() => navigation.navigate('Obligaciones')} style={styles.cardSecondary}>
           <View style={styles.cardContentRow}>
             <View style={{ flex: 1, paddingRight: 10 }}>
-              <Text style={styles.cardTitle}>CNEE</Text>
+              <Text style={styles.cardTitle}>Obligaciones de las empresas distribuidoras de energía</Text>
               <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
               <View style={styles.cardInfoRow}>
                 <Ionicons name="play-circle" size={18} color="#000" />
@@ -129,6 +129,23 @@ export default function HomeScreen() {
               </View>
             </View>
             <Image source={require('../../assets/cnee.png')} style={styles.cardImageRight} />
+          </View>
+        </TouchableOpacity>
+
+        {/* Sexta Tarjeta - Alumbrado público en la factura de energía */}
+        <TouchableOpacity onPress={() => navigation.navigate('Alumbrado')} style={styles.cardSecondary}>
+          <View style={styles.cardContentRow}>
+            <View style={{ flex: 1, paddingRight: 10 }}>
+              <Text style={styles.cardTitle}>Alumbrado público en la factura de energía</Text>
+              <Text style={styles.cardSubtitle}>Descúbrelo aquí</Text>
+              <View style={styles.cardInfoRow}>
+                <Ionicons name="play-circle" size={18} color="#000" />
+                <Text style={styles.cardInfo}>3 min</Text>
+                <Ionicons name="book" size={18} color="#000" style={{ marginLeft: 12 }} />
+                <Text style={styles.cardInfo}>12 min de lectura</Text>
+              </View>
+            </View>
+            <Image source={require('../../assets/poste.png')} style={styles.cardImageRight} />
           </View>
         </TouchableOpacity>
       </ScrollView>

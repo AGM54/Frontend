@@ -1,0 +1,314 @@
+import { StyleSheet, Dimensions, Platform } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flex: 1,
+    paddingTop: height * 0.08,
+  },
+  scrollContent: {
+    paddingBottom: height * 0.3,
+    paddingHorizontal: width * 0.05,
+    minHeight: height * 1.2,
+  },
+  title: {
+    fontSize: width * 0.07,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginBottom: height * 0.03,
+    textShadowColor: 'rgba(139, 69, 255, 1)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 15,
+    letterSpacing: 2,
+    paddingHorizontal: width * 0.05,
+    lineHeight: width * 0.08,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: height * 0.03,
+    width: '100%',
+  },
+  image: {
+    width: width * 0.85,
+    height: height * 0.25,
+    resizeMode: 'contain',
+    borderRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 15 },
+        shadowOpacity: 0.8,
+        shadowRadius: 25,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  imageCinco: {
+    width: width * 0.85,
+    height: height * 0.4,
+    resizeMode: 'contain',
+    borderRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 15 },
+        shadowOpacity: 0.8,
+        shadowRadius: 25,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  descriptionCard: {
+    borderRadius: 25,
+    padding: width * 0.045,
+    marginVertical: height * 0.02,
+    borderWidth: 3,
+    borderColor: 'rgba(139, 69, 255, 0.8)',
+    minHeight: height * 0.2,
+    position: 'relative',
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 1,
+        shadowRadius: 30,
+      },
+      android: {
+        elevation: 25,
+      },
+    }),
+  },
+  gradientBorder: {
+    position: 'absolute',
+    top: 2,
+    left: 2,
+    right: 2,
+    bottom: 2,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: 'rgba(88, 204, 247, 0.5)',
+    zIndex: 1,
+    pointerEvents: 'none',
+  },
+  sparkleContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    pointerEvents: 'none',
+  },
+  sparkle: {
+    position: 'absolute',
+    fontSize: width * 0.04,
+    color: 'rgba(139, 69, 255, 0.8)',
+  },
+  descriptionScroll: {
+    flex: 1,
+    zIndex: 3,
+    maxHeight: height * 0.3,
+  },
+  description: {
+    fontSize: width * 0.045,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    textAlign: 'justify',
+    lineHeight: width * 0.065,
+    letterSpacing: 0.8,
+    paddingVertical: height * 0.01,
+    textShadowColor: 'rgba(139, 69, 255, 0.5)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 5,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'Roboto',
+        includeFontPadding: false,
+      },
+    }),
+  },
+  curiousFact: {
+    backgroundColor: 'rgba(139, 69, 255, 0.15)',
+    borderRadius: 20,
+    padding: width * 0.04,
+    marginTop: height * 0.02,
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.4)',
+    alignItems: 'center',
+    position: 'relative',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.5,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 12,
+      },
+    }),
+  },
+  curiousFactGradient: {
+    flex: 1,
+    width: '100%',
+    borderRadius: 18,
+    padding: width * 0.04,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  curiousFactText: {
+    fontSize: width * 0.042,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    textShadowColor: 'rgba(139, 69, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
+    letterSpacing: 0.5,
+  },
+  lightningIcon: {
+    position: 'absolute',
+    top: -10,
+    right: -10,
+    fontSize: width * 0.08,
+    color: '#FFD700',
+    textShadowColor: '#FFAA00',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  fixedBottom: {
+    position: 'absolute',
+    bottom: height * 0.08,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(26, 0, 51, 0.98)',
+    paddingVertical: height * 0.02,
+    paddingHorizontal: width * 0.05,
+    borderTopWidth: 3,
+    borderTopColor: 'rgba(139, 69, 255, 0.8)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: -10 },
+        shadowOpacity: 0.8,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 25,
+      },
+    }),
+  },
+  progressBarContainer: {
+    height: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 4,
+    marginBottom: height * 0.015,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(139, 69, 255, 0.3)',
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#8B45FF',
+    borderRadius: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  stepIndicators: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: height * 0.015,
+    flexWrap: 'wrap',
+    gap: width * 0.015,
+  },
+  circle: {
+    width: width * 0.025,
+    height: width * 0.025,
+    borderRadius: width * 0.0125,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 69, 255, 0.5)',
+  },
+  activeCircle: {
+    borderColor: '#58CCF7',
+    borderWidth: 2,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#58CCF7',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  button: {
+    borderRadius: 25,
+    paddingVertical: height * 0.018,
+    paddingHorizontal: width * 0.08,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8B45FF',
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.8)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.8,
+        shadowRadius: 15,
+      },
+      android: {
+        elevation: 15,
+      },
+    }),
+  },
+  finishButton: {
+    backgroundColor: '#28A745',
+    borderColor: 'rgba(40, 167, 69, 0.8)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#28A745',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.8,
+        shadowRadius: 15,
+      },
+      android: {
+        elevation: 15,
+      },
+    }),
+  },
+  buttonText: {
+    fontSize: width * 0.05,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+    letterSpacing: 1,
+  },
+});

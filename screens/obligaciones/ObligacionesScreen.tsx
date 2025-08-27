@@ -30,11 +30,12 @@ import ConsumptionSimulator from '../../components/ConsumptionSimulator/Consumpt
 import DragDropOrder from '../../components/DragDropOrder/DragDropOrder';
 import MeterReading from '../../components/MeterReading/MeterReading';
 import InteractiveFactura from '../../components/InteractiveFactura/InteractiveFactura';
+import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
 
-type PreciosFacturaScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'PreciosFactura'>;
+type ObligacionesScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Obligaciones'>;
 
 interface LessonStep {
   title: string;
@@ -57,104 +58,103 @@ interface LessonStep {
 
 const lessonSteps: LessonStep[] = [
   {
-    title: '¿Quién fija el precio de la luz?',
-    description: 'El precio de la luz lo fija la Comisión Nacional de Energía Eléctrica, CNEE.\n\nGracias a su trabajo, el precio de la energía se ha mantenido estable para beneficio de todos los guatemaltecos.\n\n📘 Dato extra:\nLa CNEE revisa cada 3 meses los costos de producción de energía y ajusta los precios, si es necesario, pensando siempre en los usuarios.',
-    image: require('../../assets/guardian.png'),
+    title: 'Obligaciones de las empresas distribuidoras',
+    description: '¿Sabías que tu empresa distribuidora tiene varias obligaciones que debe cumplir contigo?\n\n🎯 Objetivo del módulo: Que comprendas cuáles son las obligaciones de las empresas distribuidoras de energía eléctrica y qué derechos tienes como usuario cuando estas no se cumplen.',
+    image: require('../../assets/cnee.png'),
   },
   {
-    title: '¿Qué es una factura eléctrica?',
-    description: 'Cada mes recibes tu factura. El monto a pagar depende del consumo de energía de tu hogar o negocio.\n\nTu factura incluye datos importantes que debes revisar.',
-    image: require('../../assets/recibo.png'),
-    isInteractiveFactura: true,
+    title: 'Conectar tu servicio',
+    description: 'Si tu casa está a menos de 200 metros de la red, deben instalarte el servicio si lo solicitas.\n\nEsta es una de las obligaciones principales de tu empresa distribuidora.',
+    image: require('../../assets/cables.png'),
   },
   {
-    title: '1. Datos del cliente y servicio',
-    description: 'Acá aparece tu nombre, dirección y el número de servicio.\n\nEs importante verificar que todos tus datos estén correctos para evitar problemas con el servicio eléctrico.',
-    image: require('../../assets/recibo.png'), 
+    title: 'Dar energía continua',
+    description: 'No pueden suspender el servicio sin razón o sin avisarte con tiempo.\n\nTienes derecho a un servicio eléctrico estable y confiable.',
+    image: require('../../assets/foco.png'),
   },
   {
-    title: '2. Fecha de emisión y de vencimiento',
-    description: 'La fecha de emisión indica cuándo se imprimió la factura y la fecha de vencimiento hasta cuándo puedes pagar.\n\nSiempre revisa estas fechas para pagar a tiempo y evitar recargos.',
-    image: require('../../assets/recibo.png'), 
-  },
-  {
-    title: '3. Consumo de energía',
-    description: 'Esta es la cantidad total de luz que usaste en el mes facturado y la puedes ver donde dice KWH. Pagas según la cantidad de energía que hayas consumido.\n\nEntre menos consumas, menos pagarás en tu factura.',
+    title: 'Revisar tu contador',
+    description: 'Deben verificar que mida correctamente tu consumo.\n\nSi crees que tu contador está mal, puedes solicitar una revisión técnica.',
     image: require('../../assets/contador.png'),
   },
   {
-    title: '4. Cantidad a pagar',
-    description: 'Aquí ves el total que debes pagar, incluyendo impuestos y otros cargos.\n\nEn caso descubras algún error en tu factura de energía, debes contactar a tu empresa distribuidora para hacer un reclamo.',
+    title: 'Entregar factura a tiempo',
+    description: 'Tienes derecho a recibir tu factura mensual puntualmente.\n\nLa factura debe llegar con suficiente tiempo para que puedas pagarla antes del vencimiento.',
     image: require('../../assets/recibo.png'),
   },
   {
-    title: '¿Cómo se calcula lo que pagas?',
-    description: 'El precio se basa en los kilovatios hora (kWh) que consumiste.\n\n¡Entre menos consumes, menos pagas!',
-    image: require('../../assets/contador.png'),
-    isSimulation: true,
+    title: '🎮 Actividad 1: "¿Es obligación o no?"',
+    description: 'Arrastra cada frase a la columna correcta.',
+    isDragDrop: true,
   },
   {
-    title: 'Glosario animado de la factura',
-    isGlossary: true,
+    title: '💬 ¿Qué pasa si no cumplen?',
+    description: 'Tienes derecho a presentar un reclamo formal si:\n\n• No te conectan a la red en caso de solicitarlo, estando dentro de los 200 metros.\n• No recibes tu factura.\n• Se te corta la luz sin motivo o aviso.\n• Tu contador marca mal.\n• No reparan fallas.',
+    image: require('../../assets/cnee.png'),
   },
   {
-    title: '📌 Refuerzo final: ¿Por qué es importante revisar tu factura?',
-    description: '🔎 Te ayuda a:\n\n● Detectar errores a tiempo.\n● Controlar tu consumo.\n● Saber cuánto pagas por mes y por qué.\n\n📣 Si algo no cuadra, puedes reclamar directamente a tu empresa distribuidora.',
-    image: require('../../assets/recibo.png'),
+    title: '📋 ¿Cómo reclamar?',
+    description: 'Sigue estos pasos para presentar un reclamo efectivo:\n\n1. Comunícate con tu distribuidora.\n2. Explica el problema con detalles.\n3. Anota el número de reclamo.\n4. Espera la respuesta (deben darte una solución en pocos días).\n5. Si no recibes respuesta, puedes acudir a la CNEE.',
+    image: require('../../assets/usuario.png'),
   },
   {
-    title: '🎯 En resumen',
-    description: 'Tu factura eléctrica te informa de tu consumo, monto a pagar, fechas de pago y más.\n\nAprender a leerla es parte de tus derechos como usuario del servicio eléctrico.',
-    image: require('../../assets/final.png'),
-  },
-  {
-    title: '📦 ¿Qué es el subsidio a la tarifa social?',
-    description: 'En Guatemala existe una tarifa especial para familias que consumen poca energía eléctrica: la tarifa social.\n\n⚡ Característica	📄 Detalle\n¿Quién la recibe?	Usuarios que consumen 0 a 88 kWh al mes.\n¿Quién la otorga?	El gobierno, a través del INDE y bajo supervisión de la CNEE.\n¿Qué beneficio da?	Paga solo una parte del precio total; el resto lo cubre el Estado.\n\n🎮 Actividad: Arrastra el rango correcto de consumo a la casilla "tarifa social".',
-    image: require('../../assets/subetarifas.png'),
-    isTarifaSocialActivity: true,
-  },
-  {
-    title: '🧾 ¿Cómo leer tu medidor eléctrico?',
-    description: 'El medidor es el aparato que mide tu consumo de energía.\n\nSuele estar fuera de tu casa y tiene un número en kilovatios hora (kWh). Cada mes, ese número es registrado por la empresa y se usa para generar tu factura.\n\n📘 Dato: Si crees que el consumo registrado no es correcto, puedes solicitar una revisión técnica.\n\n🎮 Actividad: Rueda animada tipo medidor donde debes leer correctamente los dígitos.',
-    image: require('../../assets/contador.png'),
-    isMeterReading: true,
-  },
-  {
-    title: 'Bonus: Pantalla "SABÍAS QUE…?"',
-    description: '📌 "La CNEE no solo define los precios de energía a los usuarios residenciales, también supervisa que las empresas distribuidoras atiendan los reclamos de los usuarios en caso de error en la factura eléctrica.."\n\n📌 "Una familia promedio en Guatemala consume entre 100 y 200 kWh al mes."\n\n📌 "Puedes solicitar una factura duplicada gratis si la perdiste."',
-    image: require('../../assets/sabias.png'),
-  },
-  {
-    title: 'Trivia: ¿Qué tanto entiendes tu factura de energía?',
-    isTrivia: true,
-  },
-  {
-    title: 'La historia de Manuel y su factura sorpresa',
-    isStory: true,
-  },
-  {
-    title: 'Actividad: Ordena tu factura',
-    description: 'Comprender el orden correcto y el propósito de cada sección de una factura eléctrica.',
+    title: '🎮 Actividad 2: Ordena los pasos',
+    description: 'Ordena correctamente los pasos para presentar un reclamo.',
     isOrderDragDrop: true,
   },
   {
-    title: '📘 Sabías que…?',
-    description: '¿Guatemala tiene uno de los sistemas eléctricos más modernos y eficientes de Latinoamérica? La ley de electricidad de Guatemala ha sido estudiada como caso de éxito en otros países.\n\nLa CNEE no solo define los precios de energía a los usuarios residenciales, también supervisa que las empresas distribuidoras atiendan los reclamos de los usuarios en caso de error en la factura eléctrica.\n\nUna familia promedio en Guatemala consume entre 100 y 200 kWh al mes.\n\nPuedes solicitar una factura duplicada gratis si la perdiste.',
-    image: require('../../assets/sabias.png'),
+    title: 'Distribuidora',
+    description: 'Empresa que lleva la electricidad a tu casa.\n\nSon las encargadas de mantener la infraestructura eléctrica en buen estado.',
+    image: require('../../assets/cables.png'),
   },
   {
-    title: 'En resumen',
-    description: '📄 Lo que aprendiste hoy:\n\n• La CNEE fija el precio de la electricidad.\n• Tu factura muestra tu consumo real en kWh.\n• Si ves un error, tienes derecho a reclamar a la distribuidora.\n• Puedes usar el simulador en línea de la CNEE para estimar cuánto pagarás.\n• Revisar tu factura es muy importante para controlar tu consumo y detectar errores.',
+    title: 'Contador',
+    description: 'Aparato que mide cuánta energía consumes.\n\nDebe estar calibrado correctamente para que pagues solo lo que realmente usas.',
+    image: require('../../assets/contador.png'),
+  },
+  {
+    title: '🧠 Trivia: "¿Conoces tus derechos?"',
+    description: 'Pon a prueba tus conocimientos sobre tus derechos como usuario.',
+    isTrueFalse: true,
+  },
+  {
+    title: '🧍 La historia de Sonia',
+    description: 'Aprende de la experiencia de Sonia y cómo resolvió su problema.',
+    isStory: true,
+  },
+  {
+    title: '🎮 Actividad 4: ¿Qué aprendió Sonia?',
+    description: 'Selecciona la lección correcta que aprendió Sonia.',
+    isNewTrivia: true,
+  },
+  {
+    title: '📌 En resumen',
+    description: 'Puntos clave que debes recordar:\n\n✔ Las distribuidoras deben conectarte a la red, darte energía continua, entregarte la factura, reparar fallas y avisarte de cambios.\n✔ Tienes derecho a reclamar si no cumplen.\n✔ La CNEE vigila que todo esto se cumpla.',
     image: require('../../assets/final.png'),
+  },
+  {
+    title: '🎯 Mensaje final',
+    description: 'CNEE: trabajamos día a día para que el servicio de energía sea fluido, confiable y de calidad.',
+    image: require('../../assets/cnee.png'),
+  },
+  {
+    title: 'Garantizar calidad del voltaje',
+    description: 'La energía debe llegar con la potencia adecuada, sin subidas o bajones.\n\nEsto protege tus aparatos eléctricos de daños.',
+    image: require('../../assets/voltaje.png'),
+  },
+  {
+    title: '🎮 Actividad 5: "Arrastra a su obligación"',
+    description: 'Relaciona la acción con la norma que debe cumplir la distribuidora.',
+    isTarifaSocialActivity: true,
   },
 ];
 
-export default function PreciosFacturaScreen() {
+export default function ObligacionesScreen() {
   const [step, setStep] = useState(0);
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-  const navigation = useNavigation<PreciosFacturaScreenNavigationProp>();
+  const navigation = useNavigation<ObligacionesScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
 
@@ -250,7 +250,16 @@ export default function PreciosFacturaScreen() {
         ) : current.isMeterReading ? (
           <MeterReading onComplete={handleNext} />
         ) : current.isStory ? (
-          <StoryCard onComplete={handleNext} />
+          <SofiaStoryCard
+            slides={[
+              { title: 'Sonia recibe una factura altísima', content: 'Un día, Sonia recibió una factura de electricidad mucho más alta de lo normal.' },
+              { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.' },
+              { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.' },
+              { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.' },
+              { title: 'Sonia aprende sobre sus derechos', content: 'Sonia aprendió que puede exigir un servicio de energía de calidad, seguro y confiable.' }
+            ]}
+            onComplete={handleNext}
+          />
         ) : (
           <>
             {current.image && (
