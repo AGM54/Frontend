@@ -53,6 +53,11 @@ interface LessonStep {
   isMeterReading?: boolean;
   isDragDropAlumbrado?: boolean;
   isAlumbradoSelectMatch?: boolean;
+  questions?: Array<{
+    question: string;
+    options: string[];
+    correctAnswer: number;
+  }>;
   dragDropAlumbradoData?: Array<{
     phrase: string;
     entity: string;
@@ -66,9 +71,27 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/parque.png'),
   },
   {
-    title: '¿Quién paga el alumbrado público?',
-    description: 'El alumbrado público es pagado por los vecinos a través de la factura de energía eléctrica.\n\nLa municipalidad fija la tasa de alumbrado público según el Código Municipal.\n\nLa empresa distribuidora de energía cobra la tasa de alumbrado público en la factura de energía.\n\n📌 La CNEE no fija ni administra ese cobro. Solo vela porque esté correctamente detallado en tu factura.',
-    image: require('../../assets/vecinos.png'),
+    title: '🧍 Ejemplo ilustrado – El caso de Julio',
+    description: '📘 Viñeta tipo historia:\n1. Julio nota un cobro nuevo en su factura: "alumbrado público".\n2. Pregunta a la empresa distribuidora, que le informa que es un cobro municipal.\n3. Visita su municipalidad, donde le explican cómo se calcula.\n4. Julio entiende que el cobro es legal, pero siempre hay que estar atentos.\n5. Aprende que debe aparecer separado del consumo de energía.',
+    image: require('../../assets/final.png'),
+    isStory: true,
+  },
+
+  {
+    title: '🎮 Actividad 3: ¿Qué aprendió Julio?',
+    isTrueFalse: true,
+    description: '¿Qué aprendió Julio?',
+    questions: [
+      {
+        question: '¿Qué aprendió Julio?',
+        options: [
+          'Que el cobro debe explicarse y puede consultarse tanto en la distribuidora como en la municipalidad.',
+          'Que la CNEE fija el monto del alumbrado público.',
+          'Que no puede reclamar si hay errores en la factura.'
+        ],
+        correctAnswer: 0
+      }
+    ]
   },
 
   {
