@@ -28,41 +28,15 @@ interface TriviaQuestion {
 const triviaQuestions: TriviaQuestion[] = [
   {
     id: 1,
-    question: "¿Quién fija las tarifas eléctricas en Guatemala para los usuarios residenciales?",
+    question: "¿Qué aprendió Sonia de su experiencia con la factura eléctrica?",
     options: [
-      { text: "A) El Congreso", correct: false },
-      { text: "B) La CNEE", correct: true },
-      { text: "C) Las empresas", correct: false }
+      { text: "A) Que debe pagar sin revisar", correct: false },
+      { text: "B) Puedo exigir a mi empresa distribuidora un servicio de energía de calidad, seguro y confiable", correct: true },
+      { text: "C) Que nunca debe llamar a la empresa", correct: false }
     ],
     feedback: {
-      correct: "La CNEE fija las tarifas eléctricas.",
-      incorrect: "Correcto: B) La CNEE."
-    }
-  },
-  {
-    id: 2,
-    question: "¿Qué hace la CNEE si una empresa eléctrica comete una falta?",
-    options: [
-      { text: "A) La ignora", correct: false },
-      { text: "B) La supervisa y le puede sancionar", correct: true },
-      { text: "C) Le da un premio", correct: false }
-    ],
-    feedback: {
-      correct: "La CNEE supervisa y sanciona empresas.",
-      incorrect: "Correcto: B) La supervisa y sanciona."
-    }
-  },
-  {
-    id: 3,
-    question: "¿La CNEE genera energía?",
-    options: [
-      { text: "A) Sí", correct: false },
-      { text: "B) No, solo regula el sector eléctrico", correct: true },
-      { text: "C) Solo en la capital", correct: false }
-    ],
-    feedback: {
-      correct: "La CNEE solo regula, no genera energía.",
-      incorrect: "Correcto: B) No, solo regula."
+      correct: "¡Exacto! Sonia aprendió que puede exigir un servicio de calidad y sus derechos como usuaria.",
+      incorrect: "Correcto: B) Sonia aprendió que puede exigir un servicio de energía de calidad, seguro y confiable."
     }
   }
 ];
