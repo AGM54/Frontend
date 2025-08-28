@@ -105,11 +105,117 @@ const dropZones: DropZone[] = [
   },
 ];
 
-interface Props {
-  onComplete: () => void;
+interface AlumbradoItem {
+  phrase: string;
+  entity: string;
 }
 
-export default function EnergyDragDropGame({ onComplete }: Props) {
+interface Props {
+  onComplete: () => void;
+  alumbradoData?: AlumbradoItem[];
+}
+
+export default function EnergyDragDropGame({ onComplete, alumbradoData }: Props) {
+  // Si existe alumbradoData, mostrar la actividad de frases y entidades
+  const [completed, setCompleted] = useState(false);
+  const [selectedPhrase, setSelectedPhrase] = useState<number | null>(null);
+  const [selectedEntity, setSelectedEntity] = useState<string | null>(null);
+  const [matches, setMatches] = useState<Array<{ phrase: string; entity: string; correct: boolean }>>([]);
+
+  if (alumbradoData) {
+    // Renderizar la actividad de frases y entidades
+    const entities = ['Municipalidad', 'CNEE', 'Distribuidora'];
+
+    const handleMatch = () => {
+      if (selectedPhrase !== null && selectedEntity) {
+        const phraseObj = alumbradoData[selectedPhrase];
+        const correct = phraseObj.entity === selectedEntity;
+        setMatches(prev => [...prev, { phrase: phraseObj.phrase, entity: selectedEntity, correct }]);
+        setSelectedPhrase(null);
+        setSelectedEntity(null);
+        if (matches.length + 1 === alumbradoData.length) {
+          setTimeout(() => {
+            setCompleted(true);
+          }, 500);
+        }
+      }
+    };
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Arrastra cada frase a la entidad correcta</Text>
+        <View style={{ marginVertical: 16 }}>
+          {alumbradoData.map((item, idx) => (
+            <View key={idx} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: selectedPhrase === idx ? '#8B45FF' : '#fff',
+                  borderRadius: 20,
+                  padding: 10,
+                  marginRight: 10,
+                  borderWidth: 2,
+                  borderColor: '#8B45FF',
+                }}
+                onPress={() => setSelectedPhrase(idx)}
+                disabled={matches.some(m => m.phrase === item.phrase)}
+              >
+                <Text style={{ color: selectedPhrase === idx ? '#fff' : '#8B45FF', fontWeight: 'bold' }}>{item.phrase}</Text>
+              </TouchableOpacity>
+              {matches.find(m => m.phrase === item.phrase) && (
+                <Text style={{ marginLeft: 8, color: matches.find(m => m.phrase === item.phrase)?.correct ? '#28A745' : '#FF0000' }}>
+                  {matches.find(m => m.phrase === item.phrase)?.entity} {matches.find(m => m.phrase === item.phrase)?.correct ? '✅' : '❌'}
+                </Text>
+              )}
+            </View>
+          ))}
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+          {entities.map(entity => (
+            <TouchableOpacity
+              key={entity}
+              style={{
+                backgroundColor: selectedEntity === entity ? '#8B45FF' : '#fff',
+                borderRadius: 20,
+                padding: 12,
+                marginHorizontal: 8,
+                borderWidth: 2,
+                borderColor: '#8B45FF',
+              }}
+              onPress={() => setSelectedEntity(entity)}
+            >
+              <Text style={{ color: selectedEntity === entity ? '#fff' : '#8B45FF', fontWeight: 'bold' }}>{entity}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: selectedPhrase !== null && selectedEntity ? '#8B45FF' : '#ccc',
+            borderRadius: 20,
+            padding: 12,
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+          onPress={handleMatch}
+          disabled={selectedPhrase === null || !selectedEntity}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Asignar</Text>
+        </TouchableOpacity>
+        {completed && (
+          <View style={{ alignItems: 'center', marginTop: 20 }}>
+            <Text style={{ fontSize: 18, color: '#28A745', fontWeight: 'bold' }}>¡Actividad completada! 🎉</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: '#8B45FF', borderRadius: 20, padding: 12, marginTop: 10 }}
+              onPress={onComplete}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Continuar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    );
+  }
+
+  // ...juego original...
   const [sources, setSources] = useState(energySources);
   const [zones, setZones] = useState(dropZones);
   const [score, setScore] = useState(0);
@@ -171,7 +277,7 @@ export default function EnergyDragDropGame({ onComplete }: Props) {
       <Text style={styles.title}>🧩 Arrastra cada fuente a su imagen correspondiente</Text>
       
       <Text style={styles.score}>Conectadas: {score}/5</Text>
-
+      {/* ...resto del juego original... */}
       {/* Drop Zones */}
       <View style={styles.dropZonesContainer}>
         {zones.map((zone) => (

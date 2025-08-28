@@ -311,4 +311,33 @@ export const styles = StyleSheet.create({
     textShadowRadius: 4,
     letterSpacing: 1,
   },
+  disabledButton: {
+    borderRadius: 25,
+    paddingVertical: height * 0.018,
+    paddingHorizontal: width * 0.08,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#666666',
+    borderWidth: 2,
+    borderColor: 'rgba(102, 102, 102, 0.8)',
+    opacity: 0.6,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#666666',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.4,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  disabledButtonText: {
+    fontSize: width * 0.04,
+    fontWeight: '600',
+    color: '#CCCCCC',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
 });

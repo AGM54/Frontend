@@ -126,26 +126,26 @@ export const styles = StyleSheet.create({
   
   // Trivia styles
   triviaTitle: {
-    fontSize: 22,
+    fontSize: width * 0.055,
     fontWeight: 'bold',
     color: '#2c3e50',
     textAlign: 'center',
-    marginBottom: 10,
-    marginTop: 20,
+    marginBottom: height * 0.0125,
+    marginTop: height * 0.025,
   },
   
   questionNumber: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: '#7f8c8d',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: height * 0.025,
   },
   
   questionCard: {
     backgroundColor: 'white',
     borderRadius: 15,
-    padding: 20,
-    margin: 10,
+    padding: width * 0.05,
+    margin: width * 0.025,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -157,23 +157,23 @@ export const styles = StyleSheet.create({
   },
   
   questionText: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: 'bold',
     color: '#2c3e50',
     textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 24,
+    marginBottom: height * 0.025,
+    lineHeight: width * 0.06,
   },
   
   optionsContainer: {
-    marginVertical: 10,
+    marginVertical: height * 0.0125,
   },
   
   optionButton: {
     backgroundColor: '#ecf0f1',
-    padding: 15,
+    padding: width * 0.0375,
     borderRadius: 10,
-    marginVertical: 5,
+    marginVertical: height * 0.00625,
     borderWidth: 2,
     borderColor: 'transparent',
     flexDirection: 'row',
@@ -197,7 +197,7 @@ export const styles = StyleSheet.create({
   },
   
   optionText: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: '#2c3e50',
     flex: 1,
   },
@@ -207,59 +207,59 @@ export const styles = StyleSheet.create({
   },
   
   checkMark: {
-    fontSize: 18,
-    marginLeft: 10,
+    fontSize: width * 0.045,
+    marginLeft: width * 0.025,
   },
   
   resultContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: height * 0.025,
   },
   
   resultText: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: height * 0.019,
   },
   
   nextButton: {
     backgroundColor: '#58CCF7',
-    paddingHorizontal: 30,
-    paddingVertical: 12,
+    paddingHorizontal: width * 0.075,
+    paddingVertical: height * 0.015,
     borderRadius: 25,
   },
   
   nextButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: 'bold',
   },
   
   // Final screen styles
   finalText: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: '#2c3e50',
     textAlign: 'center',
-    lineHeight: 24,
-    marginVertical: 20,
+    lineHeight: width * 0.06,
+    marginVertical: height * 0.025,
     fontWeight: '500',
   },
   
   scoreText: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: 'bold',
     color: '#58CCF7',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: height * 0.0375,
   },
   
   sabiasQueButton: {
     backgroundColor: '#ff6b35',
-    paddingHorizontal: 40,
-    paddingVertical: 15,
+    paddingHorizontal: width * 0.1,
+    paddingVertical: height * 0.019,
     borderRadius: 25,
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: height * 0.025,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -272,7 +272,7 @@ export const styles = StyleSheet.create({
   
   sabiasQueButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -288,8 +288,8 @@ export const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 30,
-    margin: 20,
+    padding: width * 0.075,
+    margin: width * 0.05,
     maxWidth: width * 0.9,
     alignItems: 'center',
     shadowColor: '#000',
@@ -305,27 +305,27 @@ export const styles = StyleSheet.create({
   sabiasQueImage: {
     width: width * 0.6,
     height: height * 0.2,
-    marginBottom: 20,
+    marginBottom: height * 0.025,
   },
   
   sabiasQueText: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: '#2c3e50',
     textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 30,
+    lineHeight: width * 0.06,
+    marginBottom: height * 0.0375,
   },
   
   closeButton: {
     backgroundColor: '#58CCF7',
-    paddingHorizontal: 30,
-    paddingVertical: 12,
+    paddingHorizontal: width * 0.075,
+    paddingVertical: height * 0.015,
     borderRadius: 25,
   },
   
   closeButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: 'bold',
   },
 });

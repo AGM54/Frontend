@@ -35,7 +35,7 @@ import InteractiveFactura from '../../components/InteractiveFactura/InteractiveF
 import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
 import ObligacionesMatching from '../../components/ObligacionesMatching/ObligacionesMatching';
 import TermMatching from '../../components/TermMatching/TermMatching';
-import { Confetti } from '../../components/TriviaCard/Confetti';
+// ...existing code...
 
 const { width, height } = Dimensions.get('window');
 
@@ -59,6 +59,11 @@ interface LessonStep {
   isTarifaSocialActivity?: boolean;
   isMeterReading?: boolean;
   isTermMatching?: boolean;
+  isDragDropAlumbrado?: boolean;
+  dragDropAlumbradoData?: Array<{
+    phrase: string;
+    entity: string;
+  }>;
 }
 
 const lessonSteps: LessonStep[] = [
@@ -97,36 +102,27 @@ const lessonSteps: LessonStep[] = [
     description: ' Postes, cables y transformadores deben funcionar bien y de forma segura.',
     image: require('../../assets/arre.png'),
   },
-    {
-    title: 'Informar sobre cambios de tarifa',
-    description: 'Si el precio cambia, deben informarte con claridad.',
-    image: require('../../assets/recibo.png'),
-  },
 
+  {
+    title: '💬 ¿Qué pasa si no cumplen?',
+    description: 'Tienes derecho a presentar un reclamo formal si:\n\n• No te conectan a la red en caso de solicitarlo, estando dentro de los 200 metros.\n• No recibes tu factura.\n• Se te corta la luz sin motivo o aviso.\n• Tu contador marca mal.\n• No reparan fallas.',
+    image: require('../../assets/derechos.png'),
+  },
   {
     title: '🎮 Actividad 1: "¿Es obligación o no?"',
     description: 'Arrastra cada frase a la columna correcta.',
     isDragDrop: true,
   },
   {
-    title: '💬 ¿Qué pasa si no cumplen?',
-    description: 'Tienes derecho a presentar un reclamo formal si:\n\n• No te conectan a la red en caso de solicitarlo, estando dentro de los 200 metros.\n• No recibes tu factura.\n• Se te corta la luz sin motivo o aviso.\n• Tu contador marca mal.\n• No reparan fallas.',
-    image: require('../../assets/cnee.png'),
-  },
-  {
     title: '📋 ¿Cómo reclamar?',
     description: 'Sigue estos pasos para presentar un reclamo efectivo:\n\n1. Comunícate con tu distribuidora.\n2. Explica el problema con detalles.\n3. Anota el número de reclamo.\n4. Espera la respuesta (deben darte una solución en pocos días).\n5. Si no recibes respuesta, puedes acudir a la CNEE.',
     image: require('../../assets/usuario.png'),
   },
-  {
-    title: '🎮 Actividad 2: Ordena los pasos',
-    description: 'Ordena correctamente los pasos para presentar un reclamo.',
-    isOrderDragDrop: true,
-  },
+
   {
     title: 'Distribuidora',
     description: 'Empresa que lleva la electricidad a tu casa.\n\nSon las encargadas de mantener la infraestructura eléctrica en buen estado.',
-    image: require('../../assets/cables.png'),
+    image: require('../../assets/distribuidora.png'),
   },
   {
     title: 'Contador',
@@ -136,12 +132,12 @@ const lessonSteps: LessonStep[] = [
   {
     title: 'Tarifa',
     description: 'Precio que pagas por cada kilovatio-hora (kWh) de electricidad consumido.\n\nPuede variar según el horario, el consumo y la empresa distribuidora.',
-    image: require('../../assets/cables.png'),
+    image: require('../../assets/tarifa.png'),
   },
   {
     title: 'Reclamo',
     description: 'Solicitud que haces si detectas un error en tu factura o problemas con el servicio.\n\nTienes derecho a que se investigue y te den una respuesta clara.',
-    image: require('../../assets/cables.png'),
+    image: require('../../assets/reclamos.png'),
   },
   {
     title: '🎮 Actividad 3: "Empareja el término con su definición"',
@@ -163,28 +159,34 @@ const lessonSteps: LessonStep[] = [
     description: 'Selecciona la lección correcta que aprendió Sonia.',
     isNewTrivia: true,
   },
-  {
-    title: '📌 En resumen',
-    description: 'Puntos clave que debes recordar:\n\n✔ Las distribuidoras deben conectarte a la red, darte energía continua, entregarte la factura, reparar fallas y avisarte de cambios.\n✔ Tienes derecho a reclamar si no cumplen.\n✔ La CNEE vigila que todo esto se cumpla.',
-    image: require('../../assets/final.png'),
+
+   {
+    title: '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?',
+    description: 'Las distribuidoras no solo deben darte energía, también deben cumplir con reglas técnicas y de calidad definidas por la CNEE. Estas normas aseguran que el servicio funcione bien y no afecte tus aparatos ni tu vida diaria.\n\n✔ Garantizar calidad del voltaje: La energía debe llegar con la potencia adecuada, sin subidas o bajones.\n\n✔ Avisarte sobre cortes programados: Deben notificarte con antelación si harán trabajos de mantenimiento.\n\n✔ Medir correctamente tu consumo: El medidor debe estar bien calibrado. Si no lo está, puedes pedir revisión técnica.\n\n✔ Respetar los plazos de atención: Tienen un tiempo límite para atender cortes, reclamos o conexiones.',
+    image: require('../../assets/importante.png'),
   },
-  {
-    title: '🎯 Mensaje final',
-    description: 'CNEE: trabajamos día a día para que el servicio de energía sea fluido, confiable y de calidad.',
-    image: require('../../assets/cnee.png'),
-  },
- 
   {
     title: '🎮 Actividad 5: "Arrastra a su obligación"',
     description: 'Relaciona la acción con la norma que debe cumplir la distribuidora.',
     isTarifaSocialActivity: true,
+  },
+    {
+    title: '📌 En resumen',
+    description: 'Puntos clave que debes recordar:\n\n✔ Las distribuidoras deben conectarte a la red, darte energía continua, entregarte la factura, reparar fallas y avisarte de cambios.\n✔ Tienes derecho a reclamar si no cumplen.\n✔ La CNEE vigila que todo esto se cumpla.',
+    image: require('../../assets/tres.png'),
+  },
+  {
+    title: '🎯 Mensaje final',
+    description: 'CNEE: trabajamos día a día para que el servicio de energía sea fluido, confiable y de calidad.',
+    image: require('../../assets/organizacion.png'),
   },
 ];
 
 export default function ObligacionesScreen() {
   const [step, setStep] = useState(0);
   const [typewriterComplete, setTypewriterComplete] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  // ...existing code...
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<ObligacionesScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
@@ -197,6 +199,7 @@ export default function ObligacionesScreen() {
   // Resetear typewriter cuando cambia el paso
   React.useEffect(() => {
     setTypewriterComplete(false);
+    setHasScrolledToEnd(false);
   }, [step]);
 
   const handleNext = () => {
@@ -206,11 +209,25 @@ export default function ObligacionesScreen() {
   };
 
   const handleFinish = () => {
-    setShowConfetti(true);
-    setTimeout(() => {
-      setShowConfetti(false);
-      navigation.navigate('HomeMain');
-    }, 3000);
+    navigation.navigate('HomeMain');
+  };
+
+  const handleScroll = (event: any) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const isCloseToEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+    
+    // Solo aplicar el scroll obligatorio en la pantalla "Más allá de lo básico"
+    if (current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' && isCloseToEnd) {
+      setHasScrolledToEnd(true);
+    }
+  };
+
+  // Verificar si el botón debe estar habilitado
+  const isButtonEnabled = () => {
+    if (current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?') {
+      return hasScrolledToEnd;
+    }
+    return true; // Para todas las demás pantallas
   };
 
   return (
@@ -252,6 +269,8 @@ export default function ObligacionesScreen() {
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
         {/* Título - Oculto para Story */}
         {!current.isStory && (
@@ -269,6 +288,11 @@ export default function ObligacionesScreen() {
           <ImageTriviaCard onComplete={handleNext} />
         ) : current.isDragDrop ? (
           <ObligacionesDragDrop onComplete={handleNext} />
+        ) : current.dragDropAlumbradoData ? (
+          <EnergyDragDropGame
+            alumbradoData={current.dragDropAlumbradoData}
+            onComplete={handleNext}
+          />
         ) : current.isTrueFalse ? (
           <TrueFalseQuiz
             questions={[
@@ -308,11 +332,11 @@ export default function ObligacionesScreen() {
         ) : current.isStory ? (
           <SofiaStoryCard
             slides={[
-              { title: 'Sonia recibe una factura altísima', content: 'Un día, Sonia recibió una factura de electricidad mucho más alta de lo normal.' },
-              { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.' },
-              { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.' },
-              { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.' },
-              { title: 'Sonia aprende sobre sus derechos', content: 'Sonia aprendió que puede exigir un servicio de energía de calidad, seguro y confiable.' }
+              { title: 'Sonia recibe una factura altísima', content: 'Un día, Sonia recibió una factura de electricidad mucho más alta de lo normal.', image: require('../../assets/sonia1.png') },
+              { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.', image: require('../../assets/sonia2.png') },
+              { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.', image: require('../../assets/sonia3.png') },
+              { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.', image: require('../../assets/sonia4.png') },
+              { title: 'Sonia aprende que puede hacer un reclamo a la empresa distribuidora en caso de error', content: 'Sonia aprendió que puede hacer un reclamo a la empresa distribuidora en caso de error y exigir un servicio de calidad.', image: require('../../assets/sonia5.png') }
             ]}
             onComplete={handleNext}
           />
@@ -379,21 +403,36 @@ export default function ObligacionesScreen() {
 
             {/* Botón continuar o finalizar */}
             {step < lessonSteps.length - 1 && (
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Continuar</Text>
+              <TouchableOpacity 
+                style={[styles.button, !isButtonEnabled() && styles.disabledButton]} 
+                onPress={isButtonEnabled() ? handleNext : undefined}
+                disabled={!isButtonEnabled()}
+              >
+                <Text style={[styles.buttonText, !isButtonEnabled() && styles.disabledButtonText]}>
+                  {!isButtonEnabled() && current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' 
+                    ? 'Lee todo el contenido para continuar ⬇️' 
+                    : 'Continuar'}
+                </Text>
               </TouchableOpacity>
             )}
 
             {step === lessonSteps.length - 1 && (
-              <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
-                <Text style={styles.buttonText}>Finalizar lección</Text>
+              <TouchableOpacity 
+                style={[styles.button, styles.finishButton, !isButtonEnabled() && styles.disabledButton]} 
+                onPress={isButtonEnabled() ? handleFinish : undefined}
+                disabled={!isButtonEnabled()}
+              >
+                <Text style={[styles.buttonText, !isButtonEnabled() && styles.disabledButtonText]}>
+                  {!isButtonEnabled() && current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' 
+                    ? 'Lee todo el contenido para continuar ⬇️' 
+                    : 'Finalizar lección'}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
         )}
 
-      {/* Confetti Effect */}
-      {showConfetti && <Confetti />}
+  // ...existing code...
     </LinearGradient>
   );
 }

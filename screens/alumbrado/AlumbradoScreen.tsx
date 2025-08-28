@@ -1,3 +1,6 @@
+const { width, height } = Dimensions.get('window');
+
+type AlumbradoScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Alumbrado'>;
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
@@ -15,27 +18,21 @@ import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/MainStackNavigator';
-import TriviaCard from '../../components/TriviaCard/TriviaCard';
-import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
-import GlossaryGame from '../../components/GlossaryGame/GlossaryGame_fixed';
-import BillGlossary from '../../components/BillGlossary/BillGlossary';
-import TypewriterList from '../../components/TypewriterText/TypewriterList';
-import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
-import StoryCard from '../../components/StoryCard/StoryCard';
-import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDropGame';
 import TrueFalseQuiz from '../../components/TrueFalseQuiz/TrueFalseQuiz';
+import BillGlossary from '../../components/BillGlossary/BillGlossary';
+import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
+import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDropGame';
+import AlumbradoDragDrop from '../../components/AlumbradoDragDrop/AlumbradoDragDrop';
+import AlumbradoSelectMatch from '../../components/AlumbradoDragDrop/AlumbradoSelectMatch';
 import OrderDragDrop from '../../components/OrderDragDrop/OrderDragDrop';
-import FacturaExplorer from '../../components/FacturaExplorer/FacturaExplorer';
+import InteractiveFactura from '../../components/InteractiveFactura/InteractiveFactura';
 import ConsumptionSimulator from '../../components/ConsumptionSimulator/ConsumptionSimulator';
 import DragDropOrder from '../../components/DragDropOrder/DragDropOrder';
 import MeterReading from '../../components/MeterReading/MeterReading';
-import InteractiveFactura from '../../components/InteractiveFactura/InteractiveFactura';
 import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
-const { width, height } = Dimensions.get('window');
-
-type AlumbradoScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Alumbrado'>;
+// ...existing code...
 
 interface LessonStep {
   title: string;
@@ -54,30 +51,36 @@ interface LessonStep {
   isSimulation?: boolean;
   isTarifaSocialActivity?: boolean;
   isMeterReading?: boolean;
+  isDragDropAlumbrado?: boolean;
+  isAlumbradoSelectMatch?: boolean;
+  dragDropAlumbradoData?: Array<{
+    phrase: string;
+    entity: string;
+  }>;
 }
 
 const lessonSteps: LessonStep[] = [
   {
     title: '¿Qué es el alumbrado público?',
     description: 'El alumbrado público son las luces que iluminan calles, avenidas, parques y espacios públicos. Sirve para:\n\n● Caminar con más seguridad.\n● Prevenir accidentes.\n● Que nuestras calles y plazas no estén oscuras.\n\n🎞️ Visual:\nFaroles encendidos, niños jugando, personas caminando en la noche.',
-    image: require('../../assets/poste.png'),
+    image: require('../../assets/parque.png'),
   },
   {
     title: '¿Quién paga el alumbrado público?',
     description: 'El alumbrado público es pagado por los vecinos a través de la factura de energía eléctrica.\n\nLa municipalidad fija la tasa de alumbrado público según el Código Municipal.\n\nLa empresa distribuidora de energía cobra la tasa de alumbrado público en la factura de energía.\n\n📌 La CNEE no fija ni administra ese cobro. Solo vela porque esté correctamente detallado en tu factura.',
-    image: require('../../assets/recibo.png'),
+    image: require('../../assets/vecinos.png'),
   },
-  {
-    title: '¿Dónde aparece en la factura?',
-    description: '📘 Ejemplo visual:\nBloque resaltado en la factura con el texto: "Alumbrado público – Municipalidad de [nombre]".\n\n📌 Según la CNEE, debe estar claramente separado del consumo de energía. Si no es así, puedes presentar un reclamo a la distribuidora.\n\n🎮 Actividad 1: Detecta el cobro\nMuestra una factura interactiva y que el usuario marque dónde está el cobro de alumbrado público.',
-    image: require('../../assets/factura.png'),
-    isInteractiveFactura: true,
-  },
+
   {
     title: 'Marco legal',
-    description: '🧾 Fundamento:\nEl cobro del alumbrado público está autorizado por el Artículo 35, literal h) del Código Municipal.\n\nEste permite que las municipalidades cobren una tasa de alumbrado público a través de la empresa distribuidora.\n\n👥 La CNEE no puede intervenir en el monto, pero sí vigilar que se respete la ley en cómo se refleja en la factura.\n\n🎮 Actividad 2:\nAparecen frases: el usuario debe arrastrar si le corresponde a la CNEE o a la Municipalidad.',
-    image: require('../../assets/guardian.png'),
-    isDragDrop: true,
+    description: '🧾 Fundamento:\nEl Artículo 68, literal a) del Código Municipal de Guatemala (Decreto 12-2002) establece que el alumbrado público es una competencia propia del municipio, lo que implica su obligación de prestar este servicio de forma directa o mediante convenios.\n\nEste permite que las municipalidades cobren una tasa de alumbrado público a través de la empresa distribuidora.\n\n👥 La CNEE no puede intervenir en el monto, pero sí vigilar que se respete la ley en cómo se refleja en la factura.\n\n🎮 Actividad 2:\nAparecen frases: el usuario debe arrastrar si le corresponde a la CNEE o a la Municipalidad.',
+    image: require('../../assets/leyes.png'),
+  
+  },
+  {
+  title: '🎮 Actividad: Selecciona la frase y la entidad correcta',
+  description: 'Selecciona una frase y luego la entidad a la que corresponde (CNEE, Municipalidad o Distribuidora).',
+  isAlumbradoSelectMatch: true,
   },
   {
     title: '🧠 Trivia rápida',
@@ -188,8 +191,6 @@ export default function AlumbradoScreen() {
         }}
         resizeMode="contain"
       />
-
-      {/* Contenido scrolleable */}
       <ScrollView
         ref={scrollViewRef}
         style={styles.scrollContainer}
@@ -245,6 +246,10 @@ export default function AlumbradoScreen() {
           <ImageTriviaCard onComplete={handleNext} />
         ) : current.isDragDrop ? (
           <EnergyDragDropGame onComplete={handleNext} />
+        ) : current.dragDropAlumbradoData ? (
+          <EnergyDragDropGame alumbradoData={current.dragDropAlumbradoData} onComplete={handleNext} />
+        ) : current.isAlumbradoSelectMatch ? (
+          <AlumbradoSelectMatch onComplete={handleNext} />
         ) : current.isTrueFalse ? (
           <TrueFalseQuiz
             questions={[
@@ -341,7 +346,7 @@ export default function AlumbradoScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isOrderDragDrop && !current.isInteractiveFactura && !current.isSimulation && !current.isTarifaSocialActivity && !current.isMeterReading &&
+  {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isOrderDragDrop && !current.isInteractiveFactura && !current.isSimulation && !current.isTarifaSocialActivity && !current.isMeterReading && !current.isAlumbradoSelectMatch &&
         (!current.title.includes('específicamente') || typewriterComplete) && (
           <View style={styles.fixedBottom}>
             {/* Barra de progreso */}
