@@ -23,14 +23,18 @@ import TypewriterList from '../../components/TypewriterText/TypewriterList';
 import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
 import StoryCard from '../../components/StoryCard/StoryCard';
 import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDropGame';
+import ObligacionesDragDrop from '../../components/ObligacionesDragDrop/ObligacionesDragDrop';
 import TrueFalseQuiz from '../../components/TrueFalseQuiz/TrueFalseQuiz';
 import OrderDragDrop from '../../components/OrderDragDrop/OrderDragDrop';
+import ReclamoOrderDragDrop from '../../components/ReclamoOrderDragDrop/ReclamoOrderDragDrop';
 import FacturaExplorer from '../../components/FacturaExplorer/FacturaExplorer';
 import ConsumptionSimulator from '../../components/ConsumptionSimulator/ConsumptionSimulator';
 import DragDropOrder from '../../components/DragDropOrder/DragDropOrder';
 import MeterReading from '../../components/MeterReading/MeterReading';
 import InteractiveFactura from '../../components/InteractiveFactura/InteractiveFactura';
 import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
+import ObligacionesMatching from '../../components/ObligacionesMatching/ObligacionesMatching';
+import TermMatching from '../../components/TermMatching/TermMatching';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
@@ -54,34 +58,51 @@ interface LessonStep {
   isSimulation?: boolean;
   isTarifaSocialActivity?: boolean;
   isMeterReading?: boolean;
+  isTermMatching?: boolean;
 }
 
 const lessonSteps: LessonStep[] = [
   {
     title: 'Obligaciones de las empresas distribuidoras',
-    description: '¿Sabías que tu empresa distribuidora tiene varias obligaciones que debe cumplir contigo?\n\n🎯 Objetivo del módulo: Que comprendas cuáles son las obligaciones de las empresas distribuidoras de energía eléctrica y qué derechos tienes como usuario cuando estas no se cumplen.',
+    description: '¿Sabías que tu empresa distribuidora tiene varias obligaciones que debe cumplir contigo?',
     image: require('../../assets/cnee.png'),
   },
   {
     title: 'Conectar tu servicio',
     description: 'Si tu casa está a menos de 200 metros de la red, deben instalarte el servicio si lo solicitas.\n\nEsta es una de las obligaciones principales de tu empresa distribuidora.',
-    image: require('../../assets/cables.png'),
+    image: require('../../assets/conectar.png'),
   },
   {
     title: 'Dar energía continua',
     description: 'No pueden suspender el servicio sin razón o sin avisarte con tiempo.\n\nTienes derecho a un servicio eléctrico estable y confiable.',
-    image: require('../../assets/foco.png'),
+    image: require('../../assets/cortar.png'),
   },
   {
     title: 'Revisar tu contador',
     description: 'Deben verificar que mida correctamente tu consumo.\n\nSi crees que tu contador está mal, puedes solicitar una revisión técnica.',
-    image: require('../../assets/contador.png'),
+    image: require('../../assets/revisar.png'),
   },
   {
     title: 'Entregar factura a tiempo',
     description: 'Tienes derecho a recibir tu factura mensual puntualmente.\n\nLa factura debe llegar con suficiente tiempo para que puedas pagarla antes del vencimiento.',
+    image: require('../../assets/facturatiempo.png'),
+  },
+    {
+    title: 'Reparar fallas eléctricas',
+    description: 'Deben atender cortes de luz o fallas en el menor tiempo posible.',
+    image: require('../../assets/arreglar.png'),
+  },
+    {
+    title: 'Dar mantenimiento a redes',
+    description: ' Postes, cables y transformadores deben funcionar bien y de forma segura.',
+    image: require('../../assets/arre.png'),
+  },
+    {
+    title: 'Informar sobre cambios de tarifa',
+    description: 'Si el precio cambia, deben informarte con claridad.',
     image: require('../../assets/recibo.png'),
   },
+
   {
     title: '🎮 Actividad 1: "¿Es obligación o no?"',
     description: 'Arrastra cada frase a la columna correcta.',
@@ -113,6 +134,21 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/contador.png'),
   },
   {
+    title: 'Tarifa',
+    description: 'Precio que pagas por cada kilovatio-hora (kWh) de electricidad consumido.\n\nPuede variar según el horario, el consumo y la empresa distribuidora.',
+    image: require('../../assets/cables.png'),
+  },
+  {
+    title: 'Reclamo',
+    description: 'Solicitud que haces si detectas un error en tu factura o problemas con el servicio.\n\nTienes derecho a que se investigue y te den una respuesta clara.',
+    image: require('../../assets/cables.png'),
+  },
+  {
+    title: '🎮 Actividad 3: "Empareja el término con su definición"',
+    description: 'Conecta cada término con su definición correcta.',
+    isTermMatching: true,
+  },
+  {
     title: '🧠 Trivia: "¿Conoces tus derechos?"',
     description: 'Pon a prueba tus conocimientos sobre tus derechos como usuario.',
     isTrueFalse: true,
@@ -137,11 +173,7 @@ const lessonSteps: LessonStep[] = [
     description: 'CNEE: trabajamos día a día para que el servicio de energía sea fluido, confiable y de calidad.',
     image: require('../../assets/cnee.png'),
   },
-  {
-    title: 'Garantizar calidad del voltaje',
-    description: 'La energía debe llegar con la potencia adecuada, sin subidas o bajones.\n\nEsto protege tus aparatos eléctricos de daños.',
-    image: require('../../assets/voltaje.png'),
-  },
+ 
   {
     title: '🎮 Actividad 5: "Arrastra a su obligación"',
     description: 'Relaciona la acción con la norma que debe cumplir la distribuidora.',
@@ -236,19 +268,43 @@ export default function ObligacionesScreen() {
         ) : current.isImageTrivia ? (
           <ImageTriviaCard onComplete={handleNext} />
         ) : current.isDragDrop ? (
-          <EnergyDragDropGame onComplete={handleNext} />
+          <ObligacionesDragDrop onComplete={handleNext} />
         ) : current.isTrueFalse ? (
-          <TrueFalseQuiz onComplete={handleNext} />
+          <TrueFalseQuiz
+            questions={[
+              {
+                question: '¿Puede la distribuidora cortarte la luz sin avisarte?',
+                options: ['Sí', 'No'],
+                correctAnswer: 1,
+                explanation: 'La respuesta correcta es NO. Las distribuidoras NO pueden suspender el servicio sin razón justificada y sin avisarte con tiempo. Es una de tus garantías como usuario.'
+              },
+              {
+                question: '¿Puedes pedir que revisen tu contador si crees que está mal?',
+                options: ['Sí', 'No'],
+                correctAnswer: 0,
+                explanation: 'La respuesta correcta es SÍ. Tienes derecho a solicitar una revisión técnica de tu contador si sospechas que no está midiendo correctamente tu consumo.'
+              },
+              {
+                question: '¿Quién revisa que las distribuidoras cumplan su trabajo?',
+                options: ['El vecino', 'La CNEE', 'El alcalde'],
+                correctAnswer: 1,
+                explanation: 'La respuesta correcta es LA CNEE. La CNEE (Comisión Nacional de Energía Eléctrica) es la entidad encargada de supervisar que las empresas distribuidoras cumplan con sus obligaciones.'
+              }
+            ]}
+            onComplete={handleNext}
+          />
         ) : current.isOrderDragDrop ? (
-          <OrderDragDrop onComplete={handleNext} />
+          <ReclamoOrderDragDrop onComplete={handleNext} />
         ) : current.isInteractiveFactura ? (
           <InteractiveFactura onComplete={handleNext} />
         ) : current.isSimulation ? (
           <ConsumptionSimulator onComplete={handleNext} />
         ) : current.isTarifaSocialActivity ? (
-          <DragDropOrder onComplete={handleNext} />
+          <ObligacionesMatching onComplete={handleNext} />
         ) : current.isMeterReading ? (
           <MeterReading onComplete={handleNext} />
+        ) : current.isTermMatching ? (
+          <TermMatching onComplete={handleNext} />
         ) : current.isStory ? (
           <SofiaStoryCard
             slides={[
@@ -299,7 +355,7 @@ export default function ObligacionesScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isOrderDragDrop && !current.isInteractiveFactura && !current.isSimulation && !current.isTarifaSocialActivity && !current.isMeterReading &&
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isOrderDragDrop && !current.isInteractiveFactura && !current.isSimulation && !current.isTarifaSocialActivity && !current.isMeterReading && !current.isTermMatching &&
         (!current.title.includes('específicamente') || typewriterComplete) && (
           <View style={styles.fixedBottom}>
             {/* Barra de progreso */}

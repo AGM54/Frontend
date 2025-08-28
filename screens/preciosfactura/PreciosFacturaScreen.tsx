@@ -125,6 +125,11 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/sabias.png'),
   },
   {
+    title: '🧠 Trivia: "¿Conoces tus derechos?"',
+    description: 'Pon a prueba tus conocimientos sobre tus derechos como usuario.',
+    isTrueFalse: true,
+  },
+  {
     title: 'Trivia: ¿Qué tanto entiendes tu factura de energía?',
     isTrivia: true,
   },

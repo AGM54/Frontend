@@ -5,7 +5,6 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#000000',
   },
   scrollContainer: {
     flex: 1,
@@ -17,26 +16,13 @@ export const styles = StyleSheet.create({
   },
   fixedBottom: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? height * 0.12 : height * 0.1, // Más arriba para evitar sobreposición
+    bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.95)',
     paddingHorizontal: width * 0.06,
-    paddingBottom: height * 0.025,
+    paddingBottom: Platform.OS === 'ios' ? height * 0.15 : height * 0.12,
     paddingTop: height * 0.02,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 10,
-      },
-    }),
+    backgroundColor: 'transparent',
   },
   title: {
     fontSize: width * 0.075,
@@ -77,14 +63,10 @@ export const styles = StyleSheet.create({
     marginBottom: height * 0.02,
   },
   descriptionCard: {
-    backgroundColor: '#1C1C1C',
     borderRadius: 24,
-    padding: width * 0.07,
     marginBottom: height * 0.02,
     marginHorizontal: width * 0.015,
     maxHeight: height * 0.55,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -97,8 +79,35 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  gradientBorder: {
+    position: 'absolute',
+    top: 2,
+    left: 2,
+    right: 2,
+    bottom: 2,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 69, 255, 0.3)',
+  },
+  sparkleContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: 24,
+  },
+  sparkle: {
+    position: 'absolute',
+    fontSize: width * 0.04,
+    color: 'rgba(139, 69, 255, 0.6)',
+  },
   descriptionScroll: {
     maxHeight: height * 0.5,
+    padding: width * 0.07,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginTop: height * 0.02,
+    marginBottom: height * 0.02,
   },
   description: {
     fontSize: width * 0.044,
@@ -158,24 +167,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: height * 0.025,
-    backgroundColor: '#1C1C1C',
-    borderRadius: 30,
-    paddingVertical: height * 0.015,
-    paddingHorizontal: width * 0.08,
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
+    paddingVertical: height * 0.01,
   },
   circle: {
     width: width * 0.035,

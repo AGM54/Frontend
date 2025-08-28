@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -121,7 +122,12 @@ export default function CnneScreen() {
 
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <LinearGradient
+      colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#2d1b4d', '#1a0033']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.safeArea}
+    >
       {/* Logo */}
       <Image
         source={require('../../assets/icon.png')}
@@ -179,8 +185,22 @@ export default function CnneScreen() {
                 style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
               />
             )}
-            {/* Tarjeta de información */}
-            <View style={styles.descriptionCard}>
+            {/* Tarjeta de información con diseño profesional */}
+            <LinearGradient
+              colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.descriptionCard}
+            >
+              {/* Border interior con gradiente */}
+              <View style={styles.gradientBorder} />
+              
+              {/* Efectos de partículas de estrellas sutiles */}
+              <View style={styles.sparkleContainer}>
+                <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
+                <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
+              </View>
+              
               <ScrollView
                 style={styles.descriptionScroll}
                 nestedScrollEnabled={true}
@@ -201,7 +221,7 @@ export default function CnneScreen() {
                   <Text style={styles.description}>{current.description || ''}</Text>
                 )}
               </ScrollView>
-            </View>
+            </LinearGradient>
           </>
         )}
       </ScrollView>
@@ -246,6 +266,6 @@ export default function CnneScreen() {
 
       {/* Confetti Effect */}
       {showConfetti && <Confetti />}
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
