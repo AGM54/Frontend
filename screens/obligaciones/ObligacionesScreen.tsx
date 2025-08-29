@@ -64,6 +64,11 @@ interface LessonStep {
     phrase: string;
     entity: string;
   }>;
+  slides?: Array<{
+    title: string;
+    content: string;
+    image?: any;
+  }>;
 }
 
 const lessonSteps: LessonStep[] = [
@@ -153,6 +158,13 @@ const lessonSteps: LessonStep[] = [
     title: '🧍 La historia de Sonia',
     description: 'Aprende de la experiencia de Sonia y cómo resolvió su problema.',
     isStory: true,
+    slides: [
+      { title: 'Sonia recibe una factura altísima', content: 'Un día, Sonia recibió una factura de electricidad mucho más alta de lo normal.', image: require('../../assets/sonia1.png') },
+      { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.', image: require('../../assets/sonia2.png') },
+      { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.', image: require('../../assets/sonia3.png') },
+      { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.', image: require('../../assets/sonia4.png') },
+      { title: 'Sonia aprende que puede hacer un reclamo a la empresa distribuidora en caso de error', content: 'Sonia aprendió que puede hacer un reclamo a la empresa distribuidora en caso de error y exigir un servicio de calidad.', image: require('../../assets/sonia5.png') }
+    ],
   },
   {
     title: '🎮 Actividad 4: ¿Qué aprendió Sonia?',
@@ -331,13 +343,7 @@ export default function ObligacionesScreen() {
           <TermMatching onComplete={handleNext} />
         ) : current.isStory ? (
           <SofiaStoryCard
-            slides={[
-              { title: 'Sonia recibe una factura altísima', content: 'Un día, Sonia recibió una factura de electricidad mucho más alta de lo normal.', image: require('../../assets/sonia1.png') },
-              { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.', image: require('../../assets/sonia2.png') },
-              { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.', image: require('../../assets/sonia3.png') },
-              { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.', image: require('../../assets/sonia4.png') },
-              { title: 'Sonia aprende que puede hacer un reclamo a la empresa distribuidora en caso de error', content: 'Sonia aprendió que puede hacer un reclamo a la empresa distribuidora en caso de error y exigir un servicio de calidad.', image: require('../../assets/sonia5.png') }
-            ]}
+            slides={current.slides}
             onComplete={handleNext}
           />
         ) : (

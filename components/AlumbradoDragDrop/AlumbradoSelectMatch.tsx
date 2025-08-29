@@ -14,6 +14,12 @@ const entities = ['CNEE', 'Municipalidad', 'Distribuidora'];
 export const AlumbradoSelectMatch = ({ onComplete }: { onComplete: () => void }) => {
   const [selectedPhrase, setSelectedPhrase] = useState<number | null>(null);
   const [matched, setMatched] = useState<{ [key: number]: string }>({});
+  // Agrupar frases por entidad para mostrar en los recuadros
+  const entityMatches: { [entity: string]: string[] } = {};
+  Object.entries(matched).forEach(([idx, entity]) => {
+    if (!entityMatches[entity]) entityMatches[entity] = [];
+    entityMatches[entity].push(phraseData[Number(idx)].text);
+  });
   const [completedCount, setCompletedCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -105,6 +111,12 @@ export const AlumbradoSelectMatch = ({ onComplete }: { onComplete: () => void })
                 disabled={selectedPhrase === null}
               >
                 <Text style={styles.entityTitle}>{entity}</Text>
+                {/* Mostrar frases emparejadas dentro del recuadro */}
+                {entityMatches[entity] && entityMatches[entity].map((text, i) => (
+                  <View key={i} style={styles.matchedItem}>
+                    <Text style={styles.matchedText}>✅ {text}</Text>
+                  </View>
+                ))}
               </TouchableOpacity>
             ))}
           </View>

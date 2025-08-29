@@ -62,37 +62,31 @@ interface LessonStep {
     phrase: string;
     entity: string;
   }>;
+  slides?: Array<{
+    title: string;
+    content: string;
+    image?: any;
+  }>;
 }
 
 const lessonSteps: LessonStep[] = [
   {
     title: '¿Qué es el alumbrado público?',
-    description: 'El alumbrado público son las luces que iluminan calles, avenidas, parques y espacios públicos. Sirve para:\n\n● Caminar con más seguridad.\n● Prevenir accidentes.\n● Que nuestras calles y plazas no estén oscuras.\n\n🎞️ Visual:\nFaroles encendidos, niños jugando, personas caminando en la noche.',
+    description: 'El alumbrado público son las luces que iluminan calles, avenidas, parques y espacios públicos. Sirve para:\n\n● Caminar con más seguridad.\n● Prevenir accidentes.\n● Que nuestras calles y plazas no estén oscuras.\n.',
     image: require('../../assets/parque.png'),
   },
-  {
-    title: '🧍 Ejemplo ilustrado – El caso de Julio',
-    description: '📘 Viñeta tipo historia:\n1. Julio nota un cobro nuevo en su factura: "alumbrado público".\n2. Pregunta a la empresa distribuidora, que le informa que es un cobro municipal.\n3. Visita su municipalidad, donde le explican cómo se calcula.\n4. Julio entiende que el cobro es legal, pero siempre hay que estar atentos.\n5. Aprende que debe aparecer separado del consumo de energía.',
-    image: require('../../assets/final.png'),
-    isStory: true,
-  },
 
-  {
-    title: '🎮 Actividad 3: ¿Qué aprendió Julio?',
-    isTrueFalse: true,
-    description: '¿Qué aprendió Julio?',
-    questions: [
-      {
-        question: '¿Qué aprendió Julio?',
-        options: [
-          'Que el cobro debe explicarse y puede consultarse tanto en la distribuidora como en la municipalidad.',
-          'Que la CNEE fija el monto del alumbrado público.',
-          'Que no puede reclamar si hay errores en la factura.'
-        ],
-        correctAnswer: 0
-      }
-    ]
-  },
+ {
+  title: '¿Quién paga el alumbrado público?',
+  description: `💡 El alumbrado público es pagado por los vecinos a través de la factura de energía eléctrica.
+
+🏛️ La municipalidad fija la tasa de alumbrado público según lo establecido en el Código Municipal.
+
+💸 La empresa distribuidora de energía recauda esta tasa en la factura de luz de cada usuario.
+
+📌 La CNEE no fija ni administra ese cobro. Solo vela porque esté correctamente detallado y separado en tu factura.`,
+  image: require('../../assets/vecinos.png'), 
+},
 
   {
     title: 'Marco legal',
@@ -100,6 +94,9 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/leyes.png'),
   
   },
+
+
+
   {
   title: '🎮 Actividad: Selecciona la frase y la entidad correcta',
   description: 'Selecciona una frase y luego la entidad a la que corresponde (CNEE, Municipalidad o Distribuidora).',
@@ -114,6 +111,35 @@ const lessonSteps: LessonStep[] = [
     title: '🧍 Ejemplo ilustrado – El caso de Julio',
     description: '📘 Viñeta tipo historia:\n1. Julio nota un cobro nuevo en su factura: "alumbrado público".\n2. Pregunta a la empresa distribuidora, que le informa que es un cobro municipal.\n3. Visita su municipalidad, donde le explican cómo se calcula.\n4. Julio entiende que el cobro es legal, pero siempre hay que estar atentos.\n5. Aprende que debe aparecer separado del consumo de energía.\n\n🎮 Actividad 3: ¿Qué aprendió Julio?',
     isStory: true,
+    slides: [
+      {
+        title: 'Julio nota un cobro nuevo',
+        content: 'Julio nota un cobro nuevo en su factura: "alumbrado público".',
+        image: require('../../assets/julio1.png'),
+      },
+      {
+        title: 'Pregunta a la distribuidora',
+        content: 'Pregunta a la empresa distribuidora, que le informa que es un cobro municipal.',
+        image: require('../../assets/julio2.png'),
+      },
+      {
+        title: 'Visita su municipalidad',
+        content: 'Visita su municipalidad, donde le explican cómo se calcula.',
+        image: require('../../assets/julio3.png'),
+      },
+      {
+        title: 'Entiende que es legal',
+        content: 'Julio entiende que el cobro es legal, pero siempre hay que estar atentos.',
+        image: require('../../assets/julio4.png'),
+      },
+      {
+        title: 'Aprende sobre la separación',
+        content: 'Aprende que debe aparecer separado del consumo de energía.',
+        image: require('../../assets/julio5.png'),
+      }
+
+     
+    ],
   },
   {
     title: '📌 En resumen',
@@ -306,28 +332,7 @@ export default function AlumbradoScreen() {
           <MeterReading onComplete={handleNext} />
         ) : current.isStory ? (
           <SofiaStoryCard
-            slides={[
-              { 
-                title: 'Julio nota un cobro nuevo', 
-                content: 'Julio nota un cobro nuevo en su factura: "alumbrado público".' 
-              },
-              { 
-                title: 'Pregunta a la distribuidora', 
-                content: 'Pregunta a la empresa distribuidora, que le informa que es un cobro municipal.' 
-              },
-              { 
-                title: 'Visita su municipalidad', 
-                content: 'Visita su municipalidad, donde le explican cómo se calcula.' 
-              },
-              { 
-                title: 'Entiende que es legal', 
-                content: 'Julio entiende que el cobro es legal, pero siempre hay que estar atentos.' 
-              },
-              { 
-                title: 'Aprende sobre la separación', 
-                content: 'Aprende que debe aparecer separado del consumo de energía.' 
-              }
-            ]}
+            slides={current.slides || []}
             onComplete={handleNext}
           />
         ) : (
