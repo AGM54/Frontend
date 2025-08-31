@@ -208,11 +208,20 @@ export default function ObligacionesScreen() {
   const lightningOpacity = useRef(new Animated.Value(0)).current;
   const factScale = useRef(new Animated.Value(0.8)).current;
 
-  // Resetear typewriter cuando cambia el paso
-  React.useEffect(() => {
+  // Steps with long info that require scroll to enable continue
+  const infoStepsWithScroll = [
+    '💬 ¿Qué pasa si no cumplen?',
+    '📋 ¿Cómo reclamar?',
+    '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?'
+  ];
+
+  const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
+
+  // Reset scroll state when step changes
+  useEffect(() => {
+    setHasScrolledToEnd(!isScrollBlockStep);
     setTypewriterComplete(false);
-    setHasScrolledToEnd(false);
-  }, [step]);
+  }, [step, isScrollBlockStep]);
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -224,22 +233,14 @@ export default function ObligacionesScreen() {
     navigation.navigate('HomeMain');
   };
 
+  // Detectar scroll al final para pasos informativos largos
   const handleScroll = (event: any) => {
-    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-    const isCloseToEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
-    
-    // Solo aplicar el scroll obligatorio en la pantalla "Más allá de lo básico"
-    if (current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' && isCloseToEnd) {
-      setHasScrolledToEnd(true);
+    if (isScrollBlockStep) {
+      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+      const paddingToBottom = 20;
+      const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+      setHasScrolledToEnd(isEnd);
     }
-  };
-
-  // Verificar si el botón debe estar habilitado
-  const isButtonEnabled = () => {
-    if (current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?') {
-      return hasScrolledToEnd;
-    }
-    return true; // Para todas las demás pantallas
   };
 
   return (
@@ -287,6 +288,13 @@ export default function ObligacionesScreen() {
         {/* Título - Oculto para Story */}
         {!current.isStory && (
           <Text style={styles.title}>{current.title}</Text>
+        )}
+
+        {/* Indicador visual de scroll en pasos informativos largos */}
+        {isScrollBlockStep && !hasScrolledToEnd && (
+          <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
+            📖 Desliza hacia abajo para leer toda la información
+          </Text>
         )}
 
         {/* Contenido */}
@@ -407,32 +415,24 @@ export default function ObligacionesScreen() {
               ))}
             </View>
 
-            {/* Botón continuar o finalizar */}
+            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
             {step < lessonSteps.length - 1 && (
-              <TouchableOpacity 
-                style={[styles.button, !isButtonEnabled() && styles.disabledButton]} 
-                onPress={isButtonEnabled() ? handleNext : undefined}
-                disabled={!isButtonEnabled()}
-              >
-                <Text style={[styles.buttonText, !isButtonEnabled() && styles.disabledButtonText]}>
-                  {!isButtonEnabled() && current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' 
-                    ? 'Lee todo el contenido para continuar ⬇️' 
-                    : 'Continuar'}
-                </Text>
-              </TouchableOpacity>
+              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+                <TouchableOpacity
+                  style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
+                  onPress={handleNext}
+                  disabled={isScrollBlockStep && !hasScrolledToEnd}
+                >
+                  <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
+                    {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
+                  </Text>
+                </TouchableOpacity>
+              )
             )}
 
             {step === lessonSteps.length - 1 && (
-              <TouchableOpacity 
-                style={[styles.button, styles.finishButton, !isButtonEnabled() && styles.disabledButton]} 
-                onPress={isButtonEnabled() ? handleFinish : undefined}
-                disabled={!isButtonEnabled()}
-              >
-                <Text style={[styles.buttonText, !isButtonEnabled() && styles.disabledButtonText]}>
-                  {!isButtonEnabled() && current.title === '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?' 
-                    ? 'Lee todo el contenido para continuar ⬇️' 
-                    : 'Finalizar lección'}
-                </Text>
+              <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
+                <Text style={styles.buttonText}>Finalizar lección</Text>
               </TouchableOpacity>
             )}
           </View>

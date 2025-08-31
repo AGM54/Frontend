@@ -4,10 +4,11 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
+import CustomModal from '../CustomModal';
+import { useCustomModal } from '../../hooks/useCustomModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -52,6 +53,7 @@ const consumptionOptions: ConsumptionData[] = [
 export default function ConsumptionSimulator({ onComplete }: ConsumptionSimulatorProps) {
   const [selectedConsumption, setSelectedConsumption] = useState<ConsumptionData | null>(null);
   const [hasSimulated, setHasSimulated] = useState(false);
+  const { modalConfig, isVisible, hideModal, showSuccess, showWarning } = useCustomModal();
 
   const handleConsumptionSelect = (consumption: ConsumptionData) => {
     setSelectedConsumption(consumption);
@@ -60,25 +62,19 @@ export default function ConsumptionSimulator({ onComplete }: ConsumptionSimulato
 
   const handleComplete = () => {
     if (hasSimulated) {
-      Alert.alert(
+      showSuccess(
         '¡Muy bien! 🎉',
-        'Has aprendido cómo se calcula tu factura eléctrica basada en el consumo.',
-        [
-          {
-            text: 'Continuar',
-            onPress: () => {
-              setTimeout(() => {
-                onComplete();
-              }, 500);
-            }
-          }
-        ]
+        'Has aprendido cómo se calcula tu factura eléctrica basada en el consumo. ¡Ahora entiendes mejor la relación entre consumo y pago!',
+        () => {
+          setTimeout(() => {
+            onComplete();
+          }, 500);
+        }
       );
     } else {
-      Alert.alert(
+      showWarning(
         '¡Haz una simulación! 🧮',
-        'Selecciona un nivel de consumo para ver cómo se calcula el pago.',
-        [{ text: 'Entendido' }]
+        'Selecciona un nivel de consumo para ver cómo se calcula el pago y aprender sobre las diferentes tarifas.'
       );
     }
   };
@@ -210,6 +206,19 @@ export default function ConsumptionSimulator({ onComplete }: ConsumptionSimulato
           Puedes usar el simulador oficial en el sitio web de la CNEE para cálculos más precisos
         </Text>
       </LinearGradient>
+
+      {/* Modal personalizado hermoso */}
+      {modalConfig && (
+        <CustomModal
+          visible={isVisible}
+          title={modalConfig.title}
+          message={modalConfig.message}
+          type={modalConfig.type}
+          buttons={modalConfig.buttons}
+          onClose={hideModal}
+          icon={modalConfig.icon}
+        />
+      )}
     </View>
   );
 }

@@ -16,7 +16,7 @@ interface Question {
   question: string;
   options: string[];
   correctAnswer: number;
-  explanation?: string;
+  explanation?: string | { correct: string; incorrect: string };
 }
 
 const defaultQuestions: Question[] = [
@@ -53,6 +53,12 @@ export default function TrueFalseQuiz({ onComplete, questions = defaultQuestions
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
+
+  // Función para limpiar emojis de las opciones
+  const cleanOption = (option: string) => {
+    // Elimina emojis comunes y espacios al inicio
+    return option.replace(/[\u2705\u274C\u2728\u2B50\uD83C-\uDBFF\uDC00-\uDFFF]+/g, '').trim();
+  };
 
   const handleAnswer = (answerIndex: number) => {
     const correct = answerIndex === questions[currentQuestion].correctAnswer;
@@ -127,7 +133,7 @@ export default function TrueFalseQuiz({ onComplete, questions = defaultQuestions
               style={styles.answerButtonGradient}
             >
               <Text style={styles.answerButtonText}>
-                {index === 0 ? '✅' : index === 1 ? '❌' : `${String.fromCharCode(65 + index)}.`} {option}
+                {cleanOption(option)}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -153,7 +159,9 @@ export default function TrueFalseQuiz({ onComplete, questions = defaultQuestions
               {isCorrect ? '¡Correcto! 🎉' : '¡Inténtalo de nuevo! 💪'}
             </Text>
             <Text style={styles.feedbackMessage}>
-              {current.explanation}
+              {typeof current.explanation === 'object'
+                ? (isCorrect ? current.explanation.correct : current.explanation.incorrect)
+                : current.explanation}
             </Text>
             <TouchableOpacity
               style={styles.nextButton}

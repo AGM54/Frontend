@@ -5,10 +5,11 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
-  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
+import CustomModal from '../CustomModal';
+import { useCustomModal } from '../../hooks/useCustomModal';
 
 const { width } = Dimensions.get('window');
 
@@ -21,6 +22,7 @@ const MeterReading: React.FC<MeterReadingProps> = ({ onComplete }) => {
   const [userInput, setUserInput] = useState(['', '', '', '', '']);
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedDigit, setSelectedDigit] = useState<number | null>(null);
+  const { modalConfig, isVisible, hideModal, showSuccess, showError } = useCustomModal();
 
   // Animation values for meter digits
   const digitAnimations = useRef(
@@ -75,9 +77,15 @@ const MeterReading: React.FC<MeterReadingProps> = ({ onComplete }) => {
 
     if (isCorrect) {
       setIsCompleted(true);
-      Alert.alert('¡Excelente!', 'Has leído correctamente el medidor eléctrico.');
+      showSuccess(
+        '¡Excelente! 🎯', 
+        'Has leído correctamente el medidor eléctrico. ¡Ahora sabes cómo tomar la lectura de tu medidor en casa!'
+      );
     } else {
-      Alert.alert('Intenta de nuevo', 'Revisa los dígitos del medidor cuidadosamente.');
+      showError(
+        'Inténtalo de nuevo 🔍', 
+        'Revisa los dígitos del medidor cuidadosamente. Observa cada número y vuelve a intentar.'
+      );
     }
   };
 
@@ -181,6 +189,19 @@ const MeterReading: React.FC<MeterReadingProps> = ({ onComplete }) => {
         <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
           <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
+      )}
+
+      {/* Modal personalizado hermoso */}
+      {modalConfig && (
+        <CustomModal
+          visible={isVisible}
+          title={modalConfig.title}
+          message={modalConfig.message}
+          type={modalConfig.type}
+          buttons={modalConfig.buttons}
+          onClose={hideModal}
+          icon={modalConfig.icon}
+        />
       )}
     </View>
   );

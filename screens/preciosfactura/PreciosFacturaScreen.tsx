@@ -103,12 +103,12 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/recibo.png'),
   },
   {
-    title: '🎯 En resumen',
+    title: '🎯 En resumen:',
     description: 'Tu factura eléctrica te informa de tu consumo, monto a pagar, fechas de pago y más.\n\nAprender a leerla es parte de tus derechos como usuario del servicio eléctrico.',
     image: require('../../assets/final.png'),
   },
   {
-    title: '📦 ¿Qué es el subsidio a la tarifa social?',
+    title: '📦 Pantalla complementaria: ¿Qué es el subsidio a la tarifa social?',
     description: 'En Guatemala existe una tarifa especial para familias que consumen poca energía eléctrica: la tarifa social.\n\n⚡ Característica	📄 Detalle\n¿Quién la recibe?	Usuarios que consumen 0 a 88 kWh al mes.\n¿Quién la otorga?	El gobierno, a través del INDE y bajo supervisión de la CNEE.\n¿Qué beneficio da?	Paga solo una parte del precio total; el resto lo cubre el Estado.\n\n🎮 Actividad: Arrastra el rango correcto de consumo a la casilla "tarifa social".',
     image: require('../../assets/subetarifas.png'),
     isTarifaSocialActivity: true,
@@ -158,6 +158,7 @@ export default function PreciosFacturaScreen() {
   const [step, setStep] = useState(0);
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<PreciosFacturaScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
@@ -167,10 +168,33 @@ export default function PreciosFacturaScreen() {
   const lightningOpacity = useRef(new Animated.Value(0)).current;
   const factScale = useRef(new Animated.Value(0.8)).current;
 
-  // Resetear typewriter cuando cambia el paso
-  React.useEffect(() => {
+  // Steps with long info that require scroll to enable continue
+  const infoStepsWithScroll = [
+    '¿Quién fija el precio de la luz?',
+    '📦 Pantalla complementaria: ¿Qué es el subsidio a la tarifa social?',
+    '🧾 ¿Cómo leer tu medidor eléctrico?',
+    'Bonus: Pantalla "SABÍAS QUE…?"',
+    '📘 Sabías que…?',
+    'En resumen'
+  ];
+
+  const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
+
+  // Reset scroll state when step changes
+  useEffect(() => {
+    setHasScrolledToEnd(!isScrollBlockStep);
     setTypewriterComplete(false);
-  }, [step]);
+  }, [step, isScrollBlockStep]);
+
+  // Detectar scroll al final para pasos informativos largos
+  const handleScroll = (event: any) => {
+    if (isScrollBlockStep) {
+      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+      const paddingToBottom = 20;
+      const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+      setHasScrolledToEnd(isEnd);
+    }
+  };
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -225,10 +249,19 @@ export default function PreciosFacturaScreen() {
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
         {/* Título - Oculto para Story */}
         {!current.isStory && (
           <Text style={styles.title}>{current.title}</Text>
+        )}
+
+        {/* Indicador visual de scroll en pasos informativos largos */}
+        {isScrollBlockStep && !hasScrolledToEnd && (
+          <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
+            📖 Desliza hacia abajo para leer toda la información
+          </Text>
         )}
 
         {/* Contenido */}
@@ -317,11 +350,19 @@ export default function PreciosFacturaScreen() {
               ))}
             </View>
 
-            {/* Botón continuar o finalizar */}
+            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
             {step < lessonSteps.length - 1 && (
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Continuar</Text>
-              </TouchableOpacity>
+              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+                <TouchableOpacity
+                  style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
+                  onPress={handleNext}
+                  disabled={isScrollBlockStep && !hasScrolledToEnd}
+                >
+                  <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
+                    {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
+                  </Text>
+                </TouchableOpacity>
+              )
             )}
 
             {step === lessonSteps.length - 1 && (

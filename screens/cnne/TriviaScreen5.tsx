@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
+import CustomModal from '../../components/CustomModal';
+import { useCustomModal } from '../../hooks/useCustomModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -32,6 +34,7 @@ export default function TriviaScreen5() {
   const [step, setStep] = useState(0);
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
+  const { modalConfig, isVisible, hideModal, showSuccess } = useCustomModal();
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -40,7 +43,10 @@ export default function TriviaScreen5() {
   };
 
   const handleFinish = () => {
-    alert('¡Trivia completada! 🎉 Has demostrado un excelente conocimiento sobre la CNEE.');
+    showSuccess(
+      '¡Trivia completada! 🎉', 
+      'Has demostrado un excelente conocimiento sobre la CNEE y su importante papel en el sector eléctrico de Guatemala.'
+    );
   };
 
   return (
@@ -135,6 +141,19 @@ export default function TriviaScreen5() {
             </TouchableOpacity>
           )}
         </View>
+      )}
+
+      {/* Modal personalizado hermoso */}
+      {modalConfig && (
+        <CustomModal
+          visible={isVisible}
+          title={modalConfig.title}
+          message={modalConfig.message}
+          type={modalConfig.type}
+          buttons={modalConfig.buttons}
+          onClose={hideModal}
+          icon={modalConfig.icon}
+        />
       )}
     </SafeAreaView>
   );

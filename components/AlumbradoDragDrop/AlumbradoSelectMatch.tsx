@@ -20,6 +20,8 @@ export const AlumbradoSelectMatch = ({ onComplete }: { onComplete: () => void })
     if (!entityMatches[entity]) entityMatches[entity] = [];
     entityMatches[entity].push(phraseData[Number(idx)].text);
   });
+  // Frases disponibles (no asignadas)
+  const availablePhrases = phraseData.filter((_, idx) => !matched[idx]);
   const [completedCount, setCompletedCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -81,27 +83,39 @@ export const AlumbradoSelectMatch = ({ onComplete }: { onComplete: () => void })
 
         <View style={styles.phrasesContainer}>
           <Text style={styles.sectionTitle}>📝 Frases disponibles:</Text>
-          {phraseData.map((phrase, idx) => (
-            <View key={idx} style={{ marginBottom: 18 }}>
-              <TouchableOpacity
-                style={[styles.phraseGradient, selectedPhrase === idx && { borderColor: '#FFD700', borderWidth: 3 }]}
-                disabled={matched[idx] !== undefined}
-                onPress={() => handlePhraseSelect(idx)}
-              >
-                <Text style={styles.phraseText}>{phrase.text}</Text>
-                {matched[idx] && (
-                  <Text style={styles.dragHint}>✅ Asignada a {matched[idx]}</Text>
-                )}
-                {!matched[idx] && selectedPhrase === idx && (
-                  <Text style={styles.dragHint}>Seleccionada</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          ))}
+          {availablePhrases.length === 0 ? (
+            <Text style={{ color: '#aaa', fontSize: 16, textAlign: 'center', marginVertical: 12 }}>¡Todas las frases han sido asignadas!</Text>
+          ) : (
+            availablePhrases.map((phrase, i) => {
+              // Buscar el índice original para selección
+              const idx = phraseData.findIndex(p => p.text === phrase.text);
+              // Ajuste de espaciado para frases específicas
+              let marginTop = 0;
+              let marginBottom = 18;
+              if (phrase.text.includes('Verificar que los montos')) marginTop = 10; // CNEE baja
+              if (phrase.text.includes('Cobrar tasa de alumbrado')) marginBottom = 8; // Cobrar sube
+              return (
+                <View key={idx} style={{ marginBottom, marginTop, minHeight: 48, justifyContent: 'center' }}>
+                  <TouchableOpacity
+                    style={[styles.phraseGradient, selectedPhrase === idx && { borderColor: '#FFD700', borderWidth: 3 }]}
+                    disabled={matched[idx] !== undefined}
+                    onPress={() => handlePhraseSelect(idx)}
+                  >
+                    <Text style={styles.phraseText}>{phrase.text}</Text>
+                    {!matched[idx] && selectedPhrase === idx && (
+                      <Text style={styles.dragHint}>Seleccionada</Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          )}
         </View>
 
-        <View style={styles.entitiesContainer}>
-          <Text style={styles.sectionTitle}>🎯 Elige la entidad:</Text>
+  <View style={[styles.entitiesContainer, { marginTop: 56 }]}> {/* Baja aún más el bloque de entidades */}
+          <View style={{ alignItems: 'flex-start', marginBottom: 12 }}>
+            <Text style={[styles.sectionTitle, { fontSize: 20, textAlign: 'left' }]}>🎯 Elige la entidad:</Text>
+          </View>
           <View style={styles.entitiesRow}>
             {entities.map((entity, idx) => (
               <TouchableOpacity

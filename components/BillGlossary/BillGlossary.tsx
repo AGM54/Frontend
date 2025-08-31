@@ -4,11 +4,12 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Alert,
   ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
+import CustomModal from '../CustomModal';
+import { useCustomModal } from '../../hooks/useCustomModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -67,6 +68,7 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
   const [selectedDefinition, setSelectedDefinition] = useState<GlossaryTerm | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<number[]>([]);
   const [attempts, setAttempts] = useState(0);
+  const { modalConfig, isVisible, hideModal, showSuccess, showError } = useCustomModal();
 
   // Shuffle definitions for the matching game
   const [shuffledDefinitions] = useState(
@@ -101,19 +103,14 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
       if (matchedPairs.length + 1 === glossaryTerms.length) {
         // All matched
         setTimeout(() => {
-          Alert.alert(
+          showSuccess(
             '¡Excelente trabajo! 🎉',
-            `Has completado el glosario de facturación eléctrica en ${attempts + 1} intentos.`,
-            [
-              {
-                text: 'Continuar',
-                onPress: () => {
-                  setTimeout(() => {
-                    onComplete();
-                  }, 500);
-                }
-              }
-            ]
+            `Has completado el glosario de facturación eléctrica en ${attempts + 1} intentos. ¡Ahora conoces mejor los términos de tu factura eléctrica!`,
+            () => {
+              setTimeout(() => {
+                onComplete();
+              }, 500);
+            }
           );
         }, 500);
       }
@@ -122,10 +119,9 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
       setTimeout(() => {
         setSelectedTerm(null);
         setSelectedDefinition(null);
-        Alert.alert(
+        showError(
           '¡Inténtalo de nuevo! 💪',
-          'Esa combinación no es correcta. Sigue intentando.',
-          [{ text: 'Continuar' }]
+          'Esa combinación no es correcta. Lee cuidadosamente cada definición y vuelve a intentar.'
         );
       }, 300);
     }
@@ -251,6 +247,19 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
           Intentos: {attempts} | Aciertos: {matchedPairs.length}
         </Text>
       </View>
+
+      {/* Modal personalizado hermoso */}
+      {modalConfig && (
+        <CustomModal
+          visible={isVisible}
+          title={modalConfig.title}
+          message={modalConfig.message}
+          type={modalConfig.type}
+          buttons={modalConfig.buttons}
+          onClose={hideModal}
+          icon={modalConfig.icon}
+        />
+      )}
     </View>
   );
 }

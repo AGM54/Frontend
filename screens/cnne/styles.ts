@@ -253,4 +253,22 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  disabledButton: {
+    backgroundColor: 'rgba(88, 204, 247, 0.4)',
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgba(88, 204, 247, 0.2)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  disabledButtonText: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+  },
 });

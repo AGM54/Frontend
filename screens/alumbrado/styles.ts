@@ -3,6 +3,13 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
+  disabledButton: {
+    backgroundColor: '#cccccc',
+    opacity: 0.6,
+  },
+  disabledButtonText: {
+    color: '#888888',
+  },
   safeArea: {
     flex: 1,
   },

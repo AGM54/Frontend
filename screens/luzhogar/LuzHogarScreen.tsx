@@ -171,6 +171,7 @@ export default function LuzHogarScreen() {
   const [step, setStep] = useState(0);
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<LuzHogarScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
@@ -180,10 +181,32 @@ export default function LuzHogarScreen() {
   const lightningOpacity = useRef(new Animated.Value(0)).current;
   const factScale = useRef(new Animated.Value(0.8)).current;
 
-  // Resetear typewriter cuando cambia el paso
-  React.useEffect(() => {
+  // Steps with long info that require scroll to enable continue
+  const infoStepsWithScroll = [
+    'Fuentes de energía en Guatemala',
+    'La CNEE: Tu Guardián Energético',
+    ' 1. Generación',
+    ' 2. Transmisión',
+    ' 3. Distribución'
+  ];
+
+  const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
+
+  // Reset scroll state when step changes
+  useEffect(() => {
+    setHasScrolledToEnd(!isScrollBlockStep);
     setTypewriterComplete(false);
-  }, [step]);
+  }, [step, isScrollBlockStep]);
+
+  // Detectar scroll al final para pasos informativos largos
+  const handleScroll = (event: any) => {
+    if (isScrollBlockStep) {
+      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+      const paddingToBottom = 20;
+      const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+      setHasScrolledToEnd(isEnd);
+    }
+  };
 
   // Lightning animation effect
   useEffect(() => {
@@ -286,10 +309,19 @@ export default function LuzHogarScreen() {
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
         {/* Título - Oculto para Story */}
         {!current.isStory && (
           <Text style={styles.title}>{current.title}</Text>
+        )}
+
+        {/* Indicador visual de scroll en pasos informativos largos */}
+        {isScrollBlockStep && !hasScrolledToEnd && (
+          <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
+            📖 Desliza hacia abajo para leer toda la información
+          </Text>
         )}
 
         {/* Contenido */}
@@ -423,11 +455,19 @@ export default function LuzHogarScreen() {
               ))}
             </View>
 
-            {/* Botón continuar o finalizar */}
+            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
             {step < lessonSteps.length - 1 && (
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Continuar</Text>
-              </TouchableOpacity>
+              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+                <TouchableOpacity
+                  style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
+                  onPress={handleNext}
+                  disabled={isScrollBlockStep && !hasScrolledToEnd}
+                >
+                  <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
+                    {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
+                  </Text>
+                </TouchableOpacity>
+              )
             )}
 
             {step === lessonSteps.length - 1 && (

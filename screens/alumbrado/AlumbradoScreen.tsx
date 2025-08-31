@@ -72,21 +72,16 @@ interface LessonStep {
 const lessonSteps: LessonStep[] = [
   {
     title: '¿Qué es el alumbrado público?',
-    description: 'El alumbrado público son las luces que iluminan calles, avenidas, parques y espacios públicos. Sirve para:\n\n● Caminar con más seguridad.\n● Prevenir accidentes.\n● Que nuestras calles y plazas no estén oscuras.\n.',
+    description: 'El alumbrado público son las luces que iluminan calles, avenidas, parques y espacios públicos. Sirve para:\n\n● Caminar con más seguridad.\n● Prevenir accidentes.\n● Que nuestras calles y plazas no estén oscuras.',
     image: require('../../assets/parque.png'),
   },
+ 
 
- {
-  title: '¿Quién paga el alumbrado público?',
-  description: `💡 El alumbrado público es pagado por los vecinos a través de la factura de energía eléctrica.
-
-🏛️ La municipalidad fija la tasa de alumbrado público según lo establecido en el Código Municipal.
-
-💸 La empresa distribuidora de energía recauda esta tasa en la factura de luz de cada usuario.
-
-📌 La CNEE no fija ni administra ese cobro. Solo vela porque esté correctamente detallado y separado en tu factura.`,
-  image: require('../../assets/vecinos.png'), 
-},
+  {
+    title: '¿Quién paga el alumbrado público?',
+    description: '💡 El alumbrado público es pagado por los vecinos a través de la factura de energía eléctrica.\n\n🏛️ La municipalidad fija la tasa de alumbrado público según lo establecido en el Código Municipal.\n\n💸 La empresa distribuidora de energía recauda esta tasa en la factura de luz de cada usuario.\n\n📌 La CNEE no fija ni administra ese cobro. Solo vela porque esté correctamente detallado y separado en tu factura.',
+    image: require('../../assets/vecinos.png'),
+  },
 
   {
     title: 'Marco legal',
@@ -103,7 +98,7 @@ const lessonSteps: LessonStep[] = [
   isAlumbradoSelectMatch: true,
   },
   {
-    title: '🧠 Trivia rápida',
+    title: 'Trivia rápida',
     description: 'Pregunta 1: ¿Quién fija la tasa de alumbrado público?\nPregunta 2: ¿Se puede reclamar a la distribuidora si el cobro no está detallado en la factura?\nPregunta 3: ¿La CNEE cobra el alumbrado?',
     isTrueFalse: true,
   },
@@ -143,25 +138,30 @@ const lessonSteps: LessonStep[] = [
   },
   {
     title: '📌 En resumen',
-    description: '✔ El alumbrado público es importante para que nuestras calles y plazas estén iluminadas.\n✔ Lo cobra la empresa distribuidora a través de la factura eléctrica.\n✔ La CNEE no lo fija, pero sí revisa que se detalle bien en la factura.\n✔ Si no aparece claro, puedes presentar un reclamo a la distribuidora.\n\n🎯 Slogan final:\n"Una ciudad segura es una ciudad bien iluminada.\nConsulta y aprende a leer tu factura de energía."',
+    description: '✔ El alumbrado público es importante para que nuestras calles y plazas estén iluminadas.\n✔ Lo cobra la empresa distribuidora a través de la factura eléctrica.\n✔ La CNEE no lo fija, pero sí revisa que se detalle bien en la factura.\n✔ Si no aparece claro, puedes presentar un reclamo a la distribuidora.\n\"',
     image: require('../../assets/final.png'),
   },
   {
     title: '🧾 ¿Por qué varía el cobro entre municipios?',
-    description: '🧠 Texto explicativo:\nEl monto que pagas por alumbrado público no es igual en todos los municipios. Cambia según:\n\n● Cuántas lámparas hay en tu barrio o municipio.\n● Si las luminarias son tradicionales o LED.\n● Cuánto presupuesto tiene tu municipalidad.\n● Qué porcentaje se cobra según tu consumo.\n\n📌 Por eso, aunque consumas lo mismo, puedes pagar más o menos que otra persona que viva en otro municipio.',
+    description: 'El monto que pagas por alumbrado público no es igual en todos los municipios. Cambia según:\n\n● Cuántas lámparas hay en tu barrio o municipio.\n● Si las luminarias son tradicionales o LED.\n● Cuánto presupuesto tiene tu municipalidad.\n● Qué porcentaje se cobra según tu consumo.\n\n📌 Por eso, aunque consumas lo mismo, puedes pagar más o menos que otra persona que viva en otro municipio.',
     image: require('../../assets/poste.png'),
   },
   {
-    title: '📘 ¿Qué pasa si hay una lámpara dañada?',
-    description: '🧠 Texto explicativo:\nSi ves una lámpara pública dañada o que no funciona:\n\n1. Toma nota de la ubicación.\n2. Verifica si tu municipalidad tiene un canal de reporte.\n3. Llama o escribe a tu empresa distribuidora.\n\n📌 La responsabilidad primaria es de la municipalidad, pero algunas delegan el mantenimiento a la distribuidora.\n\n🎞️ Visual:\nEscena nocturna con una lámpara fundida → usuario reporta vía teléfono o app → técnico la arregla.\n\n🎮 Actividad 5: ¿A quién reporto esta lámpara dañada?',
+    title: '  ¿Qué hacer si hay una lámpara dañada?',
+    description: 'Si ves una lámpara pública dañada o que no funciona:\n\n1. Toma nota de la ubicación.\n2. Verifica si tu municipalidad tiene un canal de reporte.\n3. Llama o escribe a tu empresa distribuidora.\n\n📌 La responsabilidad primaria es de la municipalidad, pero algunas delegan el mantenimiento a la distribuidora.',
+    image: require('../../assets/dano.png'),
+  },
+  {
+    title: ' ¿Qué pasa si hay una lámpara dañada?',
+    description: ' Actividad 5: ¿A quién reporto esta lámpara dañada?',
     image: require('../../assets/poste.png'),
     isNewTrivia: true,
   },
   {
     title: '📊 ¿Cuánto se invierte en alumbrado?',
-    description: '🧾 Texto informativo:\nEl dinero que se cobra por alumbrado público no se va a la CNEE ni a la empresa distribuidora. Se transfiere a la municipalidad, que debe usarlo para:\n\n● Pagar el consumo de energía de luminarias.\n● Dar mantenimiento a postes y cables.\n● Ampliar la cobertura de alumbrado.\n● Sustituir bombillas por luminarias LED.\n\n📌 Puedes pedir a tu municipalidad un informe de cómo se usa ese dinero (Ley de Acceso a la Información Pública).\n\n🎮 Actividad 6: Arma el presupuesto\nEl usuario arrastra etiquetas ("energía", "reparaciones", "expansión") al gráfico de torta para armar cómo se distribuye el fondo.',
+    description: '🧾 Texto informativo:\nEl dinero que se cobra por alumbrado público no se va a la CNEE ni a la empresa distribuidora. Se transfiere a la municipalidad, que debe usarlo para:\n\n● Pagar el consumo de energía de luminarias.\n● Dar mantenimiento a postes y cables.\n● Ampliar la cobertura de alumbrado.\n● Sustituir bombillas por luminarias LED.\n\n📌 Puedes pedir a tu municipalidad un informe de cómo se usa ese dinero (Ley de Acceso a la Información Pública).\n',
     image: require('../../assets/guardian.png'),
-    isOrderDragDrop: true,
+ 
   },
   {
     title: '🧠 Trivia extendida – ¿Cuánto sabes?',
@@ -170,9 +170,15 @@ const lessonSteps: LessonStep[] = [
   },
   {
     title: '✅ Lo que debes saber sobre el alumbrado público',
-    description: '🧾 Lista clara:\n\n● Saber cuánto pagas exactamente por alumbrado público.\n● Ver ese cobro separado en tu factura.\n● Consultar cómo se calculó y qué cubre.\n● Reclamar si hay errores o cobros duplicados.\n● Solicitar reparación de luminarias dañadas.\n● Pedir que se ilumine una zona oscura (la muni evaluará).\n\n🎮 Actividad 7: "Todo lo que debes saber sobre alumbrado público" (tipo memory)\nEmpareja íconos (lupa, signo de pregunta, foco) con los derechos correspondientes.',
+    description: '🧾 Lista clara:\n\n● Saber cuánto pagas exactamente por alumbrado público.\n● Ver ese cobro separado en tu factura.\n● Consultar cómo se calculó y qué cubre.\n● Reclamar si hay errores o cobros duplicados.\n● Solicitar reparación de luminarias dañadas.\n● Pedir que se ilumine una zona oscura (la muni evaluará).\n',
     image: require('../../assets/final.png'),
-    isImageTrivia: true,
+   
+  },
+
+    {
+    title: 'Slogan final',
+    description: '“Una ciudad segura es una ciudad bien iluminada.\nConsulta y aprende a leer tu factura de energía.”',
+    image: require('../../assets/final.png'),
   },
 ];
 
@@ -180,19 +186,35 @@ export default function AlumbradoScreen() {
   const [step, setStep] = useState(0);
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<AlumbradoScreenNavigationProp>();
+  
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
+
+  // Steps with long info that require scroll to enable continue
+  const infoStepsWithScroll = [
+    '¿Quién paga el alumbrado público?',
+    'Marco legal',
+    '📌 En resumen',
+    '🧾 ¿Por qué varía el cobro entre municipios?',
+    '📘 ¿Qué pasa si hay una lámpara dañada?',
+    '📊 ¿Cuánto se invierte en alumbrado?',
+    '✅ Lo que debes saber sobre el alumbrado público'
+  ];
+
+  const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
 
   // Animation values for curious fact
   const lightningOpacity = useRef(new Animated.Value(0)).current;
   const factScale = useRef(new Animated.Value(0.8)).current;
 
-  // Resetear typewriter cuando cambia el paso
-  React.useEffect(() => {
+  // Reset scroll state when step changes
+  useEffect(() => {
+    setHasScrolledToEnd(!isScrollBlockStep);
     setTypewriterComplete(false);
-  }, [step]);
+  }, [step, isScrollBlockStep]);
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -206,6 +228,16 @@ export default function AlumbradoScreen() {
       setShowConfetti(false);
       navigation.navigate('HomeMain');
     }, 3000);
+  };
+
+  // Detectar scroll al final para pasos informativos largos
+  const handleScroll = (event: any) => {
+    if (isScrollBlockStep) {
+      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+      const paddingToBottom = 20;
+      const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+      setHasScrolledToEnd(isEnd);
+    }
   };
 
   return (
@@ -241,18 +273,27 @@ export default function AlumbradoScreen() {
         resizeMode="contain"
       />
       <ScrollView
-        ref={scrollViewRef}
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={true}
+  ref={scrollViewRef}
+  style={styles.scrollContainer}
+  contentContainerStyle={styles.scrollContent}
+  showsVerticalScrollIndicator={true}
+  onScroll={handleScroll}
+  scrollEventThrottle={16}
       >
         {/* Título - Oculto para Story */}
         {!current.isStory && (
           <Text style={styles.title}>{current.title}</Text>
         )}
 
+        {/* Indicador visual de scroll en pasos informativos largos */}
+        {isScrollBlockStep && !hasScrolledToEnd && (
+          <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
+            📖 Desliza hacia abajo para leer toda la información
+          </Text>
+        )}
+
         {/* Contenido */}
-        {current.isTrivia ? (
+  {current.isTrivia ? (
           <TrueFalseQuiz
             questions={[
               {
@@ -305,17 +346,29 @@ export default function AlumbradoScreen() {
               {
                 question: '¿Quién fija la tasa de alumbrado público?',
                 options: ['CNEE', 'Municipalidad', 'Empresa distribuidora'],
-                correctAnswer: 1
+                correctAnswer: 1,
+                explanation: {
+                  correct: '¡Correcto! La Municipalidad fija la tasa de alumbrado público.',
+                  incorrect: 'Incorrecto. La Municipalidad es quien fija la tasa, no la CNEE ni la distribuidora.'
+                }
               },
               {
                 question: '¿Se puede reclamar a la distribuidora si el cobro no está detallado en la factura?',
-                options: ['Sí', 'No'],
-                correctAnswer: 0
+                options: ['Si', 'No'],
+                correctAnswer: 0,
+                explanation: {
+                  correct: '¡Correcto! Puedes reclamar a la distribuidora si el cobro no está detallado.',
+                  incorrect: 'Incorrecto. Sí puedes reclamar a la distribuidora.'
+                }
               },
               {
                 question: '¿La CNEE cobra el alumbrado?',
-                options: ['Sí', 'No'],
-                correctAnswer: 1
+                options: ['Si', 'No'],
+                correctAnswer: 1,
+                explanation: {
+                  correct: '¡Correcto! La CNEE no cobra el alumbrado público.',
+                  incorrect: 'Incorrecto. La CNEE no cobra el alumbrado público.'
+                }
               }
             ]}
             onComplete={handleNext}
@@ -354,18 +407,13 @@ export default function AlumbradoScreen() {
             >
               {/* Border interior con gradiente */}
               <View style={styles.gradientBorder} />
-              
               {/* Efectos de partículas de estrellas sutiles */}
               <View style={styles.sparkleContainer}>
                 <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
                 <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
               </View>
-              
-              <ScrollView
-                style={styles.descriptionScroll}
-                nestedScrollEnabled={true}
-                showsVerticalScrollIndicator={true}
-              >
+              {/* Typewriter solo en el paso informativo largo */}
+              <ScrollView style={[styles.descriptionScroll, { maxHeight: height * 0.55 }]} showsVerticalScrollIndicator={true}>
                 <Text style={styles.description}>{current.description || ''}</Text>
               </ScrollView>
             </LinearGradient>
@@ -396,11 +444,19 @@ export default function AlumbradoScreen() {
               ))}
             </View>
 
-            {/* Botón continuar o finalizar */}
+            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
             {step < lessonSteps.length - 1 && (
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Continuar</Text>
-              </TouchableOpacity>
+              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+                <TouchableOpacity
+                  style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
+                  onPress={handleNext}
+                  disabled={isScrollBlockStep && !hasScrolledToEnd}
+                >
+                  <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
+                    {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
+                  </Text>
+                </TouchableOpacity>
+              )
             )}
 
             {step === lessonSteps.length - 1 && (

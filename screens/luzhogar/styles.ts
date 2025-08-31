@@ -272,6 +272,14 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  disabledButton: {
+    backgroundColor: '#666666',
+    opacity: 0.5,
+  },
+  disabledButtonText: {
+    color: '#FFFFFF',
+    opacity: 0.5,
+  },
   curiousFact: {
     backgroundColor: '#2A4B7C',
     borderRadius: 16,

@@ -4,10 +4,11 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
+import CustomModal from '../CustomModal';
+import { useCustomModal } from '../../hooks/useCustomModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -64,6 +65,7 @@ const facturaSections: FacturaSectionData[] = [
 export default function FacturaExplorer({ onComplete }: FacturaExplorerProps) {
   const [exploredSections, setExploredSections] = useState<number[]>([]);
   const [selectedSection, setSelectedSection] = useState<FacturaSectionData | null>(null);
+  const { modalConfig, isVisible, hideModal, showSuccess, showWarning } = useCustomModal();
 
   const handleSectionPress = (section: FacturaSectionData) => {
     setSelectedSection(section);
@@ -78,25 +80,19 @@ export default function FacturaExplorer({ onComplete }: FacturaExplorerProps) {
 
   const handleComplete = () => {
     if (exploredSections.length === facturaSections.length) {
-      Alert.alert(
+      showSuccess(
         '¡Excelente! 🎉',
-        'Has explorado todas las secciones de la factura eléctrica.',
-        [
-          {
-            text: 'Continuar',
-            onPress: () => {
-              setTimeout(() => {
-                onComplete();
-              }, 500);
-            }
-          }
-        ]
+        'Has explorado todas las secciones de la factura eléctrica. ¡Ahora entiendes mejor cómo leer tu factura mensual!',
+        () => {
+          setTimeout(() => {
+            onComplete();
+          }, 500);
+        }
       );
     } else {
-      Alert.alert(
+      showWarning(
         '¡Sigue explorando! 🔍',
-        `Te faltan ${facturaSections.length - exploredSections.length} secciones por descubrir.`,
-        [{ text: 'Continuar explorando' }]
+        `Te faltan ${facturaSections.length - exploredSections.length} secciones por descubrir. Explora todas las áreas para comprender completamente tu factura.`
       );
     }
   };
@@ -191,6 +187,19 @@ export default function FacturaExplorer({ onComplete }: FacturaExplorerProps) {
             </TouchableOpacity>
           </LinearGradient>
         </View>
+      )}
+
+      {/* Modal personalizado hermoso */}
+      {modalConfig && (
+        <CustomModal
+          visible={isVisible}
+          title={modalConfig.title}
+          message={modalConfig.message}
+          type={modalConfig.type}
+          buttons={modalConfig.buttons}
+          onClose={hideModal}
+          icon={modalConfig.icon}
+        />
       )}
     </View>
   );

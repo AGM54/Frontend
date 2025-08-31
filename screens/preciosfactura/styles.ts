@@ -311,4 +311,20 @@ export const styles = StyleSheet.create({
     textShadowRadius: 4,
     letterSpacing: 1,
   },
+  disabledButton: {
+    borderRadius: 25,
+    paddingVertical: height * 0.018,
+    paddingHorizontal: width * 0.08,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(139, 69, 255, 0.3)',
+    borderWidth: 2,
+    borderColor: 'rgba(139, 69, 255, 0.3)',
+  },
+  disabledButtonText: {
+    fontSize: width * 0.05,
+    fontWeight: '800',
+    color: 'rgba(255, 255, 255, 0.4)',
+    letterSpacing: 1,
+  },
 });
