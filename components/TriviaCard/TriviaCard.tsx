@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from './styles';
@@ -22,63 +21,51 @@ interface TriviaQuestion {
 const triviaQuestions: TriviaQuestion[] = [
   {
     id: 1,
-    question: "Define el precio de la energía para usuarios residenciales",
+    question: "¿El precio de la energía eléctrica es fijado por la CNEE?",
     correct: true,
-    feedback: "¡Correcto! La CNEE establece las tarifas eléctricas justas para garantizar un servicio de calidad a precios accesibles."
+    feedback: "¡Correcto! La CNEE establece las tarifas eléctricas para garantizar precios justos y accesibles para todos los usuarios."
   },
   {
     id: 2,
-    question: "Genera electricidad desde plantas solares",
+    question: "¿Tu factura de electricidad depende únicamente del consumo de energía?",
     correct: false,
-    feedback: "Incorrecto. La CNEE no genera electricidad, sino que regula el sector eléctrico de Guatemala."
+    feedback: "Incorrecto. Tu factura incluye varios conceptos además del consumo: cargo fijo, alumbrado público, tasas municipales, y otros cargos regulados."
   },
   {
     id: 3,
-    question: "Supervisa que las empresas del sector eléctrico cumplan las normas",
+    question: "¿Puedes reportar errores en tu factura directamente a la empresa distribuidora?",
     correct: true,
-    feedback: "¡Correcto! La CNEE vigila que las empresas del sector eléctrico actúen correctamente."
+    feedback: "¡Correcto! Puedes contactar directamente a tu empresa distribuidora para reportar errores, hacer reclamos o solicitar aclaraciones sobre tu factura."
   },
   {
     id: 4,
-    question: "Cobra directamente el recibo de la luz",
+    question: "¿El cargo por alumbrado público es opcional en tu factura?",
     correct: false,
-    feedback: "Incorrecto. La CNEE no cobra recibos directamente, eso lo hacen las empresas distribuidoras."
+    feedback: "Incorrecto. El cargo por alumbrado público es obligatorio y contribuye al mantenimiento de la iluminación en calles y espacios públicos."
   },
   {
     id: 5,
-    question: "Resuelve disputas entre empresas del sector",
+    question: "¿La lectura del medidor determina tu consumo mensual?",
     correct: true,
-    feedback: "¡Correcto! La CNEE ayuda a resolver desacuerdos entre empresas del sector eléctrico."
+    feedback: "¡Correcto! La diferencia entre la lectura actual y la anterior determina tu consumo mensual de energía eléctrica."
   },
   {
     id: 6,
-    question: "Instala cables eléctricos en las casas",
+    question: "¿Todas las tarifas eléctricas son iguales para todos los usuarios?",
     correct: false,
-    feedback: "Incorrecto. La CNEE no instala cables, eso lo hacen las empresas distribuidoras y técnicos especializados."
+    feedback: "Incorrecto. Existen diferentes tarifas según el tipo de usuario: residencial, comercial, industrial, y según el nivel de consumo."
   },
   {
     id: 7,
-    question: "Protege los derechos de los consumidores",
+    question: "¿La factura incluye información sobre tu historial de consumo?",
     correct: true,
-    feedback: "¡Correcto! La CNEE defiende los derechos de los consumidores de energía eléctrica."
+    feedback: "¡Correcto! Tu factura muestra el historial de consumo de los últimos meses para que puedas comparar y monitorear tu uso de energía."
   },
   {
     id: 8,
-    question: "Define normas técnicas sobre cómo debe funcionar la red eléctrica",
-    correct: true,
-    feedback: "¡Correcto! La CNEE establece reglas técnicas que deben cumplirse en el sector eléctrico."
-  },
-  {
-    id: 9,
-    question: "Se financia con impuestos del Estado",
+    question: "¿Los impuestos y tasas municipales son fijados por la empresa eléctrica?",
     correct: false,
-    feedback: "Incorrecto. La CNEE se financia principalmente con contribuciones del sector eléctrico, no con impuestos generales."
-  },
-  {
-    id: 10,
-    question: "Permite el uso de redes de energía a empresas autorizadas",
-    correct: true,
-    feedback: "¡Correcto! La CNEE permite el uso de redes para utilizar las redes de energía a empresas autorizadas."
+    feedback: "Incorrecto. Los impuestos y tasas municipales son establecidos por el gobierno y municipalidades, no por la empresa eléctrica."
   }
 ];
 
@@ -91,7 +78,6 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const question = triviaQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === triviaQuestions.length - 1;
@@ -104,15 +90,6 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
       setScore(score + 1);
     }
   };
-
-  // Scroll automático cuando aparece el feedback
-  useEffect(() => {
-    if (showFeedback && scrollViewRef.current) {
-      setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }, 300);
-    }
-  }, [showFeedback]);
 
   const handleContinue = () => {
     if (isLastQuestion) {
@@ -128,7 +105,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
 
   return (
     <LinearGradient
-      colors={['#1a1a2e', '#16213e', '#0f3460']}
+      colors={['#1a0033', '#2d1b4d', '#3d2b5f']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.triviaContainer}
@@ -142,16 +119,11 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
         </Text>
       </View>
 
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={true}
-        bounces={true}
-        alwaysBounceVertical={true}
+      <View
+        style={[styles.scrollContainer, styles.scrollContent]}
       >
         <LinearGradient
-          colors={['#2a2a4a', '#1e1e3a', '#151530']}
+          colors={['#4a3075', '#2d1b4d', '#1a0033']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.questionCard}
@@ -170,7 +142,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
               <LinearGradient
                 colors={
                   selectedAnswer === true 
-                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    ? (isCorrect ? ['#134e5e', '#71b280'] : ['#cb2d3e', '#ef473a'])
                     : ['#2c2c2c', '#1c1c1c']
                 }
                 start={{ x: 0, y: 0 }}
@@ -197,7 +169,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
               <LinearGradient
                 colors={
                   selectedAnswer === false 
-                    ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
+                    ? (isCorrect ? ['#134e5e', '#71b280'] : ['#cb2d3e', '#ef473a'])
                     : ['#2c2c2c', '#1c1c1c']
                 }
                 start={{ x: 0, y: 0 }}
@@ -217,21 +189,21 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
           {showFeedback && (
             <LinearGradient
               colors={
-                isCorrect 
-                  ? ['rgba(40, 167, 69, 0.3)', 'rgba(32, 199, 81, 0.2)']
-                  : ['rgba(220, 53, 69, 0.3)', 'rgba(255, 71, 87, 0.2)']
+                isCorrect
+                  ? ['#00b09b', '#96c93d'] // verde profesional para correcto
+                  : ['#ff416c', '#ff4b2b'] // rojo profesional para incorrecto
               }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={[
                 styles.feedbackContainer,
-                isCorrect ? styles.correctFeedback : styles.incorrectFeedback
+                { borderRadius: 18, borderWidth: 0, shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 8, elevation: 6 }
               ]}
             >
-              <Text style={styles.feedbackTitle}>
+              <Text style={[styles.feedbackTitle, { color: '#fff', textShadowColor: '#2d1b4d', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 6 }] }>
                 {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
               </Text>
-              <Text style={styles.feedbackText}>{question.feedback}</Text>
+              <Text style={[styles.feedbackText, { color: '#fff', opacity: 0.95 }]}>{question.feedback}</Text>
             </LinearGradient>
           )}
         </LinearGradient>
@@ -253,7 +225,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
             </LinearGradient>
           </TouchableOpacity>
         )}
-      </ScrollView>
+      </View>
     </LinearGradient>
   );
 }

@@ -47,17 +47,21 @@ const lessonSteps: LessonStep[] = [
   {
     title: '¿Qué es la CNEE?',
     description: 'La CNEE es la institución que dirige el sector eléctrico de Guatemala. No genera electricidad, pero trabaja todos los días para que los guatemaltecos recibamos un servicio de energía de calidad, sin cortes y con precios estables.',
-    image: require('../../assets/quees.png'),
+    image: require('../../assets/imagen.png'),
   },
   {
     title: '¿Qué hace la CNEE?',
-    description: `●  Aplica la ley: hace cumplir la ley de electricidad.\n
-●  Protege los derechos de quienes usamos la energía.\n
-●  Vigila que las empresas del sector eléctrico actúen correctamente.\n
-●  Define cuánto deben cobrar las empresas distribuidoras por llevar la electricidad a los hogares y comercios.\n
-●  Resuelve conflictos: ayuda a resolver desacuerdos entre empresas del sector.\n
-●  Crea normas: establece reglas técnicas que deben cumplirse.\n
-●  Permite el uso de redes para utilizar las redes de energía.`,
+    description: `●  Protege los derechos de quienes usamos la energía.
+
+●  Vigila que las empresas del sector eléctrico actúen correctamente.
+
+●  Define cuánto deben cobrar las empresas distribuidoras por llevar la electricidad a los hogares y comercios.
+
+●  Establece reglas técnicas que deben cumplirse.
+
+●  Permite el uso de redes para utilizar las redes de energía.
+
+●  Supervisa la calidad del servicio .`,
   },
   {
     title: '¡Pongamos a prueba tus conocimientos!',
@@ -97,34 +101,41 @@ export default function CnneScreen() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  const innerScrollViewRef = useRef<ScrollView>(null);
   const navigation = useNavigation<CnneScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
 
   // Steps with long info that require scroll to enable continue
-  const infoStepsWithScroll = [
+  const infoStepsWithScroll: string[] = [];
+
+  // Steps that should use large card styles (regardless of scroll requirement)
+  const largeCardSteps = [
     '¿Qué hace la CNEE?',
-    '¿Qué ha logrado la CNEE?',
-    '¿Dónde vemos el trabajo de la CNEE en la vida diaria?'
+  '¿Qué ha logrado la CNEE?'
   ];
 
   const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
+  const isLargeCardStep = largeCardSteps.includes(current.title);
 
   // Reset scroll state when step changes
   useEffect(() => {
-    setHasScrolledToEnd(!isScrollBlockStep);
+    setHasScrolledToEnd(true);
     setTypewriterComplete(false);
-  }, [step, isScrollBlockStep]);
+  }, [step]);
 
-  // Detectar scroll al final para pasos informativos largos
+  // Detectar scroll al final para pasos informativos largos - ScrollView principal
   const handleScroll = (event: any) => {
-    if (isScrollBlockStep) {
-      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-      const paddingToBottom = 20;
-      const isEnd = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
-      setHasScrolledToEnd(isEnd);
-    }
+    // Scroll detection deshabilitado para todos los pasos
   };
+
+  // Detectar scroll al final para el ScrollView interno de la tarjeta
+  const handleInnerScroll = (event: any) => {
+    // Scroll detection deshabilitado para todos los pasos
+  };
+
+  // Auto-detectar scroll completado después de un tiempo para casos problemáticos
+  // Scroll auto-completado deshabilitado
 
   const handleNext = () => {
     if (step < lessonSteps.length - 1) {
@@ -143,118 +154,121 @@ export default function CnneScreen() {
 
 
   return (
-    <LinearGradient
-      colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#2d1b4d', '#1a0033']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.safeArea}
-    >
-      {/* Logo */}
-      <Image
-        source={require('../../assets/icon.png')}
-        style={{
-          position: 'absolute',
-          top: height * 0.02,
-          right: width * 0.04,
-          width: width * 0.25,
-          height: height * 0.05,
-          zIndex: 99,
-          opacity: 0.95,
-          ...Platform.select({
-            ios: {
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-            },
-            android: {
-              elevation: 4,
-            },
-          }),
-        }}
-        resizeMode="contain"
-      />
-
-      {/* Contenido scrolleable */}
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={true}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
+    <View style={{ flex: 1, backgroundColor: '#1a0033' }}>
+      <LinearGradient
+        colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#2d1b4d', '#1a0033']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.safeArea}
       >
-        {/* Título - Oculto para Story */}
-        {!current.isStory && (
-          <Text style={styles.title}>{current.title}</Text>
-        )}
+        {/* Logo */}
+        <Image
+          source={require('../../assets/icon.png')}
+          style={{
+            position: 'absolute',
+            top: height * 0.02,
+            right: width * 0.04,
+            width: width * 0.25,
+            height: height * 0.05,
+            zIndex: 99,
+            opacity: 0.95,
+            ...Platform.select({
+              ios: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+              },
+              android: {
+                elevation: 4,
+              },
+            }),
+          }}
+          resizeMode="contain"
+        />
 
-        {/* Indicador visual de scroll en pasos informativos largos */}
-        {isScrollBlockStep && !hasScrolledToEnd && (
-          <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
-            📖 Desliza hacia abajo para leer toda la información
-          </Text>
-        )}
+        {/* Contenido scrolleable */}
+        <ScrollView
+          ref={scrollViewRef}
+          style={styles.scrollContainer}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={true}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+        >
+          {/* Título - Oculto para Story */}
+          {!current.isStory && (
+            <Text style={styles.title}>{current.title}</Text>
+          )}
 
-        {/* Contenido */}
-        {current.isTrivia ? (
-          <TriviaCard onComplete={handleNext} />
-        ) : current.isNewTrivia ? (
-          <TriviaCardScreen5 onComplete={handleNext} />
-        ) : current.isGlossary ? (
-          <GlossaryGame onComplete={handleNext} />
-        ) : current.isImageTrivia ? (
-          <ImageTriviaCard onComplete={handleNext} />
-        ) : current.isStory ? (
-          <StorySlide onComplete={handleFinish} />
-        ) : (
-          <>
-            {current.image && (
-              <Image
-                source={current.image}
-                style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
-              />
-            )}
-            {/* Tarjeta de información con diseño profesional */}
-            <LinearGradient
-              colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.descriptionCard}
-            >
-              {/* Border interior con gradiente */}
-              <View style={styles.gradientBorder} />
-              
-              {/* Efectos de partículas de estrellas sutiles */}
-              <View style={styles.sparkleContainer}>
-                <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
-                <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
-              </View>
-              
-              <ScrollView
-                style={styles.descriptionScroll}
-                nestedScrollEnabled={true}
-                showsVerticalScrollIndicator={true}
+          {/* Indicador visual de scroll en pasos informativos largos */}
+          {isScrollBlockStep && !hasScrolledToEnd && (
+            <Text style={{ textAlign: 'center', color: '#58CCF7', marginBottom: 8, fontSize: width * 0.037, fontWeight: '600' }}>
+              📖 Desliza hacia abajo para leer toda la información
+            </Text>
+          )}
+
+          {/* Contenido */}
+          {current.isTrivia ? (
+            <TriviaCard onComplete={handleNext} />
+          ) : current.isNewTrivia ? (
+            <TriviaCardScreen5 onComplete={handleNext} />
+          ) : current.isGlossary ? (
+            <GlossaryGame onComplete={handleNext} />
+          ) : current.isImageTrivia ? (
+            <ImageTriviaCard onComplete={handleNext} />
+          ) : current.isStory ? (
+            <StorySlide onComplete={handleFinish} />
+          ) : (
+            <>
+              {current.image && (
+                <Image
+                  source={current.image}
+                  style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
+                />
+              )}
+              {/* Tarjeta de información con diseño profesional */}
+              <LinearGradient
+                colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={isLargeCardStep ? styles.descriptionCardLarge : styles.descriptionCard}
               >
-                {current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' && current.description ? (
-                  <TypewriterList
-                    items={current.description.split('\n\n').map(item => item.replace('●  ', '').trim()).filter(item => item.length > 0)}
-                    itemStyle={styles.description}
-                    speed={25}
-                    itemDelay={1200}
-                    startDelay={500}
-                    onComplete={() => setTypewriterComplete(true)}
-                    scrollViewRef={scrollViewRef}
-                    autoScroll={false}
-                  />
-                ) : (
-                  <Text style={styles.description}>{current.description || ''}</Text>
-                )}
-              </ScrollView>
-            </LinearGradient>
-          </>
-        )}
-      </ScrollView>
+                {/* Border interior con gradiente */}
+                <View style={styles.gradientBorder} />
+                {/* Efectos de partículas de estrellas sutiles */}
+                <View style={styles.sparkleContainer}>
+                  <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
+                  <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
+                </View>
+                <ScrollView
+                  ref={innerScrollViewRef}
+                  style={isLargeCardStep ? styles.descriptionScrollLarge : styles.descriptionScroll}
+                  nestedScrollEnabled={true}
+                  showsVerticalScrollIndicator={true}
+                  onScroll={handleInnerScroll}
+                  scrollEventThrottle={16}
+                >
+                  {current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' && current.description ? (
+                    <TypewriterList
+                      items={current.description.split('\n\n').map(item => item.replace('●  ', '').trim()).filter(item => item.length > 0)}
+                      itemStyle={styles.description}
+                      speed={25}
+                      itemDelay={1200}
+                      startDelay={500}
+                      onComplete={() => setTypewriterComplete(true)}
+                      scrollViewRef={scrollViewRef}
+                      autoScroll={false}
+                    />
+                  ) : (
+                    <Text style={styles.description}>{current.description || ''}</Text>
+                  )}
+                </ScrollView>
+              </LinearGradient>
+            </>
+          )}
+        </ScrollView>
+      </LinearGradient>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
       {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory &&
@@ -304,6 +318,6 @@ export default function CnneScreen() {
 
       {/* Confetti Effect */}
       {showConfetti && <Confetti />}
-    </LinearGradient>
+    </View>
   );
 }

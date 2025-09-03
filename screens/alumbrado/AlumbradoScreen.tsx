@@ -144,7 +144,7 @@ const lessonSteps: LessonStep[] = [
   {
     title: '🧾 ¿Por qué varía el cobro entre municipios?',
     description: 'El monto que pagas por alumbrado público no es igual en todos los municipios. Cambia según:\n\n● Cuántas lámparas hay en tu barrio o municipio.\n● Si las luminarias son tradicionales o LED.\n● Cuánto presupuesto tiene tu municipalidad.\n● Qué porcentaje se cobra según tu consumo.\n\n📌 Por eso, aunque consumas lo mismo, puedes pagar más o menos que otra persona que viva en otro municipio.',
-    image: require('../../assets/poste.png'),
+    image: require('../../assets/cuatro.png'),
   },
   {
     title: '  ¿Qué hacer si hay una lámpara dañada?',
@@ -171,14 +171,14 @@ const lessonSteps: LessonStep[] = [
   {
     title: '✅ Lo que debes saber sobre el alumbrado público',
     description: '🧾 Lista clara:\n\n● Saber cuánto pagas exactamente por alumbrado público.\n● Ver ese cobro separado en tu factura.\n● Consultar cómo se calculó y qué cubre.\n● Reclamar si hay errores o cobros duplicados.\n● Solicitar reparación de luminarias dañadas.\n● Pedir que se ilumine una zona oscura (la muni evaluará).\n',
-    image: require('../../assets/final.png'),
+    image: require('../../assets/final2.png'),
    
   },
 
     {
     title: 'Slogan final',
     description: '“Una ciudad segura es una ciudad bien iluminada.\nConsulta y aprende a leer tu factura de energía.”',
-    image: require('../../assets/final.png'),
+    image: require('../../assets/iluminada.png'),
   },
 ];
 

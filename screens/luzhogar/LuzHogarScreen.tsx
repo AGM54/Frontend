@@ -25,6 +25,7 @@ import EnergyDragDropGame from '../../components/EnergyDragDropGame/EnergyDragDr
 import TrueFalseQuiz from '../../components/TrueFalseQuiz/TrueFalseQuiz';
 import SofiaStoryCard from '../../components/SofiaStoryCard/SofiaStoryCard';
 import OrderDragDrop from '../../components/OrderDragDrop/OrderDragDrop';
+import MultipleChoiceTrivia from '../../components/TriviaCard/MultipleChoiceTrivia';
 import { Confetti } from '../../components/TriviaCard/Confetti';
 
 const { width, height } = Dimensions.get('window');
@@ -45,6 +46,16 @@ interface LessonStep {
   isTrueFalse?: boolean;
   isOrderDragDrop?: boolean;
   isSofiaStory?: boolean;
+  isMultipleChoice?: boolean;
+  multipleChoiceData?: {
+    question: string;
+    options: Array<{
+      id: string;
+      text: string;
+      correct: boolean;
+    }>;
+    explanation: string;
+  };
 }
 
 const lessonSteps: LessonStep[] = [
@@ -86,6 +97,19 @@ const lessonSteps: LessonStep[] = [
     title: 'Líneas de Transmisión',
     description: 'La electricidad viaja por líneas de alto voltaje desde las plantas hasta todos los departamentos del país.',
     image: require('../../assets/lineastransmision.png'),
+  },
+  {
+    title: '🎮 Mini quiz interactivo',
+    isMultipleChoice: true,
+    multipleChoiceData: {
+      question: '¿Cómo viaja la electricidad por el país?',
+      options: [
+        { id: 'A', text: 'A) En camiones eléctricos', correct: false },
+        { id: 'B', text: ' B) Por líneas de alto voltaje', correct: true },
+        { id: 'C', text: 'C) Por tubos subterráneos de agua', correct: false }
+      ],
+      explanation: '¡Correcto! La electricidad viaja por líneas de alto voltaje, sostenidas por grandes torres eléctricas, desde las plantas generadoras hasta llegar a todos los departamentos del país.'
+    }
   },
   {
     title: 'Distribución en tu colonia y hogar',
@@ -135,6 +159,19 @@ const lessonSteps: LessonStep[] = [
   {
     title: '',
     isSofiaStory: true,
+  },
+  {
+    title: '🎮 Mini quiz sobre Sofia',
+    isMultipleChoice: true,
+    multipleChoiceData: {
+      question: 'Según la historia de Sofía, ¿cuál es la función principal de la CNEE?',
+      options: [
+        { id: 'A', text: 'A) Generar electricidad en plantas solares', correct: false },
+        { id: 'B', text: '✅ B) Supervisar y regular el sector eléctrico', correct: true },
+        { id: 'C', text: 'C) Instalar medidores en las casas', correct: false }
+      ],
+      explanation: '¡Correcto! Como aprendió Sofía, la CNEE no genera ni distribuye electricidad, sino que supervisa y regula todo el sector eléctrico para garantizar un servicio de calidad.'
+    }
   },
   {
     title: 'Etapas del viaje de la electricidad',
@@ -343,6 +380,23 @@ export default function LuzHogarScreen() {
           <StoryCard onComplete={handleNext} />
         ) : current.isSofiaStory ? (
           <SofiaStoryCard onComplete={handleNext} />
+        ) : current.isMultipleChoice && current.multipleChoiceData ? (
+          <MultipleChoiceTrivia 
+            question={current.multipleChoiceData.question}
+            options={current.multipleChoiceData.options}
+            explanation={current.multipleChoiceData.explanation}
+            onComplete={handleNext} 
+          />
+        ) : current.title === 'Etapas del viaje de la electricidad' ? (
+          // Solo imagen para "Etapas del viaje de la electricidad", sin recuadro de texto
+          current.image && (
+            <View style={styles.fullImageContainer}>
+              <Image
+                source={current.image}
+                style={styles.fullImage}
+              />
+            </View>
+          )
         ) : (
           <>
             {current.image && (
@@ -387,13 +441,18 @@ export default function LuzHogarScreen() {
                   />
                 ) : current.title === 'Transporte de Electricidad' ? (
                   <>
-                    <Text style={styles.description}>
+                    <Text style={[styles.description, { fontSize: width * 0.04, lineHeight: width * 0.06 }]}>
                       {current.description?.split('\n\n')[0] || ''}
                     </Text>
                     <Animated.View 
                       style={[
-                        styles.curiousFact,
                         {
+                          backgroundColor: '#2A4B7C',
+                          borderRadius: 12,
+                          padding: width * 0.04,
+                          marginTop: height * 0.01,
+                          borderWidth: 1,
+                          borderColor: '#58CCF7',
                           transform: [{ scale: factScale }]
                         }
                       ]}
@@ -402,19 +461,25 @@ export default function LuzHogarScreen() {
                         colors={['rgba(139, 69, 255, 0.4)', 'rgba(75, 0, 130, 0.5)']}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.curiousFactGradient}
+                        style={{
+                          borderRadius: 12,
+                          padding: width * 0.04,
+                          borderWidth: 1,
+                          borderColor: 'rgba(139, 69, 255, 0.8)',
+                        }}
                       >
-                        <Text style={styles.curiousFactText}>
+                        <Text style={[styles.curiousFactText, { fontSize: width * 0.038, lineHeight: width * 0.05 }]}>
                           📘 Dato curioso:
                         </Text>
-                        <Text style={[styles.curiousFactText, { marginTop: height * 0.01 }]}>
+                        <Text style={[styles.curiousFactText, { marginTop: height * 0.005, fontSize: width * 0.036, lineHeight: width * 0.048 }]}>
                           La electricidad viaja a casi la velocidad de la luz.
                         </Text>
                         <Animated.Text 
                           style={[
                             styles.lightningIcon,
                             {
-                              opacity: lightningOpacity
+                              opacity: lightningOpacity,
+                              fontSize: width * 0.05
                             }
                           ]}
                         >
@@ -433,31 +498,31 @@ export default function LuzHogarScreen() {
       </ScrollView>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isSofiaStory && !current.isOrderDragDrop &&
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isDragDrop && !current.isStory && !current.isTrueFalse && !current.isSofiaStory && !current.isOrderDragDrop && !current.isMultipleChoice &&
         (!current.title.includes('específicamente') || typewriterComplete) && (
-          <View style={styles.fixedBottom}>
-            {/* Barra de progreso */}
-            <View style={styles.progressBarContainer}>
-              <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
-            </View>
+          ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+            <View style={styles.fixedBottom}>
+              {/* Barra de progreso */}
+              <View style={styles.progressBarContainer}>
+                <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+              </View>
 
-            {/* Indicadores de pasos */}
-            <View style={styles.stepIndicators}>
-              {lessonSteps.map((_, i) => (
-                <View
-                  key={i}
-                  style={[
-                    styles.circle,
-                    i === step && styles.activeCircle,
-                    { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
-                  ]}
-                />
-              ))}
-            </View>
+              {/* Indicadores de pasos */}
+              <View style={styles.stepIndicators}>
+                {lessonSteps.map((_, i) => (
+                  <View
+                    key={i}
+                    style={[
+                      styles.circle,
+                      i === step && styles.activeCircle,
+                      { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
+                    ]}
+                  />
+                ))}
+              </View>
 
-            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
-            {step < lessonSteps.length - 1 && (
-              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+              {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
+              {step < lessonSteps.length - 1 && (
                 <TouchableOpacity
                   style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
                   onPress={handleNext}
@@ -467,15 +532,15 @@ export default function LuzHogarScreen() {
                     {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
                   </Text>
                 </TouchableOpacity>
-              )
-            )}
+              )}
 
-            {step === lessonSteps.length - 1 && (
-              <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
-                <Text style={styles.buttonText}>Finalizar lección</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+              {step === lessonSteps.length - 1 && (
+                <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
+                  <Text style={styles.buttonText}>Finalizar lección</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )
         )}
 
       {/* Confetti Effect */}

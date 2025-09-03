@@ -3,6 +3,22 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
+  fullImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 0,
+    marginHorizontal: 0,
+    width: '100%',
+    height: height * 0.7,
+  },
+  fullImage: {
+    width: width * 0.95,
+    height: height * 0.65,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginVertical: 0,
+  },
   safeArea: {
     flex: 1,
     backgroundColor: '#000000',

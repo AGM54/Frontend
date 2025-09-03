@@ -147,29 +147,35 @@ export default function TrueFalseQuiz({ onComplete, questions = defaultQuestions
       <Modal transparent visible={showFeedback} animationType="fade">
         <View style={styles.modalOverlay}>
           <LinearGradient
-            colors={isCorrect ? 
-              ['#1a0033', '#2d1b4d', '#28A745', '#34CE57', '#2d1b4d', '#1a0033'] :
-              ['#1a0033', '#2d1b4d', '#DC3545', '#E74C3C', '#2d1b4d', '#1a0033']
+            colors={isCorrect
+              ? ['#43e97b', '#38f9d7', '#28a745', '#218838', '#14532d'] // degradado verde profesional
+              : ['#ff5858', '#f857a6', '#e53935', '#b71c1c', '#7f1d1d'] // degradado rojo profesional
             }
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.feedbackModal}
+            style={[styles.feedbackModal, { borderWidth: 2, borderColor: isCorrect ? '#43e97b' : '#e53935', shadowColor: isCorrect ? '#43e97b' : '#e53935', shadowOpacity: 0.25, shadowRadius: 16 }]}
           >
-            <Text style={styles.feedbackTitle}>
-              {isCorrect ? '¡Correcto! 🎉' : '¡Inténtalo de nuevo! 💪'}
+            <Text style={[styles.feedbackTitle, isCorrect && { textShadowColor: '#43e97b', textShadowOffset: { width: 0, height: 4 }, textShadowRadius: 12 }]}> 
+              {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto'}
             </Text>
             <Text style={styles.feedbackMessage}>
-              {typeof current.explanation === 'object'
-                ? (isCorrect ? current.explanation.correct : current.explanation.incorrect)
-                : current.explanation}
+              {isCorrect ? (
+                typeof current.explanation === 'object'
+                  ? current.explanation.correct
+                  : current.explanation || '¡Muy bien!'
+              ) : (
+                typeof current.explanation === 'object'
+                  ? 'Es incorrecto porque ' + current.explanation.incorrect.toLowerCase() + '\n\nLa opción correcta es: ' + current.options[current.correctAnswer]
+                  : 'Es incorrecto porque ' + (current.explanation || 'esta no es la respuesta adecuada').toLowerCase() + '\n\nLa opción correcta es: ' + current.options[current.correctAnswer]
+              )}
             </Text>
             <TouchableOpacity
               style={styles.nextButton}
               onPress={handleNext}
             >
               <LinearGradient
-                colors={['#58CCF7', '#4A9FE7']}
-                style={styles.nextButtonGradient}
+                colors={isCorrect ? ['#43e97b', '#38f9d7'] : ['#e53935', '#ff5858']}
+                style={[styles.nextButtonGradient, { borderWidth: 2, borderColor: isCorrect ? '#43e97b' : '#e53935', shadowColor: isCorrect ? '#43e97b' : '#e53935', shadowOpacity: 0.18, shadowRadius: 8 }]}
               >
                 <Text style={styles.nextButtonText}>
                   {currentQuestion < questions.length - 1 ? 'Siguiente' : 'Finalizar'}

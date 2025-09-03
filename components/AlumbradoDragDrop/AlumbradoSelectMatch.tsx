@@ -145,12 +145,15 @@ export const AlumbradoSelectMatch = ({ onComplete }: { onComplete: () => void })
         >
           <View style={styles.modalOverlay}>
             <LinearGradient
-              colors={['rgba(139, 69, 255, 0.95)', 'rgba(88, 204, 247, 0.9)', 'rgba(139, 69, 255, 0.95)']}
+              colors={modalMessage.startsWith('¡Correcto!')
+                ? ['#43e97b', '#38f9d7', '#28a745', '#218838', '#14532d'] // verde profesional
+                : ['#ff5858', '#f857a6', '#e53935', '#b71c1c', '#7f1d1d'] // rojo profesional
+              }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.modalContent}
+              style={[styles.modalContent, { borderWidth: 2, borderColor: modalMessage.startsWith('¡Correcto!') ? '#43e97b' : '#e53935', shadowColor: modalMessage.startsWith('¡Correcto!') ? '#43e97b' : '#e53935', shadowOpacity: 0.22, shadowRadius: 12 }]}
             >
-              <Text style={styles.modalText}>{modalMessage}</Text>
+              <Text style={[styles.modalText, modalMessage.startsWith('¡Correcto!') && { textShadowColor: '#43e97b', textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 8 }]}>{modalMessage}</Text>
             </LinearGradient>
           </View>
         </Modal>

@@ -12,17 +12,21 @@ export const styles = StyleSheet.create({
     paddingTop: height * 0.08,
   },
   scrollContent: {
-    paddingBottom: height * 0.25, // Más espacio para evitar sobreposición con elementos fijos
+    paddingBottom: height * 0.2, // Reducido para que el botón esté más arriba
   },
   fixedBottom: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: width * 0.06,
-    paddingBottom: Platform.OS === 'ios' ? height * 0.15 : height * 0.12,
-    paddingTop: height * 0.02,
-    backgroundColor: 'transparent',
+    bottom: height * 0.09,
+    left: width * 0.04,
+    right: width * 0.04,
+    paddingHorizontal: width * 0.02,
+    paddingBottom: height * 0.01,
+    paddingTop: height * 0.01,
+    backgroundColor: 'rgba(45,27,77,0.85)',
+    borderRadius: 18,
+    width: '92%',
+    alignSelf: 'center',
+    zIndex: 10,
   },
   title: {
     fontSize: width * 0.075,
@@ -47,12 +51,12 @@ export const styles = StyleSheet.create({
     }),
   },
   image: {
-    width: width * 0.8,
-    height: width * 0.6,
+    width: width * 0.75, // Reducido de 0.8 a 0.75
+    height: width * 0.5,  // Reducido de 0.6 a 0.5
     resizeMode: 'contain',
     alignSelf: 'center',
-    marginTop: height * 0.02,
-    marginBottom: height * 0.02,
+    marginTop: height * 0.015, // Menos margen superior
+    marginBottom: height * 0.015, // Menos margen inferior
   },
   imageCinco: {
     width: width * 0.95,
@@ -66,7 +70,7 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     marginBottom: height * 0.02,
     marginHorizontal: width * 0.015,
-    maxHeight: height * 0.55,
+    maxHeight: height * 0.45, // Reducido para dar más espacio al botón
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -79,6 +83,24 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+    descriptionCardLarge: {
+      borderRadius: 24,
+      marginBottom: height * 0.02,
+      marginHorizontal: width * 0.015,
+      maxHeight: height * 0.78, // Mucho más alto para mostrar toda la info
+      minHeight: height * 0.45,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.4,
+          shadowRadius: 15,
+        },
+        android: {
+          elevation: 8,
+        },
+      }),
+    },
   gradientBorder: {
     position: 'absolute',
     top: 2,
@@ -101,8 +123,13 @@ export const styles = StyleSheet.create({
     color: 'rgba(139, 69, 255, 0.6)',
   },
   descriptionScroll: {
-    maxHeight: height * 0.5,
+    maxHeight: height * 0.40, // Reducido para dar más espacio al botón
     padding: width * 0.07,
+  },
+  descriptionScrollLarge: {
+    minHeight: height * 0.40,
+    padding: width * 0.05,
+    paddingBottom: height * 0.04,
   },
   imageContainer: {
     alignItems: 'center',
@@ -133,7 +160,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: height * 0.015,
+    marginBottom: height * 0.01, // Reducido de 0.015 a 0.01
     marginHorizontal: width * 0.02,
     ...Platform.select({
       ios: {
@@ -166,8 +193,8 @@ export const styles = StyleSheet.create({
   stepIndicators: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: height * 0.025,
-    paddingVertical: height * 0.01,
+    marginBottom: height * 0.01, // Reducido de 0.025 a 0.01
+    paddingVertical: height * 0.005, // Reducido
   },
   circle: {
     width: width * 0.035,

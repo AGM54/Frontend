@@ -25,7 +25,7 @@ const storySlides: StorySlideData[] = [
   {
     id: 1,
     title: "Se va la luz",
-    image: require('../../assets/historia1.png'),
+    image: require('../../assets/julio11.png'),
     description: 'Diego está en su cuarto, se va la energía: "¡Nooo! Se fue la luz justo cuando iba a entregar mi tarea..."',
     buttonText: "Continuar"
   },

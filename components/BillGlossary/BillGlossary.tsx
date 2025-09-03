@@ -75,6 +75,8 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
     [...glossaryTerms].sort(() => Math.random() - 0.5)
   );
 
+  const progress = (matchedPairs.length / glossaryTerms.length) * 100;
+
   const handleTermPress = (term: GlossaryTerm) => {
     if (matchedPairs.includes(term.id)) return;
     setSelectedTerm(term);
@@ -93,173 +95,179 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
 
   const checkMatch = (term: GlossaryTerm, definition: GlossaryTerm) => {
     setAttempts(attempts + 1);
-    
+
     if (term.id === definition.id) {
-      // Correct match
+      // Match successful
       setMatchedPairs([...matchedPairs, term.id]);
       setSelectedTerm(null);
       setSelectedDefinition(null);
       
       if (matchedPairs.length + 1 === glossaryTerms.length) {
-        // All matched
-        setTimeout(() => {
-          showSuccess(
-            '¡Excelente trabajo! 🎉',
-            `Has completado el glosario de facturación eléctrica en ${attempts + 1} intentos. ¡Ahora conoces mejor los términos de tu factura eléctrica!`,
-            () => {
-              setTimeout(() => {
-                onComplete();
-              }, 500);
-            }
-          );
-        }, 500);
+        showSuccess('¡Felicidades!', 'Has completado correctamente el glosario de facturación eléctrica.');
+      } else {
+        showSuccess('¡Correcto!', `Has emparejado correctamente "${term.term}".`);
       }
     } else {
-      // Wrong match
-      setTimeout(() => {
-        setSelectedTerm(null);
-        setSelectedDefinition(null);
-        showError(
-          '¡Inténtalo de nuevo! 💪',
-          'Esa combinación no es correcta. Lee cuidadosamente cada definición y vuelve a intentar.'
-        );
-      }, 300);
+      // Match failed
+      setSelectedTerm(null);
+      setSelectedDefinition(null);
+      showError('Incorrecto', 'Intenta de nuevo. Revisa cuidadosamente las definiciones.');
     }
   };
 
   const resetGame = () => {
-    setMatchedPairs([]);
     setSelectedTerm(null);
     setSelectedDefinition(null);
+    setMatchedPairs([]);
     setAttempts(0);
   };
 
-  const progress = (matchedPairs.length / glossaryTerms.length) * 100;
+  const isGameComplete = matchedPairs.length === glossaryTerms.length;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>📚 Glosario de facturación eléctrica</Text>
-      <Text style={styles.instruction}>
-        Empareja cada término con su definición correcta:
-      </Text>
-
-      {/* Progress */}
-      <View style={styles.progressContainer}>
-        <Text style={styles.progressText}>
-          Emparejados: {matchedPairs.length}/{glossaryTerms.length}
+    <LinearGradient
+      colors={['#1a0033', '#2d1b4d', '#3d2b5f', '#2d1b4d', '#1a0033']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <View style={[styles.container, { backgroundColor: 'transparent', flex: 1 }]}> 
+        <Text style={styles.title}>📚 Glosario de facturación eléctrica</Text>
+        <Text style={styles.instruction}>
+          Empareja cada término con su definición correcta:
         </Text>
-        <View style={styles.progressBar}>
-          <LinearGradient
-            colors={['#58CCF7', '#60A5FA', '#3B82F6']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.progressFill, { width: `${progress}%` }]}
-          />
-        </View>
-      </View>
 
-      <ScrollView style={styles.gameContainer} showsVerticalScrollIndicator={false}>
-        {/* Terms Section */}
-        <Text style={styles.sectionTitle}>🏷️ TÉRMINOS</Text>
-        <View style={styles.termsContainer}>
-          {glossaryTerms.map((term) => (
-            <TouchableOpacity
-              key={`term-${term.id}`}
-              style={[
-                styles.termCard,
-                selectedTerm?.id === term.id && styles.selectedCard,
-                matchedPairs.includes(term.id) && styles.matchedCard,
-              ]}
-              onPress={() => handleTermPress(term)}
-              disabled={matchedPairs.includes(term.id)}
-            >
-              <LinearGradient
-                colors={
-                  matchedPairs.includes(term.id)
-                    ? ['#28A745', '#34CE57', '#40E869']
-                    : selectedTerm?.id === term.id
-                    ? ['#FF6B6B', '#FF8E8E', '#FFB3B3']
-                    : term.color
-                }
-                style={styles.cardGradient}
-              >
-                <Text style={styles.termIcon}>{term.icon}</Text>
-                <Text style={styles.termText}>{term.term}</Text>
-                {matchedPairs.includes(term.id) && (
-                  <Text style={styles.checkIcon}>✅</Text>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Definitions Section */}
-        <Text style={styles.sectionTitle}>📖 DEFINICIONES</Text>
-        <View style={styles.definitionsContainer}>
-          {shuffledDefinitions.map((definition) => (
-            <TouchableOpacity
-              key={`def-${definition.id}`}
-              style={[
-                styles.definitionCard,
-                selectedDefinition?.id === definition.id && styles.selectedCard,
-                matchedPairs.includes(definition.id) && styles.matchedCard,
-              ]}
-              onPress={() => handleDefinitionPress(definition)}
-              disabled={matchedPairs.includes(definition.id)}
-            >
-              <LinearGradient
-                colors={
-                  matchedPairs.includes(definition.id)
-                    ? ['#28A745', '#34CE57', '#40E869']
-                    : selectedDefinition?.id === definition.id
-                    ? ['#FF6B6B', '#FF8E8E', '#FFB3B3']
-                    : ['rgba(139, 69, 255, 0.3)', 'rgba(88, 204, 247, 0.2)']
-                }
-                style={styles.definitionGradient}
-              >
-                <Text style={styles.definitionText}>{definition.definition}</Text>
-                {matchedPairs.includes(definition.id) && (
-                  <Text style={styles.checkIconDef}>✅</Text>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-
-      {/* Action Buttons */}
-      <View style={styles.actionButtons}>
-        {matchedPairs.length < glossaryTerms.length && (
-          <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
+        {/* Progress */}
+        <View style={styles.progressContainer}>
+          <Text style={styles.progressText}>
+            Emparejados: {matchedPairs.length}/{glossaryTerms.length}
+          </Text>
+          <View style={styles.progressBar}>
             <LinearGradient
-              colors={['#6C757D', '#545B62', '#454D55']}
-              style={styles.buttonGradient}
-            >
-              <Text style={styles.buttonText}>🔄 Reiniciar</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              colors={['#8B45FF', '#58CCF7', '#3B82F6']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={[styles.progressFill, { width: `${progress}%` }]}
+            />
+          </View>
+        </View>
+
+        <ScrollView style={styles.gameContainer} showsVerticalScrollIndicator={false}>
+          {/* Terms Section */}
+          <Text style={styles.sectionTitle}>🏷️ TÉRMINOS</Text>
+          <View style={styles.termsContainer}>
+            {glossaryTerms.map((term) => (
+              <TouchableOpacity
+                key={`term-${term.id}`}
+                style={[
+                  styles.termCard,
+                  selectedTerm?.id === term.id && styles.selectedCard,
+                  matchedPairs.includes(term.id) && styles.matchedCard,
+                ]}
+                onPress={() => handleTermPress(term)}
+                disabled={matchedPairs.includes(term.id)}
+              >
+                <LinearGradient
+                  colors={
+                    matchedPairs.includes(term.id)
+                      ? ['#28A745', '#34CE57', '#40E869']
+                      : selectedTerm?.id === term.id
+                      ? ['#A855F7', '#8B5CF6', '#7C3AED']
+                      : ['#6366F1', '#8B5CF6', '#A855F7']
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.cardGradient}
+                >
+                  <Text style={styles.termIcon}>{term.icon}</Text>
+                  <Text style={styles.termText}>{term.term}</Text>
+                  {matchedPairs.includes(term.id) && (
+                    <Text style={styles.checkIcon}>✅</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Definitions Section */}
+          <Text style={styles.sectionTitle}>📖 DEFINICIONES</Text>
+          <View style={styles.definitionsContainer}>
+            {shuffledDefinitions.map((definition) => (
+              <TouchableOpacity
+                key={`def-${definition.id}`}
+                style={[
+                  styles.definitionCard,
+                  selectedDefinition?.id === definition.id && styles.selectedCard,
+                  matchedPairs.includes(definition.id) && styles.matchedCard,
+                ]}
+                onPress={() => handleDefinitionPress(definition)}
+                disabled={matchedPairs.includes(definition.id)}
+              >
+                <LinearGradient
+                  colors={
+                    matchedPairs.includes(definition.id)
+                      ? ['#28A745', '#34CE57', '#40E869']
+                      : selectedDefinition?.id === definition.id
+                      ? ['#7C3AED', '#8B5CF6', '#A855F7']
+                      : ['#4F46E5', '#7C3AED', '#8B5CF6']
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.definitionGradient}
+                >
+                  <Text style={styles.definitionText}>{definition.definition}</Text>
+                  {matchedPairs.includes(definition.id) && (
+                    <Text style={styles.checkIconDef}>✅</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        {/* Action Buttons */}
+        <View style={styles.actionButtons}>
+          {!isGameComplete ? (
+            <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
+              <LinearGradient
+                colors={['#6C757D', '#545B62', '#454D55']}
+                style={styles.buttonGradient}
+              >
+                <Text style={styles.buttonText}>🔄 Reiniciar</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.continueButton} onPress={onComplete}>
+              <LinearGradient
+                colors={['#28A745', '#34CE57', '#40E869']}
+                style={styles.buttonGradient}
+              >
+                <Text style={styles.buttonText}>✅ Continuar</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Game Stats */}
+        <View style={styles.statsContainer}>
+          <Text style={styles.statsText}>
+            Intentos: {attempts} | Aciertos: {matchedPairs.length}
+          </Text>
+        </View>
+
+        {/* Modal personalizado */}
+        {modalConfig && (
+          <CustomModal
+            visible={isVisible}
+            title={modalConfig.title}
+            message={modalConfig.message}
+            type={modalConfig.type}
+            buttons={modalConfig.buttons}
+            onClose={hideModal}
+            icon={modalConfig.icon}
+          />
         )}
       </View>
-
-      {/* Game Stats */}
-      <View style={styles.statsContainer}>
-        <Text style={styles.statsText}>
-          Intentos: {attempts} | Aciertos: {matchedPairs.length}
-        </Text>
-      </View>
-
-      {/* Modal personalizado hermoso */}
-      {modalConfig && (
-        <CustomModal
-          visible={isVisible}
-          title={modalConfig.title}
-          message={modalConfig.message}
-          type={modalConfig.type}
-          buttons={modalConfig.buttons}
-          onClose={hideModal}
-          icon={modalConfig.icon}
-        />
-      )}
-    </View>
+    </LinearGradient>
   );
 }
