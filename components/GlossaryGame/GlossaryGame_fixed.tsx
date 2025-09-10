@@ -116,24 +116,24 @@ export default function GlossaryGame({ onComplete }: GlossaryGameProps) {
 
   return (
     <Animated.View style={[styles.container, { transform: [{ translateX: shake }] }]}>
-      <Text style={styles.title}>Selecciona un término y su definición</Text>
+      <Text style={styles.title}>Conecta cada término con su definición</Text>
 
       {/* Términos */}
-      <View style={styles.termsContainer}>
-        <Text style={styles.sectionTitle}>Términos:</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📋 Términos:</Text>
         {terms.map((term) => (
           <TouchableOpacity
             key={term.id}
             onPress={() => handleTermPress(term)}
             disabled={matchedPairs.includes(term.id)}
             style={[
-              styles.termButton,
+              styles.button,
               selectedTerm?.id === term.id && styles.selectedButton,
               matchedPairs.includes(term.id) && styles.matchedButton
             ]}
           >
             <Text style={[
-              styles.termText,
+              styles.buttonText,
               matchedPairs.includes(term.id) && styles.matchedText
             ]}>
               {term.term}
@@ -143,22 +143,21 @@ export default function GlossaryGame({ onComplete }: GlossaryGameProps) {
       </View>
 
       {/* Definiciones */}
-      <View style={styles.definitionsContainer}>
-        <Text style={styles.sectionTitle}>Definiciones:</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📖 Definiciones:</Text>
         {definitions.map((def) => (
           <TouchableOpacity
             key={def.id}
             onPress={() => handleDefinitionPress(def)}
             disabled={matchedPairs.includes(def.id)}
             style={[
-              styles.definitionButton,
-              { backgroundColor: def.color },
+              styles.button,
               selectedDefinition?.id === def.id && styles.selectedButton,
               matchedPairs.includes(def.id) && styles.matchedButton
             ]}
           >
             <Text style={[
-              styles.definitionText,
+              styles.buttonText,
               matchedPairs.includes(def.id) && styles.matchedText
             ]}>
               {def.definition}
@@ -170,7 +169,7 @@ export default function GlossaryGame({ onComplete }: GlossaryGameProps) {
       {/* Progreso */}
       <View style={styles.progressContainer}>
         <Text style={styles.progressText}>
-          {matchedPairs.length} de {terms.length} pares encontrados
+          ✨ {matchedPairs.length} de {terms.length} pares encontrados
         </Text>
       </View>
     </Animated.View>
@@ -181,65 +180,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: width * 0.04,
-    backgroundColor: '#2A2A2A',
+    backgroundColor: 'rgba(26, 0, 51, 0.95)',
     borderRadius: 16,
   },
   title: {
     color: '#FFFFFF',
-    fontSize: width * 0.045,
-    fontWeight: '600',
+    fontSize: width * 0.05,
+    fontWeight: '700',
     textAlign: 'center',
-    marginBottom: height * 0.02,
+    marginBottom: height * 0.025,
+  },
+  section: {
+    marginBottom: height * 0.025,
   },
   sectionTitle: {
     color: '#FFFFFF',
-    fontSize: width * 0.04,
+    fontSize: width * 0.045,
     fontWeight: '600',
     marginBottom: height * 0.015,
-    opacity: 0.9,
   },
-  termsContainer: {
-    marginBottom: height * 0.02,
-  },
-  definitionsContainer: {
-    marginBottom: height * 0.02,
-  },
-  termButton: {
-    backgroundColor: '#1C1C1C',
+  button: {
+    backgroundColor: '#2d1b4d',
     padding: width * 0.04,
     borderRadius: 12,
-    marginBottom: height * 0.01,
+    marginBottom: height * 0.012,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  definitionButton: {
-    padding: width * 0.04,
-    borderRadius: 12,
-    marginBottom: height * 0.01,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    opacity: 0.8,
+    borderColor: 'rgba(139, 69, 255, 0.3)',
   },
   selectedButton: {
+    backgroundColor: '#58CCF7',
     borderColor: '#58CCF7',
-    borderWidth: 2,
+    transform: [{ scale: 1.02 }],
   },
   matchedButton: {
-    backgroundColor: 'rgba(40, 167, 69, 0.2)',
+    backgroundColor: '#28A745',
     borderColor: '#28A745',
   },
-  termText: {
+  buttonText: {
     color: '#FFFFFF',
-    fontSize: width * 0.038,
+    fontSize: width * 0.04,
     fontWeight: '500',
   },
-  definitionText: {
-    color: '#FFFFFF',
-    fontSize: width * 0.034,
-    opacity: 0.9,
-  },
   matchedText: {
-    color: '#28A745',
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
   progressContainer: {
     alignItems: 'center',
@@ -247,7 +231,14 @@ const styles = StyleSheet.create({
   },
   progressText: {
     color: '#FFFFFF',
-    fontSize: width * 0.035,
-    opacity: 0.8,
+    fontSize: width * 0.04,
+    fontWeight: '600',
+    textAlign: 'center',
+    backgroundColor: 'rgba(88, 204, 247, 0.2)',
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.06,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(88, 204, 247, 0.3)',
   },
 });

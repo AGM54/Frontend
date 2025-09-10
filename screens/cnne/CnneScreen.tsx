@@ -51,25 +51,33 @@ const lessonSteps: LessonStep[] = [
   },
   {
     title: '¿Qué hace la CNEE?',
-    description: `●  Protege los derechos de quienes usamos la energía.
+    description: `Protege los derechos de quienes usamos la energía.
 
-●  Vigila que las empresas del sector eléctrico actúen correctamente.
+Vigila que las empresas del sector eléctrico actúen correctamente.
 
-●  Define cuánto deben cobrar las empresas distribuidoras por llevar la electricidad a los hogares y comercios.
+Define cuánto deben cobrar las empresas distribuidoras por llevar la electricidad a los hogares y comercios.
 
-●  Establece reglas técnicas que deben cumplirse.
+Establece reglas técnicas que deben cumplirse.
 
-●  Permite el uso de redes para utilizar las redes de energía.
+Permite el uso de redes para utilizar las redes de energía.
 
-●  Supervisa la calidad del servicio .`,
+Supervisa la calidad del servicio.`,
   },
   {
-    title: '¡Pongamos a prueba tus conocimientos!',
+    title: 'Comprueba lo que has aprendido',
     isTrivia: true,
   },
   {
     title: '¿Qué ha logrado la CNEE?',
-    description: `●  Inversión extranjera: empresas de otros países han invertido en Guatemala, generando empleo.\n\n●  Infraestructura moderna: se han construido redes eléctricas nuevas y seguras.\n\n●  Trámites más rápidos y sencillos para los usuarios.\n\n●  Un servicio de energía seguro y de calidad.\n\n●  Precios estables`,
+    description: `Inversión extranjera: empresas de otros países han invertido en Guatemala, generando empleo.
+
+Infraestructura moderna: se han construido redes eléctricas nuevas y seguras.
+
+Trámites más rápidos y sencillos para los usuarios.
+
+Un servicio de energía seguro y de calidad.
+
+Precios estables.`,
     isAchievements: true,
   },
   {
@@ -82,7 +90,15 @@ const lessonSteps: LessonStep[] = [
   },
   {
     title: '¿Dónde vemos el trabajo de la CNEE en la vida diaria?',
-    description: `●  Cuando enciendes la luz en tu cuarto.\n\n●  Cuando cargas tu celular.\n\n●  Cuando tu familia paga el recibo de la luz.\n\n●  Cuando se va la energía y vuelve rápido.\n\n●  Cuando exiges que no te cobren de más.`,
+    description: `Cuando enciendes la luz en tu cuarto.
+
+Cuando cargas tu celular.
+
+Cuando tu familia paga el recibo de la luz.
+
+Cuando se va la energía y vuelve rápido.
+
+Cuando exiges que no te cobren de más.`,
     image: require('../../assets/cinco.png'),
   },
   {
@@ -121,7 +137,7 @@ export default function CnneScreen() {
   // Reset scroll state when step changes
   useEffect(() => {
     setHasScrolledToEnd(true);
-    setTypewriterComplete(false);
+    setTypewriterComplete(true); // Siempre habilitado para evitar problemas
   }, [step]);
 
   // Detectar scroll al final para pasos informativos largos - ScrollView principal
@@ -236,11 +252,7 @@ export default function CnneScreen() {
               >
                 {/* Border interior con gradiente */}
                 <View style={styles.gradientBorder} />
-                {/* Efectos de partículas de estrellas sutiles */}
-                <View style={styles.sparkleContainer}>
-                  <Text style={[styles.sparkle, { top: '5%', left: '88%' }]}>✨</Text>
-                  <Text style={[styles.sparkle, { bottom: '5%', right: '88%' }]}>⭐</Text>
-                </View>
+                {/* Efectos de partículas de estrellas sutiles - REMOVIDOS */}
                 <ScrollView
                   ref={innerScrollViewRef}
                   style={isLargeCardStep ? styles.descriptionScrollLarge : styles.descriptionScroll}
@@ -250,16 +262,13 @@ export default function CnneScreen() {
                   scrollEventThrottle={16}
                 >
                   {current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' && current.description ? (
-                    <TypewriterList
-                      items={current.description.split('\n\n').map(item => item.replace('●  ', '').trim()).filter(item => item.length > 0)}
-                      itemStyle={styles.description}
-                      speed={25}
-                      itemDelay={1200}
-                      startDelay={500}
-                      onComplete={() => setTypewriterComplete(true)}
-                      scrollViewRef={scrollViewRef}
-                      autoScroll={false}
-                    />
+                    <View>
+                      {current.description.split('\n\n').map((item, index) => (
+                        <Text key={index} style={[styles.description, { marginBottom: 12 }]}>
+                          {item.replace('●  ', '').trim()}
+                        </Text>
+                      ))}
+                    </View>
                   ) : (
                     <Text style={styles.description}>{current.description || ''}</Text>
                   )}
@@ -271,8 +280,7 @@ export default function CnneScreen() {
       </LinearGradient>
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory &&
-        (!current.title.includes('vida diaria') || typewriterComplete) && (
+      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory && (
           <View style={styles.fixedBottom}>
             {/* Barra de progreso */}
             <View style={styles.progressBarContainer}>

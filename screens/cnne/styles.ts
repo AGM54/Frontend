@@ -12,11 +12,11 @@ export const styles = StyleSheet.create({
     paddingTop: height * 0.08,
   },
   scrollContent: {
-    paddingBottom: height * 0.2, // Reducido para que el botón esté más arriba
+    paddingBottom: height * 0.18, // Ajustado para dar espacio al botón
   },
   fixedBottom: {
     position: 'absolute',
-    bottom: height * 0.09,
+    bottom: height * 0.08, // Ajustado para mejor posición
     left: width * 0.04,
     right: width * 0.04,
     paddingHorizontal: width * 0.02,
@@ -70,7 +70,8 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     marginBottom: height * 0.02,
     marginHorizontal: width * 0.015,
-    maxHeight: height * 0.45, // Reducido para dar más espacio al botón
+    maxHeight: height * 0.55, // Aumentado para mostrar más contenido
+    minHeight: height * 0.25, // Altura mínima para consistencia
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -83,24 +84,24 @@ export const styles = StyleSheet.create({
       },
     }),
   },
-    descriptionCardLarge: {
-      borderRadius: 24,
-      marginBottom: height * 0.02,
-      marginHorizontal: width * 0.015,
-      maxHeight: height * 0.78, // Mucho más alto para mostrar toda la info
-      minHeight: height * 0.45,
-      ...Platform.select({
-        ios: {
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: 0.4,
-          shadowRadius: 15,
-        },
-        android: {
-          elevation: 8,
-        },
-      }),
-    },
+  descriptionCardLarge: {
+    borderRadius: 24,
+    marginBottom: height * 0.02,
+    marginHorizontal: width * 0.015,
+    maxHeight: height * 0.65, // Ajustado para mejor proporción
+    minHeight: height * 0.45,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.4,
+        shadowRadius: 15,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
   gradientBorder: {
     position: 'absolute',
     top: 2,
@@ -123,10 +124,12 @@ export const styles = StyleSheet.create({
     color: 'rgba(139, 69, 255, 0.6)',
   },
   descriptionScroll: {
-    maxHeight: height * 0.40, // Reducido para dar más espacio al botón
-    padding: width * 0.07,
+    maxHeight: height * 0.48, // Aumentado para coincidir con descriptionCard
+    padding: width * 0.06,
+    paddingBottom: height * 0.03,
   },
   descriptionScrollLarge: {
+    maxHeight: height * 0.58, // Ajustado para mejor proporción
     minHeight: height * 0.40,
     padding: width * 0.05,
     paddingBottom: height * 0.04,

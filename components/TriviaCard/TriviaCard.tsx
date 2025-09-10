@@ -23,49 +23,49 @@ const triviaQuestions: TriviaQuestion[] = [
     id: 1,
     question: "¿El precio de la energía eléctrica es fijado por la CNEE?",
     correct: true,
-    feedback: "¡Correcto! La CNEE establece las tarifas eléctricas para garantizar precios justos y accesibles para todos los usuarios."
+    feedback: "La CNEE establece las tarifas eléctricas para garantizar precios justos y accesibles para todos los usuarios."
   },
   {
     id: 2,
     question: "¿Tu factura de electricidad depende únicamente del consumo de energía?",
     correct: false,
-    feedback: "Incorrecto. Tu factura incluye varios conceptos además del consumo: cargo fijo, alumbrado público, tasas municipales, y otros cargos regulados."
+    feedback: "Tu factura incluye varios conceptos además del consumo: cargo fijo, alumbrado público, tasas municipales, y otros cargos regulados."
   },
   {
     id: 3,
     question: "¿Puedes reportar errores en tu factura directamente a la empresa distribuidora?",
     correct: true,
-    feedback: "¡Correcto! Puedes contactar directamente a tu empresa distribuidora para reportar errores, hacer reclamos o solicitar aclaraciones sobre tu factura."
+    feedback: "Puedes contactar directamente a tu empresa distribuidora para reportar errores, hacer reclamos o solicitar aclaraciones sobre tu factura."
   },
   {
     id: 4,
     question: "¿El cargo por alumbrado público es opcional en tu factura?",
     correct: false,
-    feedback: "Incorrecto. El cargo por alumbrado público es obligatorio y contribuye al mantenimiento de la iluminación en calles y espacios públicos."
+    feedback: "El cargo por alumbrado público es obligatorio y contribuye al mantenimiento de la iluminación en calles y espacios públicos."
   },
   {
     id: 5,
     question: "¿La lectura del medidor determina tu consumo mensual?",
     correct: true,
-    feedback: "¡Correcto! La diferencia entre la lectura actual y la anterior determina tu consumo mensual de energía eléctrica."
+    feedback: "La diferencia entre la lectura actual y la anterior determina tu consumo mensual de energía eléctrica."
   },
   {
     id: 6,
     question: "¿Todas las tarifas eléctricas son iguales para todos los usuarios?",
     correct: false,
-    feedback: "Incorrecto. Existen diferentes tarifas según el tipo de usuario: residencial, comercial, industrial, y según el nivel de consumo."
+    feedback: "Existen diferentes tarifas según el tipo de usuario: residencial, comercial, industrial, y según el nivel de consumo."
   },
   {
     id: 7,
     question: "¿La factura incluye información sobre tu historial de consumo?",
     correct: true,
-    feedback: "¡Correcto! Tu factura muestra el historial de consumo de los últimos meses para que puedas comparar y monitorear tu uso de energía."
+    feedback: "Tu factura muestra el historial de consumo de los últimos meses para que puedas comparar y monitorear tu uso de energía."
   },
   {
     id: 8,
     question: "¿Los impuestos y tasas municipales son fijados por la empresa eléctrica?",
     correct: false,
-    feedback: "Incorrecto. Los impuestos y tasas municipales son establecidos por el gobierno y municipalidades, no por la empresa eléctrica."
+    feedback: "Los impuestos y tasas municipales son establecidos por el gobierno y municipalidades, no por la empresa eléctrica."
   }
 ];
 
@@ -188,22 +188,18 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
 
           {showFeedback && (
             <LinearGradient
-              colors={
-                isCorrect
-                  ? ['#00b09b', '#96c93d'] // verde profesional para correcto
-                  : ['#ff416c', '#ff4b2b'] // rojo profesional para incorrecto
-              }
+              colors={isCorrect ? ['#28A745', '#28A745'] : ['#DC3545', '#DC3545']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={[
                 styles.feedbackContainer,
-                { borderRadius: 18, borderWidth: 0, shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 8, elevation: 6 }
+                isCorrect ? styles.correctFeedback : styles.incorrectFeedback
               ]}
             >
-              <Text style={[styles.feedbackTitle, { color: '#fff', textShadowColor: '#2d1b4d', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 6 }] }>
-                {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
+              <Text style={styles.feedbackTitle}>
+                {isCorrect ? 'CORRECTO' : 'INCORRECTO'}
               </Text>
-              <Text style={[styles.feedbackText, { color: '#fff', opacity: 0.95 }]}>{question.feedback}</Text>
+              <Text style={styles.feedbackText}>{question.feedback}</Text>
             </LinearGradient>
           )}
         </LinearGradient>
