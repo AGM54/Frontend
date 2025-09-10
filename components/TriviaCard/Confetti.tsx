@@ -130,14 +130,14 @@ export const Confetti: React.FC = () => {
   return (
     <View style={[styles.container, { justifyContent: 'flex-start' }]} pointerEvents="none">
       {stars.map((s) => (
-        <AnimatedStar key={s.id} left={s.left} top={s.top} size={s.size} color={s.color} delay={s.delay} duration={s.duration} />
+        <AnimatedFirework key={s.id} left={s.left} top={s.top} size={s.size} color={s.color} delay={s.delay} duration={s.duration} />
       ))}
     </View>
   );
 };
 
-// Animated single star that pulses (blink)
-const AnimatedStar: React.FC<{ left: number; top: number; size: number; color: string; delay: number; duration: number }> = ({ left, top, size, color, delay, duration }) => {
+// Animated firework/starburst that pulses and shows rays
+const AnimatedFirework: React.FC<{ left: number; top: number; size: number; color: string; delay: number; duration: number }> = ({ left, top, size, color, delay, duration }) => {
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.6)).current;
 
@@ -146,12 +146,12 @@ const AnimatedStar: React.FC<{ left: number; top: number; size: number; color: s
       Animated.sequence([
         Animated.delay(delay),
         Animated.parallel([
-          Animated.timing(opacity, { toValue: 1, duration: duration / 3, useNativeDriver: true }),
-          Animated.timing(scale, { toValue: 1.15, duration: duration / 3, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 1, duration: Math.max(120, duration / 3), useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 1.05, duration: Math.max(120, duration / 3), useNativeDriver: true }),
         ]),
         Animated.parallel([
-          Animated.timing(opacity, { toValue: 0.2, duration: duration / 2, useNativeDriver: true }),
-          Animated.timing(scale, { toValue: 0.8, duration: duration / 2, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 0.0, duration: Math.max(200, duration / 2), useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 0.8, duration: Math.max(200, duration / 2), useNativeDriver: true }),
         ]),
       ])
     );
@@ -159,24 +159,44 @@ const AnimatedStar: React.FC<{ left: number; top: number; size: number; color: s
     return () => loop.stop();
   }, []);
 
+  const rays = [0, 60, 120, 180, 240, 300]; // angles for ray directions
+
   return (
     <Animated.View
       style={{
         position: 'absolute',
         left,
         top,
-        width: size,
-        height: size,
+        width: size * 2,
+        height: size * 2,
         alignItems: 'center',
         justifyContent: 'center',
         transform: [{ scale }],
         opacity,
       }}
     >
-      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-        <View style={{ position: 'absolute', width: size * 0.7, height: size * 0.7, backgroundColor: color, borderRadius: size * 0.35, opacity: 0.9 }} />
-        <View style={{ width: size * 0.9, height: size * 0.2, backgroundColor: color, transform: [{ rotate: '45deg' }], borderRadius: size * 0.1 }} />
-      </View>
+      {/* Glow center */}
+      <View style={{ position: 'absolute', width: size * 1.6, height: size * 1.6, borderRadius: (size * 1.6) / 2, backgroundColor: color, opacity: 0.18 }} />
+      <View style={{ position: 'absolute', width: size * 1.0, height: size * 1.0, borderRadius: (size * 1.0) / 2, backgroundColor: color, opacity: 0.28 }} />
+
+      {/* Rays */}
+      {rays.map((angle, i) => (
+        <View
+          key={i}
+          style={{
+            position: 'absolute',
+            width: size * 0.12,
+            height: size * 1.1,
+            backgroundColor: color,
+            borderRadius: size * 0.06,
+            opacity: 0.95,
+            transform: [{ rotate: `${angle}deg` }, { translateY: -size * 0.55 }],
+          }}
+        />
+      ))}
+
+      {/* Small center sparkle */}
+      <View style={{ width: size * 0.5, height: size * 0.5, borderRadius: (size * 0.5) / 2, backgroundColor: '#fff', opacity: 0.9 }} />
     </Animated.View>
   );
 };
