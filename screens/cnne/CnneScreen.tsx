@@ -16,6 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/MainStackNavigator';
 import TriviaCard from '../../components/TriviaCard/TriviaCard';
 import TriviaCardScreen5 from '../../components/TriviaCard/TriviaCardScreen5';
+import DiegoTrivia from '../../components/TriviaCard/DiegoTrivia';
 import GlossaryGame from '../../components/GlossaryGame/GlossaryGame_fixed';
 import TypewriterList from '../../components/TypewriterText/TypewriterList';
 import ImageTriviaCard from '../../components/ImageTriviaCard/ImageTriviaCard';
@@ -36,6 +37,8 @@ interface LessonStep {
   isAchievements?: boolean;
   isImageTrivia?: boolean;
   isStory?: boolean;
+  isDiegoTrivia?: boolean;
+  isSabias?: boolean;
 }
 
 const lessonSteps: LessonStep[] = [
@@ -109,6 +112,16 @@ Cuando exiges que no te cobren de más.`,
     title: 'Conoce a Diego y cómo descubre la CNEE',
     isStory: true,
   },
+  {
+    title: 'Actividad: ¿Qué aprendió Diego?',
+    isDiegoTrivia: true,
+  },
+  {
+    title: 'SABÍAS QUE...?',
+    isSabias: true,
+    description: 'La CNEE se financia con una tasa del 0.3% sobre la venta de energía por parte de las empresas distribuidoras, no con nuestros impuestos.'
+  },
+  
 ];
 
 export default function CnneScreen() {
@@ -116,6 +129,8 @@ export default function CnneScreen() {
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+  const [showSabiasInfo, setShowSabiasInfo] = useState(false);
+  const [finishing, setFinishing] = useState(false);
 
   // Estados para mediciones dinámicas
   const [footerHeight, setFooterHeight] = useState(0);
@@ -166,17 +181,27 @@ export default function CnneScreen() {
   // Scroll auto-completado deshabilitado
 
   const handleNext = () => {
-    if (step < lessonSteps.length - 1) {
-      setStep(step + 1);
-    }
+    setStep(s => {
+      if (s < lessonSteps.length - 1) return s + 1;
+      return s;
+    });
   };
 
   const handleFinish = () => {
+    if (finishing) return; // prevent double press
+    setFinishing(true);
     setShowConfetti(true);
+    // ensure confetti is visible a short time, then navigate
     setTimeout(() => {
       setShowConfetti(false);
-      navigation.navigate('HomeMain');
-    }, 3000);
+      setFinishing(false);
+      try {
+        navigation.navigate('HomeMain');
+      } catch (e) {
+        // navigation might fail silently in some test environments
+        console.warn('Navigation failed on finish', e);
+      }
+    }, 2200);
   };
 
 
@@ -246,12 +271,57 @@ export default function CnneScreen() {
             <TriviaCard onComplete={handleNext} />
           ) : current.isNewTrivia ? (
             <TriviaCardScreen5 onComplete={handleNext} />
+          ) : current.isDiegoTrivia ? (
+            <DiegoTrivia onComplete={handleNext} />
+          ) : current.isSabias ? (
+            // SABÍAS QUE screen: show a button that reveals the fact, and allow continue
+            <>
+              {current.image && (
+                <Image
+                  source={current.image}
+                  onLayout={(e) => setImageHeight(e.nativeEvent.layout.height)}
+                  style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
+                />
+              )}
+
+              <LinearGradient
+                colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.descriptionCard}
+              >
+                <View style={styles.gradientBorder} />
+                <View style={{ padding: 18 }}>
+                  {!showSabiasInfo ? (
+                    <TouchableOpacity
+                      onPress={() => setShowSabiasInfo(true)}
+                      style={[styles.button, { marginTop: 18 }]}
+                    >
+                      <Text style={styles.buttonText}>SABÍAS QUE...?</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <>
+                      <View style={{ marginTop: 8 }}>
+                        <Text style={[styles.description, { fontWeight: '600' }]}>{current.description}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={handleFinish}
+                        style={[styles.button, { marginTop: 18, alignSelf: 'center' }]}
+                        disabled={finishing}
+                      >
+                        <Text style={styles.buttonText}>{finishing ? 'Finalizando...' : 'Continuar'}</Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                </View>
+              </LinearGradient>
+            </>
           ) : current.isGlossary ? (
             <GlossaryGame onComplete={handleNext} />
           ) : current.isImageTrivia ? (
             <ImageTriviaCard onComplete={handleNext} />
           ) : current.isStory ? (
-            <StorySlide onComplete={handleFinish} />
+            <StorySlide onComplete={handleNext} />
           ) : (
             <>
               {current.image && (
@@ -289,6 +359,7 @@ export default function CnneScreen() {
                   onScroll={handleInnerScroll}
                   scrollEventThrottle={16}
                 >
+                  
                   {current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' && current.description ? (
                     <View>
                       {current.description.split('\n\n').map((item, index) => (
@@ -307,8 +378,8 @@ export default function CnneScreen() {
         </ScrollView>
       </LinearGradient>
 
-      {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
-      {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory && (
+  {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
+  {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory && !current.isDiegoTrivia && !current.isSabias && (
         <View
           style={styles.fixedBottom}
           onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}
@@ -356,7 +427,7 @@ export default function CnneScreen() {
       )}
 
       {/* Confetti Effect */}
-      {showConfetti && <Confetti />}
+  {showConfetti && <Confetti />}
     </View>
   );
 }

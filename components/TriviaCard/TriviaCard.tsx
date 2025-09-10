@@ -21,51 +21,51 @@ interface TriviaQuestion {
 const triviaQuestions: TriviaQuestion[] = [
   {
     id: 1,
-    question: "¿El precio de la energía eléctrica es fijado por la CNEE?",
-    correct: true,
-    feedback: "La CNEE establece las tarifas eléctricas para garantizar precios justos y accesibles para todos los usuarios."
+    question: '¿La CNEE genera electricidad en Guatemala?',
+    correct: false,
+    feedback: 'No; la CNEE no produce energía. Su función es regular y supervisar el sector eléctrico.'
   },
   {
     id: 2,
-    question: "¿Tu factura de electricidad depende únicamente del consumo de energía?",
-    correct: false,
-    feedback: "Tu factura incluye varios conceptos además del consumo: cargo fijo, alumbrado público, tasas municipales, y otros cargos regulados."
+    question: '¿La CNEE se encarga de que la energía que recibimos sea de calidad y sin cortes?',
+    correct: true,
+    feedback: 'Sí; la CNEE supervisa la calidad del servicio para que llegue con la potencia adecuada y menor cantidad de fallas.'
   },
   {
     id: 3,
-    question: "¿Puedes reportar errores en tu factura directamente a la empresa distribuidora?",
+    question: '¿La CNEE aplica la Ley General de Electricidad en el país?',
     correct: true,
-    feedback: "Puedes contactar directamente a tu empresa distribuidora para reportar errores, hacer reclamos o solicitar aclaraciones sobre tu factura."
+    feedback: 'Sí; la CNEE implementa y supervisa el cumplimiento de la normativa eléctrica, incluida la Ley General de Electricidad.'
   },
   {
     id: 4,
-    question: "¿El cargo por alumbrado público es opcional en tu factura?",
-    correct: false,
-    feedback: "El cargo por alumbrado público es obligatorio y contribuye al mantenimiento de la iluminación en calles y espacios públicos."
+    question: '¿La CNEE protege los derechos de los usuarios de energía eléctrica?',
+    correct: true,
+    feedback: 'Sí; protege derechos de los usuarios y vela por un servicio justo y transparente.'
   },
   {
     id: 5,
-    question: "¿La lectura del medidor determina tu consumo mensual?",
+    question: '¿La CNEE vigila que las empresas del sector eléctrico actúen correctamente?',
     correct: true,
-    feedback: "La diferencia entre la lectura actual y la anterior determina tu consumo mensual de energía eléctrica."
+    feedback: 'Sí; supervisa a las empresas para garantizar que cumplan normas técnicas y de atención al usuario.'
   },
   {
     id: 6,
-    question: "¿Todas las tarifas eléctricas son iguales para todos los usuarios?",
-    correct: false,
-    feedback: "Existen diferentes tarifas según el tipo de usuario: residencial, comercial, industrial, y según el nivel de consumo."
+    question: '¿La CNEE decide cuánto pueden cobrar las distribuidoras por llevar la energía a los hogares?',
+    correct: true,
+    feedback: 'Sí; una de sus funciones es regular y autorizar tarifas para las distribuidoras.'
   },
   {
     id: 7,
-    question: "¿La factura incluye información sobre tu historial de consumo?",
+    question: '¿La CNEE resuelve conflictos entre empresas del sector eléctrico?',
     correct: true,
-    feedback: "Tu factura muestra el historial de consumo de los últimos meses para que puedas comparar y monitorear tu uso de energía."
+    feedback: 'Sí; la CNEE puede intervenir en reclamos y disputas del sector para asegurar cumplimiento de la normativa.'
   },
   {
     id: 8,
-    question: "¿Los impuestos y tasas municipales son fijados por la empresa eléctrica?",
-    correct: false,
-    feedback: "Los impuestos y tasas municipales son establecidos por el gobierno y municipalidades, no por la empresa eléctrica."
+    question: '¿La CNEE establece normas y permite el uso de las redes eléctricas?',
+    correct: true,
+    feedback: 'Sí; establece normas técnicas y facilita el uso y acceso a las redes eléctricas.'
   }
 ];
 
@@ -199,7 +199,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
               <Text style={styles.feedbackTitle}>
                 {isCorrect ? 'CORRECTO' : 'INCORRECTO'}
               </Text>
-              <Text style={styles.feedbackText}>{question.feedback}</Text>
+              <Text style={styles.feedbackText}>{question.feedback.replace(/^\s*(CORRECTO:|INCORRECTO:|Correcto:?|Incorrecto:?|¡Correcto!?)/i, '').trim()}</Text>
             </LinearGradient>
           )}
         </LinearGradient>

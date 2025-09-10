@@ -115,21 +115,69 @@ const ConfettiPiece: React.FC<ConfettiPieceProps> = ({ color, x, delay, size }) 
 };
 
 export const Confetti: React.FC = () => {
-  const colors = ['#58CCF7', '#FFD700', '#FF69B4', '#FF7A00', '#FFF', '#A020F0', '#28A745'];
-  const pieces = Array.from({ length: 40 }, (_, i) => ({
+  // Stars that blink across the screen
+  const colors = ['#FFD700', '#FFF9C4', '#FFE57F', '#FFF'];
+  const stars = Array.from({ length: 60 }, (_, i) => ({
     id: i,
     color: colors[i % colors.length],
-    x: Math.random() * width - width / 1.2,
-    delay: Math.random() * 700,
-    size: 22 + Math.random() * 18,
+    left: Math.random() * (width - 20),
+    top: Math.random() * (height - 20),
+    size: 6 + Math.random() * 14,
+    delay: Math.random() * 1200,
+    duration: 600 + Math.random() * 1200,
   }));
 
   return (
-    <View style={styles.container}>
-      {pieces.map((piece) => (
-        <ConfettiPiece key={piece.id} {...piece} />
+    <View style={[styles.container, { justifyContent: 'flex-start' }]} pointerEvents="none">
+      {stars.map((s) => (
+        <AnimatedStar key={s.id} left={s.left} top={s.top} size={s.size} color={s.color} delay={s.delay} duration={s.duration} />
       ))}
     </View>
+  );
+};
+
+// Animated single star that pulses (blink)
+const AnimatedStar: React.FC<{ left: number; top: number; size: number; color: string; delay: number; duration: number }> = ({ left, top, size, color, delay, duration }) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(0.6)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.delay(delay),
+        Animated.parallel([
+          Animated.timing(opacity, { toValue: 1, duration: duration / 3, useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 1.15, duration: duration / 3, useNativeDriver: true }),
+        ]),
+        Animated.parallel([
+          Animated.timing(opacity, { toValue: 0.2, duration: duration / 2, useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 0.8, duration: duration / 2, useNativeDriver: true }),
+        ]),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left,
+        top,
+        width: size,
+        height: size,
+        alignItems: 'center',
+        justifyContent: 'center',
+        transform: [{ scale }],
+        opacity,
+      }}
+    >
+      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ position: 'absolute', width: size * 0.7, height: size * 0.7, backgroundColor: color, borderRadius: size * 0.35, opacity: 0.9 }} />
+        <View style={{ width: size * 0.9, height: size * 0.2, backgroundColor: color, transform: [{ rotate: '45deg' }], borderRadius: size * 0.1 }} />
+      </View>
+    </Animated.View>
   );
 };
 

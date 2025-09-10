@@ -28,15 +28,41 @@ interface TriviaQuestion {
 const triviaQuestions: TriviaQuestion[] = [
   {
     id: 1,
-    question: "¿Qué aprendió Sonia de su experiencia con la factura eléctrica?",
+    question: '¿Quién fija las tarifas eléctricas en Guatemala para los usuarios residenciales?',
     options: [
-      { text: "A) Que debe pagar sin revisar", correct: false },
-      { text: "B) Puedo exigir a mi empresa distribuidora un servicio de energía de calidad, seguro y confiable", correct: true },
-      { text: "C) Que nunca debe llamar a la empresa", correct: false }
+      { text: 'A) El Congreso', correct: false },
+      { text: 'B) La CNEE', correct: true },
+      { text: 'C) Las empresas', correct: false }
     ],
     feedback: {
-      correct: "¡Exacto! Sonia aprendió que puede exigir un servicio de calidad y sus derechos como usuaria.",
-      incorrect: "Correcto: B) Sonia aprendió que puede exigir un servicio de energía de calidad, seguro y confiable."
+      correct: 'La CNEE regula y autoriza las tarifas para usuarios residenciales, no el Congreso ni las empresas privadas.',
+      incorrect: 'La CNEE es la entidad responsable de regular y autorizar las tarifas eléctricas; esa es la respuesta correcta.'
+    }
+  },
+  {
+    id: 2,
+    question: '¿Qué hace la CNEE si una empresa eléctrica comete una falta?',
+    options: [
+      { text: 'A) La ignora', correct: false },
+      { text: 'B) La supervisa y le puede sancionar', correct: true },
+      { text: 'C) Le da un premio', correct: false }
+    ],
+    feedback: {
+      correct: 'La CNEE puede supervisar a la empresa, imponer sanciones o medidas correctivas cuando incumple la normativa.',
+      incorrect: 'La CNEE supervisa el cumplimiento normativo y puede sancionar a las empresas que incumplen; por eso B es la respuesta correcta.'
+    }
+  },
+  {
+    id: 3,
+    question: '¿La CNEE genera energía?',
+    options: [
+      { text: 'A) Sí', correct: false },
+      { text: 'B) No, solo regula el sector eléctrico', correct: true },
+      { text: 'C) Solo en la capital', correct: false }
+    ],
+    feedback: {
+      correct: 'La CNEE no produce energía; su función principal es regular, supervisar y normar el sector eléctrico.',
+      incorrect: 'La CNEE no genera energía; regula el sector y supervisa a quienes sí la producen o distribuyen.'
     }
   }
 ];
@@ -163,7 +189,7 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
                 {isCorrect ? '¡Correcto!' : 'Incorrecto'}
               </Text>
               <Text style={styles.feedbackText}>
-                {isCorrect ? question.feedback.correct : question.feedback.incorrect}
+                {isCorrect ? question.feedback.correct.replace(/^\s*(¡?Correcto!?|Correcto:|Incorrecto:?)/i, '').trim() : question.feedback.incorrect.replace(/^\s*(¡?Correcto!?|Correcto:|Incorrecto:?)/i, '').trim()}
               </Text>
             </View>
           )}
