@@ -105,7 +105,7 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
 
   return (
     <LinearGradient
-      colors={['#1a1a2e', '#16213e', '#0f3460']}
+      colors={['#1a0033', '#2d1b4d', '#3d2b5f']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.triviaContainer}
@@ -128,7 +128,7 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
         alwaysBounceVertical={true}
       >
         <LinearGradient
-          colors={['#2a2a4a', '#1e1e3a', '#151530']}
+          colors={['#2d1b4d', '#3d2b5f', '#8B45FF']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.questionCard}
@@ -140,7 +140,7 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
           )}
 
           <LinearGradient
-            colors={['rgba(255, 255, 255, 0.15)', 'rgba(88, 204, 247, 0.1)']}
+            colors={['rgba(139, 69, 255, 0.15)', 'rgba(139, 69, 255, 0.1)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.imageContainer}
@@ -171,7 +171,7 @@ export default function ImageTriviaCard({ onComplete }: ImageTriviaCardProps) {
                 colors={
                   selectedAnswer === true 
                     ? (isCorrect ? ['#28A745', '#20C751'] : ['#DC3545', '#FF4757'])
-                    : ['#2c2c2c', '#1c1c1c']
+                    : ['#3d2b5f', '#2d1b4d']
                 }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}

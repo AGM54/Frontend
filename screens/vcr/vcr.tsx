@@ -116,7 +116,7 @@ export default function VcrScreen() {
               resizeMode="contain"
             />
           )}
-          <Text style={[styles.description, { textAlign: 'justify' }]}> {current.description} </Text>
+          <Text style={[styles.description, { textAlign: 'justify' }]}>{current.description}</Text>
         </>
       )}
 

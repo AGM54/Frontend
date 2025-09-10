@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     paddingTop: height * 0.08,
   },
   scrollContent: {
-    paddingBottom: height * 0.18, // Ajustado para dar espacio al botón
+    // paddingBottom removido - ahora es dinámico
   },
   fixedBottom: {
     position: 'absolute',
@@ -70,8 +70,9 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     marginBottom: height * 0.02,
     marginHorizontal: width * 0.015,
-    maxHeight: height * 0.55, // Aumentado para mostrar más contenido
-    minHeight: height * 0.25, // Altura mínima para consistencia
+    maxHeight: height * 0.75, // Aumentado significativamente para mostrar más contenido
+    minHeight: height * 0.35, // Altura mínima aumentada para mejor visualización
+    flex: 1, // Permite que el contenedor crezca según el contenido
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -88,8 +89,9 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     marginBottom: height * 0.02,
     marginHorizontal: width * 0.015,
-    maxHeight: height * 0.65, // Ajustado para mejor proporción
-    minHeight: height * 0.45,
+    maxHeight: height * 0.85, // Aumentado para contenido extenso
+    minHeight: height * 0.55, // Altura mínima aumentada
+    flex: 1, // Permite que el contenedor crezca según el contenido
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -124,15 +126,16 @@ export const styles = StyleSheet.create({
     color: 'rgba(139, 69, 255, 0.6)',
   },
   descriptionScroll: {
-    maxHeight: height * 0.48, // Aumentado para coincidir con descriptionCard
     padding: width * 0.06,
     paddingBottom: height * 0.03,
+    minHeight: 0,
+    flexGrow: 1, // Permite que el scroll crezca para llenar el espacio disponible
   },
   descriptionScrollLarge: {
-    maxHeight: height * 0.58, // Ajustado para mejor proporción
-    minHeight: height * 0.40,
     padding: width * 0.05,
     paddingBottom: height * 0.04,
+    minHeight: 0,
+    flexGrow: 1, // Permite que el scroll crezca para llenar el espacio disponible
   },
   imageContainer: {
     alignItems: 'center',
@@ -140,12 +143,13 @@ export const styles = StyleSheet.create({
     marginBottom: height * 0.02,
   },
   description: {
-    fontSize: width * 0.044,
+    fontSize: width * 0.042, // Ligeramente reducido para mejor legibilidad
     color: '#FFFFFF',
     textAlign: 'justify',
-    lineHeight: width * 0.072,
-    letterSpacing: 0.3,
+    lineHeight: width * 0.068, // Ajustado para mejor espaciado
+    letterSpacing: 0.5, // Aumentado para mejor legibilidad
     textAlignVertical: 'top',
+    paddingHorizontal: width * 0.02, // Añadido padding horizontal para mejor lectura
     ...Platform.select({
       ios: {
         fontFamily: 'System',

@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#1a0033',
     padding: width * 0.05,
     paddingBottom: height * 0.12, // Espacio para la barra de navegación inferior
   },
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   dropZone: {
     width: width * 0.42,
     height: height * 0.22,
-    backgroundColor: '#1C1C1C',
+    backgroundColor: '#2d1b4d',
     borderRadius: 16,
     borderWidth: 2,
     borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     }),
   },
   filledDropZone: {
-    backgroundColor: '#2A4B7C',
+    backgroundColor: '#3d2b5f',
     borderColor: '#58CCF7',
     borderStyle: 'solid',
     ...Platform.select({
@@ -166,7 +166,7 @@ export const styles = StyleSheet.create({
   draggableItem: {
     width: width * 0.42,
     height: height * 0.08,
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#3d2b5f',
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#58CCF7',
@@ -272,7 +272,7 @@ export const styles = StyleSheet.create({
     }),
   },
   selectedItem: {
-    backgroundColor: '#4A5C7A',
+    backgroundColor: '#8B45FF',
     borderColor: '#FFF',
     borderWidth: 3,
     transform: [{ scale: 1.05 }],

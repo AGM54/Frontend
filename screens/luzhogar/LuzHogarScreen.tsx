@@ -66,27 +66,27 @@ const lessonSteps: LessonStep[] = [
   },
   {
     title: 'Central Hidroeléctrica',
-    description: ' Agua de ríos\nLas centrales hidroeléctricas aprovechan la fuerza del agua de nuestros ríos para generar electricidad de manera limpia y renovable.',
+    description: 'Agua de ríos\nLas centrales hidroeléctricas aprovechan la fuerza del agua de nuestros ríos para generar electricidad de manera limpia y renovable.',
     image: require('../../assets/hidrocolor.png'),
   },
   {
     title: 'Paneles Solares',
-    description: ' Sol\nLos paneles solares capturan la energía del sol y la convierten en electricidad, aprovechando uno de nuestros recursos más abundantes.',
+    description: 'Sol\nLos paneles solares capturan la energía del sol y la convierten en electricidad, aprovechando uno de nuestros recursos más abundantes.',
     image: require('../../assets/solarcolor.png'),
   },
   {
     title: 'Aerogeneradores',
-    description: ' Viento\nLos aerogeneradores utilizan la fuerza del viento para hacer girar sus aspas y generar energía eléctrica de forma sostenible.',
+    description: 'Viento\nLos aerogeneradores utilizan la fuerza del viento para hacer girar sus aspas y generar energía eléctrica de forma sostenible.',
     image: require('../../assets/generadorcolor.png'),
   },
   {
     title: 'Planta de Biomasa',
-    description: ' Caña de azúcar\nLas plantas de biomasa queman residuos de caña de azúcar y otros materiales orgánicos para producir electricidad.',
+    description: 'Caña de azúcar\nLas plantas de biomasa queman residuos de caña de azúcar y otros materiales orgánicos para producir electricidad.',
     image: require('../../assets/biomasaa.png'),
   },
   {
     title: 'Planta Térmica',
-    description: '🛢️ Combustibles\nLas plantas térmicas utilizan combustibles como gas natural o diesel para generar electricidad cuando se necesita más energía.',
+    description: 'Combustibles\nLas plantas térmicas utilizan combustibles como gas natural o diesel para generar electricidad cuando se necesita más energía.',
     image: require('../../assets/termopng.png'),
   },
   {
@@ -167,7 +167,7 @@ const lessonSteps: LessonStep[] = [
       question: 'Según la historia de Sofía, ¿cuál es la función principal de la CNEE?',
       options: [
         { id: 'A', text: 'A) Generar electricidad en plantas solares', correct: false },
-        { id: 'B', text: '✅ B) Supervisar y regular el sector eléctrico', correct: true },
+        { id: 'B', text: 'B) Supervisar y regular el sector eléctrico', correct: true },
         { id: 'C', text: 'C) Instalar medidores en las casas', correct: false }
       ],
       explanation: '¡Correcto! Como aprendió Sofía, la CNEE no genera ni distribuye electricidad, sino que supervisa y regula todo el sector eléctrico para garantizar un servicio de calidad.'
@@ -489,7 +489,25 @@ export default function LuzHogarScreen() {
                     </Animated.View>
                   </>
                 ) : (
-                  <Text style={styles.description}>{current.description || ''}</Text>
+                  // Renderizar descripción con títulos centrados cuando aplique
+                  current.description?.includes('\n') && 
+                  ['Central Hidroeléctrica', 'Paneles Solares', 'Aerogeneradores', 'Planta de Biomasa', 'Planta Térmica'].includes(current.title) ? (
+                    <View>
+                      {current.description.split('\n').map((line, index) => (
+                        <Text 
+                          key={index} 
+                          style={[
+                            styles.description, 
+                            index === 0 ? { textAlign: 'center', fontWeight: 'bold', marginBottom: 8 } : {}
+                          ]}
+                        >
+                          {line}
+                        </Text>
+                      ))}
+                    </View>
+                  ) : (
+                    <Text style={styles.description}>{current.description || ''}</Text>
+                  )
                 )}
               </ScrollView>
             </LinearGradient>

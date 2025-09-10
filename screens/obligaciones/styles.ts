@@ -88,6 +88,28 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  descriptionCardLarge: {
+    borderRadius: 25,
+    padding: width * 0.045,
+    marginVertical: height * 0.02,
+    borderWidth: 3,
+    borderColor: 'rgba(139, 69, 255, 0.8)',
+    minHeight: height * 0.45, // Más alto para "¿Cómo reclamar?"
+    maxHeight: height * 0.65, // Límite máximo para mantener buena proporción
+    position: 'relative',
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#8B45FF',
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 1,
+        shadowRadius: 30,
+      },
+      android: {
+        elevation: 25,
+      },
+    }),
+  },
   gradientBorder: {
     position: 'absolute',
     top: 2,
@@ -118,6 +140,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     zIndex: 3,
     maxHeight: height * 0.3,
+  },
+  descriptionScrollLarge: {
+    flex: 1,
+    zIndex: 3,
+    maxHeight: height * 0.55, // Más espacio para contenido largo
+    minHeight: height * 0.35, // Altura mínima garantizada
   },
   description: {
     fontSize: width * 0.045,

@@ -182,7 +182,7 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
                   <Text style={styles.termIcon}>{term.icon}</Text>
                   <Text style={styles.termText}>{term.term}</Text>
                   {matchedPairs.includes(term.id) && (
-                    <Text style={styles.checkIcon}>✅</Text>
+                    <Text style={styles.checkIcon}>✓</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
@@ -217,7 +217,7 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
                 >
                   <Text style={styles.definitionText}>{definition.definition}</Text>
                   {matchedPairs.includes(definition.id) && (
-                    <Text style={styles.checkIconDef}>✅</Text>
+                    <Text style={styles.checkIconDef}>✓</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
@@ -242,7 +242,7 @@ export default function BillGlossary({ onComplete }: BillGlossaryProps) {
                 colors={['#28A745', '#34CE57', '#40E869']}
                 style={styles.buttonGradient}
               >
-                <Text style={styles.buttonText}>✅ Continuar</Text>
+                <Text style={styles.buttonText}>Continuar</Text>
               </LinearGradient>
             </TouchableOpacity>
           )}

@@ -153,7 +153,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
                   styles.answerText,
                   selectedAnswer === true && styles.selectedAnswerText
                 ]}>
-                  ✅ Sí
+                  Sí
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -180,7 +180,7 @@ export default function TriviaCard({ onComplete }: TriviaCardProps) {
                   styles.answerText,
                   selectedAnswer === false && styles.selectedAnswerText
                 ]}>
-                  ❌ No
+                  No
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

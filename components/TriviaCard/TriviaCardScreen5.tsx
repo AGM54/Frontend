@@ -160,7 +160,7 @@ export default function TriviaCardScreen5({ onComplete }: TriviaCardScreen5Props
               isCorrect ? styles.correctFeedback : styles.incorrectFeedback
             ]}>
               <Text style={styles.feedbackTitle}>
-                {isCorrect ? '¡Correcto! 🎉' : '❌ Incorrecto'}
+                {isCorrect ? '¡Correcto!' : 'Incorrecto'}
               </Text>
               <Text style={styles.feedbackText}>
                 {isCorrect ? question.feedback.correct : question.feedback.incorrect}

@@ -156,7 +156,7 @@ export default function MultipleChoiceTrivia({
               textShadowOffset: { width: 0, height: 2 },
               textShadowRadius: 6,
             }}>
-              {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto 😔'}
+              {isCorrect ? '¡Correcto!' : 'Incorrecto'}
             </Text>
             <Text style={{
               fontSize: width * 0.038,

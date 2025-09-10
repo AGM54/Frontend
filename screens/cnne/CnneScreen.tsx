@@ -116,8 +116,20 @@ export default function CnneScreen() {
   const [typewriterComplete, setTypewriterComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+
+  // Estados para mediciones dinámicas
+  const [footerHeight, setFooterHeight] = useState(0);
+  const [titleHeight, setTitleHeight] = useState(0);
+  const [imageHeight, setImageHeight] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const innerScrollViewRef = useRef<ScrollView>(null);
+
+  // Cálculo del alto disponible para la tarjeta
+  const EXTRA_VERTICAL_MARGINS = height * 0.05; // Reducido para dar más espacio a la tarjeta
+  const availableCardHeight = Math.max(
+    height * 0.5, // Altura mínima garantizada más generosa
+    height - footerHeight - titleHeight - imageHeight - EXTRA_VERTICAL_MARGINS
+  );
   const navigation = useNavigation<CnneScreenNavigationProp>();
   const progress = (step + 1) / lessonSteps.length;
   const current = lessonSteps[step];
@@ -128,7 +140,7 @@ export default function CnneScreen() {
   // Steps that should use large card styles (regardless of scroll requirement)
   const largeCardSteps = [
     '¿Qué hace la CNEE?',
-  '¿Qué ha logrado la CNEE?'
+    '¿Qué ha logrado la CNEE?'
   ];
 
   const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
@@ -207,14 +219,19 @@ export default function CnneScreen() {
         <ScrollView
           ref={scrollViewRef}
           style={styles.scrollContainer}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: footerHeight + height * 0.02 }]}
           showsVerticalScrollIndicator={true}
           onScroll={handleScroll}
           scrollEventThrottle={16}
         >
           {/* Título - Oculto para Story */}
           {!current.isStory && (
-            <Text style={styles.title}>{current.title}</Text>
+            <Text
+              style={styles.title}
+              onLayout={(e) => setTitleHeight(e.nativeEvent.layout.height)}
+            >
+              {current.title}
+            </Text>
           )}
 
           {/* Indicador visual de scroll en pasos informativos largos */}
@@ -240,6 +257,7 @@ export default function CnneScreen() {
               {current.image && (
                 <Image
                   source={current.image}
+                  onLayout={(e) => setImageHeight(e.nativeEvent.layout.height)}
                   style={current.title === '¿Dónde vemos el trabajo de la CNEE en la vida diaria?' ? styles.imageCinco : styles.image}
                 />
               )}
@@ -248,14 +266,24 @@ export default function CnneScreen() {
                 colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={isLargeCardStep ? styles.descriptionCardLarge : styles.descriptionCard}
+                style={[
+                  isLargeCardStep ? styles.descriptionCardLarge : styles.descriptionCard,
+                  {
+                    maxHeight: Math.max(availableCardHeight, height * 0.7), // Usar el mayor entre el calculado y 70% de pantalla
+                    minHeight: Math.min(availableCardHeight * 0.8, height * 0.5) // Altura mínima más generosa
+                  }
+                ]}
               >
                 {/* Border interior con gradiente */}
                 <View style={styles.gradientBorder} />
                 {/* Efectos de partículas de estrellas sutiles - REMOVIDOS */}
                 <ScrollView
                   ref={innerScrollViewRef}
-                  style={isLargeCardStep ? styles.descriptionScrollLarge : styles.descriptionScroll}
+                  style={[
+                    isLargeCardStep ? styles.descriptionScrollLarge : styles.descriptionScroll,
+                    { flexGrow: 1 }
+                  ]}
+                  contentContainerStyle={{ paddingBottom: height * 0.015, flexGrow: 1 }}
                   nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={true}
                   onScroll={handleInnerScroll}
@@ -281,48 +309,51 @@ export default function CnneScreen() {
 
       {/* Elementos fijos en la parte inferior - Ocultos durante la trivia */}
       {!current.isTrivia && !current.isNewTrivia && !current.isGlossary && !current.isImageTrivia && !current.isStory && (
-          <View style={styles.fixedBottom}>
-            {/* Barra de progreso */}
-            <View style={styles.progressBarContainer}>
-              <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
-            </View>
-
-            {/* Indicadores de pasos */}
-            <View style={styles.stepIndicators}>
-              {lessonSteps.map((_, i) => (
-                <View
-                  key={i}
-                  style={[
-                    styles.circle,
-                    i === step && styles.activeCircle,
-                    { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
-                  ]}
-                />
-              ))}
-            </View>
-
-            {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
-            {step < lessonSteps.length - 1 && (
-              ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
-                <TouchableOpacity
-                  style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
-                  onPress={handleNext}
-                  disabled={isScrollBlockStep && !hasScrolledToEnd}
-                >
-                  <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
-                    {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
-                  </Text>
-                </TouchableOpacity>
-              )
-            )}
-
-            {step === lessonSteps.length - 1 && (
-              <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
-                <Text style={styles.buttonText}>Finalizar lección</Text>
-              </TouchableOpacity>
-            )}
+        <View
+          style={styles.fixedBottom}
+          onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}
+        >
+          {/* Barra de progreso */}
+          <View style={styles.progressBarContainer}>
+            <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
           </View>
-        )}
+
+          {/* Indicadores de pasos */}
+          <View style={styles.stepIndicators}>
+            {lessonSteps.map((_, i) => (
+              <View
+                key={i}
+                style={[
+                  styles.circle,
+                  i === step && styles.activeCircle,
+                  { backgroundColor: i === step ? '#58CCF7' : 'rgba(255, 255, 255, 0.1)' },
+                ]}
+              />
+            ))}
+          </View>
+
+          {/* Botón continuar o finalizar, oculto hasta que el usuario lea todo en el paso informativo largo */}
+          {step < lessonSteps.length - 1 && (
+            ((isScrollBlockStep && hasScrolledToEnd) || !isScrollBlockStep) && (
+              <TouchableOpacity
+                style={[styles.button, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButton]}
+                onPress={handleNext}
+                disabled={isScrollBlockStep && !hasScrolledToEnd}
+              >
+                <Text style={[styles.buttonText, (isScrollBlockStep && !hasScrolledToEnd) && styles.disabledButtonText]}>
+                  {isScrollBlockStep && !hasScrolledToEnd ? '📖 Lee todo el contenido' : 'Continuar'}
+                </Text>
+              </TouchableOpacity>
+            )
+          )}
+
+          {step === lessonSteps.length - 1 && (
+            <TouchableOpacity style={[styles.button, styles.finishButton]} onPress={handleFinish}>
+              <Text style={styles.buttonText}>Finalizar lección</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
 
       {/* Confetti Effect */}
       {showConfetti && <Confetti />}

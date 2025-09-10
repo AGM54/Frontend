@@ -145,12 +145,12 @@ const lessonSteps: LessonStep[] = [
     image: require('../../assets/reclamos.png'),
   },
   {
-    title: '🎮 Actividad 3: "Empareja el término con su definición"',
+    title: '🎮 Actividad 3: Empareja el término con su definición',
     description: 'Conecta cada término con su definición correcta.',
     isTermMatching: true,
   },
   {
-    title: '🧠 Trivia: "¿Conoces tus derechos?"',
+    title: '🧠 Trivia: ¿Conoces tus derechos?',
     description: 'Pon a prueba tus conocimientos sobre tus derechos como usuario.',
     isTrueFalse: true,
   },
@@ -163,7 +163,7 @@ const lessonSteps: LessonStep[] = [
       { title: 'Llama a la empresa distribuidora', content: 'Sonia no se quedó callada y llamó inmediatamente a su empresa distribuidora.', image: require('../../assets/sonia2.png') },
       { title: 'Solicita una revisión de su contador', content: 'Pidió que revisaran su contador porque sospechaba que algo estaba mal.', image: require('../../assets/sonia3.png') },
       { title: 'Le corrigen el error y le reembolsan', content: 'La empresa encontró el error, lo corrigió y le devolvió el dinero de más que había pagado.', image: require('../../assets/sonia4.png') },
-      { title: 'Sonia aprende que puede hacer un reclamo a la empresa distribuidora en caso de error', content: 'Sonia aprendió que puede hacer un reclamo a la empresa distribuidora en caso de error y exigir un servicio de calidad.', image: require('../../assets/sonia5.png') }
+      { title: 'Sonia aprende sobre sus derechos', content: 'Sonia aprendió que puede hacer un reclamo a la empresa distribuidora en caso de error y exigir un servicio de calidad.', image: require('../../assets/sonia5.png') }
     ],
   },
   {
@@ -173,7 +173,7 @@ const lessonSteps: LessonStep[] = [
   },
 
    {
-    title: '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?',
+    title: '📘 Normas adicionales de las distribuidoras',
     description: 'Las distribuidoras no solo deben darte energía, también deben cumplir con reglas técnicas y de calidad definidas por la CNEE. Estas normas aseguran que el servicio funcione bien y no afecte tus aparatos ni tu vida diaria.\n\n✔ Garantizar calidad del voltaje: La energía debe llegar con la potencia adecuada, sin subidas o bajones.\n\n✔ Avisarte sobre cortes programados: Deben notificarte con antelación si harán trabajos de mantenimiento.\n\n✔ Medir correctamente tu consumo: El medidor debe estar bien calibrado. Si no lo está, puedes pedir revisión técnica.\n\n✔ Respetar los plazos de atención: Tienen un tiempo límite para atender cortes, reclamos o conexiones.',
     image: require('../../assets/importante.png'),
   },
@@ -212,10 +212,16 @@ export default function ObligacionesScreen() {
   const infoStepsWithScroll = [
     '💬 ¿Qué pasa si no cumplen?',
     '📋 ¿Cómo reclamar?',
-    '📘 Más allá de lo básico – ¿Qué otras normas deben cumplir las distribuidoras?'
+    '📘 Normas adicionales de las distribuidoras'
+  ];
+
+  // Steps that should use large card styles
+  const largeCardSteps = [
+    '📋 ¿Cómo reclamar?'
   ];
 
   const isScrollBlockStep = infoStepsWithScroll.includes(current.title);
+  const isLargeCardStep = largeCardSteps.includes(current.title);
 
   // Reset scroll state when step changes
   useEffect(() => {
@@ -369,7 +375,7 @@ export default function ObligacionesScreen() {
               colors={['rgba(45, 27, 77, 0.9)', 'rgba(26, 0, 51, 0.95)', 'rgba(45, 27, 77, 0.9)']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.descriptionCard}
+              style={isLargeCardStep ? styles.descriptionCardLarge : styles.descriptionCard}
             >
               {/* Border interior con gradiente */}
               <View style={styles.gradientBorder} />
@@ -381,7 +387,7 @@ export default function ObligacionesScreen() {
               </View>
               
               <ScrollView
-                style={styles.descriptionScroll}
+                style={isLargeCardStep ? styles.descriptionScrollLarge : styles.descriptionScroll}
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={true}
               >

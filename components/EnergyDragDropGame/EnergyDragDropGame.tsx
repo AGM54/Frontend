@@ -274,7 +274,7 @@ export default function EnergyDragDropGame({ onComplete, alumbradoData }: Props)
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🧩 Arrastra cada fuente a su imagen correspondiente</Text>
+      <Text style={styles.title}>Arrastra cada fuente a su imagen correspondiente</Text>
       
       <Text style={styles.score}>Conectadas: {score}/5</Text>
       {/* ...resto del juego original... */}

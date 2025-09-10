@@ -227,7 +227,7 @@ export default function OrderDragDrop({ onComplete }: OrderDragDropProps) {
                 end={{ x: 1, y: 1 }}
                 style={styles.buttonGradient}
               >
-                <Text style={styles.buttonText}>✅ Verificar Orden</Text>
+                <Text style={styles.buttonText}>Verificar Orden</Text>
               </LinearGradient>
             </TouchableOpacity>
 
