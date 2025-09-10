@@ -444,7 +444,7 @@ export default function ObligacionesScreen() {
           </View>
         )}
 
-  // ...existing code...
+      {/* ...existing code... */}
     </LinearGradient>
   );
 }
